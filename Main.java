@@ -132,6 +132,7 @@ public class Main {
 			),
 			stackRegister 
 		);
+		stackElements++;
 		
 		return result;
 	}
@@ -154,6 +155,7 @@ public class Main {
 	) {
 		String result = "";
 		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
+		stackElements--;
 		
 		if (stackElements == 0) {
 			result = "\tERROR: Pop instruction is invalid: there are no elements in stack";
@@ -410,7 +412,7 @@ public class Main {
 			BufferedReader bufferedFile = new BufferedReader(new FileReader(file));
 			
 			
-			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(]?[%][\\w]+[)]?)|(?:(?<sca11>-?[\\d]+)?\\s*[(]?\\s*(?<reg12>[%][\\w]+)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(]?[%][\\w]+[)]?)|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
+			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*[(]?\\s*(?<reg12>[%][\\w]+)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
 			Pattern emptyLine = Pattern.compile("^\\s*#\\w*\\s*$");
 			Matcher instructionMatcher;
 			
@@ -425,7 +427,7 @@ public class Main {
 					instructionMatcher.matches();
 					
 					// Print 
-					/*System.out.println("************ RIGA ************: "+line);
+					System.out.println("************ RIGA ************: "+line);
 				
 					System.out.println("ins: " + instructionMatcher.group("ins"));
 					System.out.println("num1: " + instructionMatcher.group("num1"));   
@@ -436,7 +438,7 @@ public class Main {
 					System.out.println("sca21: " + instructionMatcher.group("sca21")); 
 					System.out.println("reg22: " + instructionMatcher.group("reg22")); 
 					System.out.println("reg21: " + ((instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"))); 
-					System.out.println("sca22: " + instructionMatcher.group("sca22")); */
+					System.out.println("sca22: " + instructionMatcher.group("sca22")); 
 					
 					program += parseInstruction(
 						instructionMatcher.group("ins"),
