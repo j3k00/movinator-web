@@ -611,7 +611,6 @@ public class Main {
 			reg2 != null 
 		) {
 			result = "(" + reg2 + ", " + reg1 + ", " + sca2 + ")";
-			stackElements++;
 			
 		// 4(%esp, %esi, 4)
 		} else if (
