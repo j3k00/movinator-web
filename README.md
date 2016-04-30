@@ -1,7 +1,6 @@
 ## Description
 
-This program is written in Java and it changes the following instructions into
-a sequence of mov instructions
+The Movinator is written in Java and it compiles the following instructions into "mov" instructions.
 
 ## Functionallity
 
