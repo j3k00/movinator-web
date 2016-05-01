@@ -192,10 +192,11 @@ public class Movinator {
 		String reg11,
 		String sca12
 	) {
+			stackElements--;
 		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
-		stackElements--;
 		
-		if (stackElements == 0) {
+		
+		if (stackElements < 0) {
 			addLine("ERROR: Pop instruction is invalid: there are no elements in stack");
 			
 		} else {
