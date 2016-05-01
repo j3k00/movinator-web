@@ -412,7 +412,7 @@ public class Main {
 			BufferedReader bufferedFile = new BufferedReader(new FileReader(file));
 			
 			
-			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*[(]?\\s*(?<reg12>[%][\\w]+)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
+			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
 			Pattern emptyLine = Pattern.compile("^\\s*#\\w*\\s*$");
 			Matcher instructionMatcher;
 			
@@ -440,6 +440,7 @@ public class Main {
 					System.out.println("reg21: " + ((instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"))); 
 					System.out.println("sca22: " + instructionMatcher.group("sca22")); 
 					
+					/*
 					program += parseInstruction(
 						instructionMatcher.group("ins"),
 						instructionMatcher.group("num1"),   
@@ -452,7 +453,7 @@ public class Main {
 						(instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"),
 						instructionMatcher.group("sca22"),
 						line
-					);
+					);*/
 				} else {
 					
 					program += line.replaceAll("^\\s*", "\t") + "\n";

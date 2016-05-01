@@ -110,6 +110,7 @@ if [ ! -f $2 ]; then
 fi
 
 echo " * \033[;32mOK\033[0m : Check complete\n"
+sleep 1
 
 if [ ! -f $FILE_OUT ]; then 
 	java Main $FILE_IN

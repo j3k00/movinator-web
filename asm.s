@@ -1,6 +1,10 @@
-push	 (%ebx , %esi, 2)
-mov	( %ebx), %ebx
-mov	4 (%ebx), %ebx
-mov	4( %ebx, %ebx), %ebx
-add	123  (%ebx , %esi, 2), %ecx
-movl -12(, %eax,4),%esp
+decl %eax
+decl 4(%eax)
+decl 4(,%eax,4)
+decl (%edx,%eax,4)
+incl %eax
+incl 4(%eax)
+incl 4(,%eax,4)
+incl (%edx,%eax,4)
+addl $3,%ebx
+addl %eax,%ebx
