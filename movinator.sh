@@ -36,8 +36,11 @@ done
 
 clear
 
-PROG_SRC="Main.java"
-PROG_CLS="Main.class"
+PROG_SRC_MAIN="Main.java"
+PROG_SRC_MOVINATOR="Movinator.java"
+PROG_CLS_MAIN="Main.class"
+PROG_CLS_MOVINATOR="Movinator.class"
+
 PROG_ERR="/tmp/movinator_error"
 ASM_OUT="ass"
 
@@ -82,24 +85,44 @@ else
 	fi
 fi
 
-if [ ! -f $PROG_CLS ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then 
-
-	javac Main.java 2> $PROG_ERR
+if [ ! -f $PROG_CLS_MOVINATOR ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then 
 	
-	if [ -f $PROG_CLS ]; then 
-		echo " * \033[;32mOK\033[0m : File $PROG_CLS created"
-		sleep 1
-	else
-		echo " * \033[;31mERROR\033[0m : Unable to create $PROG_CLS"
+	javac $PROG_SRC_MOVINATOR 2> $PROG_ERR
+	
+	if [ ! -f $PROG_CLS_MOVINATOR ]; then
+		echo " * \033[;31mERROR\033[0m : Unable to create $PROG_CLS_MOVINATOR"
+		cat $PROG_ERR
+		rm -f $PROG_ERR
+		exit
+	fi 
+	
+	echo " * \033[;32mOK\033[0m : File $PROG_CLS_MOVINATOR created"
+	sleep 1
+fi
+
+if [ ! -f $PROG_CLS_MAIN ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then 
+	
+	javac $PROG_SRC_MAIN 2> $PROG_ERR
+	
+	if [ ! -f $PROG_CLS_MAIN ]; then 
+		echo " * \033[;31mERROR\033[0m : Unable to create $PROG_CLS_MAIN"
 		cat $PROG_ERR
 		rm -f $PROG_ERR
 		exit
 	fi
+	
+	echo " * \033[;32mOK\033[0m : File $PROG_CLS_MAIN created"
+	sleep 1
 fi
 
 # Source Program not exist
-if [ ! -f $PROG_SRC ]; then
-	echo " * \033[;31mERROR\033[0m : Unable to locate $PROG_SRC"
+if [ ! -f $PROG_SRC_MAIN ]; then
+	echo " * \033[;31mERROR\033[0m : Unable to locate $PROG_SRC_MAIN"
+	exit
+fi
+
+if [ ! -f $PROG_SRC_MOVINATOR ]; then
+	echo " * \033[;31mERROR\033[0m : Unable to locate $PROG_SRC_MOVINATOR"
 	exit
 fi
 

@@ -1,10 +1,15 @@
-decl %eax
-decl 4(%eax)
-decl 4(,%eax,4)
-decl (%edx,%eax,4)
-incl %eax
-incl 4(%eax)
-incl 4(,%eax,4)
-incl (%edx,%eax,4)
-addl $3,%ebx
-addl %eax,%ebx
+.section .data
+
+.global _start
+_start:
+
+mov	$3, %eax
+mov	$3, %ebx
+pop %eax
+	mov	$3, %ebx
+mov	%ebx, %ebx
+mov	( %ebx), %ebx
+mov	4 (%ebx), %ebx
+mov	4( %ebx, %ebx), %ebx
+add	123  ( , %ebx, 4), %ebx
+movl -12(, %eax,4),%eax
