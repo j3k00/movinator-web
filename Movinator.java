@@ -192,7 +192,7 @@ public class Movinator {
 		String reg11,
 		String sca12
 	) {
-			stackElements--;
+		stackElements--;
 		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
 		
 		
@@ -750,7 +750,7 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void generateMov(String param1, String param2) {
-		addLine("mov\t", param1, ", ", param2);
+		addLine("movl\t", param1, ", ", param2);
 	}
 	
 	/**
@@ -897,8 +897,8 @@ public class Movinator {
 		String reg11,
 		String reg21
 	) {
-		String regSwap = "edx";
-		String regSwap2 = "ecx";
+		String regSwap = "%edx";
+		String regSwap2 = "%ecx";
 		
 		if (reg11.contains("%edx") || reg21.contains("%edx") ) {
 			regSwap  = "%eax";
@@ -927,8 +927,8 @@ public class Movinator {
 		generateMov(reg11 , "data_items+512(" + regSwap + ")" );
 		generateMov(reg21 , "data_items+512(" + regSwap2 + ")" );
 		
-		generateMov( "temp", regSwap  );
-		generateMov( "temp2" ,regSwap2 );
+		generateMov("temp", regSwap  );
+		generateMov("temp2" ,regSwap2 );
 	}
 	
 	/**
