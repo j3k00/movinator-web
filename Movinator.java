@@ -7,6 +7,7 @@ public class Movinator {
 	public Movinator(int max) {
 		addLine(true, false, ".section .data");
 		constructData_items(max);
+		constructData_temp();
 		addLine(true, false, ".global _start");
 		addLine(true, false, "_start:");
 	}
@@ -939,7 +940,6 @@ public class Movinator {
 	* 
 	* @return String This returns the assembly initialization of array.
 	*/
-	// TODO: va istanziato dopo .data
 	private void constructData_items(int max) {
 		addLine(true, false,"data_items:");
 		addLine(false, true, ".long");
@@ -951,6 +951,14 @@ public class Movinator {
 		}
 		
 		addLine(true, false, "");
+	}
+	
+	private void constructData_temp() {
+		addLine(true, false,"temp:");
+		addLine(false, true, ".long 0");
+		
+		addLine(true, false,"temp2:");
+		addLine(false, true, ".long 0");
 	}
 	
 	private Boolean isMemoryAddress(String s){
