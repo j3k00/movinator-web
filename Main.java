@@ -413,7 +413,7 @@ public class Main {
 			
 			
 			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
-			Pattern emptyLine = Pattern.compile("^\\s*#\\w*\\s*$");
+			Pattern emptyLine = Pattern.compile("^\\s*(?:[#]\\w*|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*$");
 			Matcher instructionMatcher;
 			
 			while ((line = bufferedFile.readLine()) != null ) {
