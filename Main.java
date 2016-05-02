@@ -47,7 +47,7 @@ public class Main {
 						instructionMatcher.matches();
 						
 						// Print 
-						System.out.println("************ RIGA ************: "+line);
+						/*System.out.println("************ RIGA ************: "+line);
 						
 						System.out.println("ins: " + instructionMatcher.group("ins"));
 						System.out.println("num1: " + instructionMatcher.group("num1"));
@@ -60,7 +60,7 @@ public class Main {
 						System.out.println("reg21: " + ((instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"))); 
 						System.out.println("sca22: " + instructionMatcher.group("sca22"));
 						
-						/*
+						*/
 						checker.parseInstruction(
 							instructionMatcher.group("ins"),
 							instructionMatcher.group("num1"),   
@@ -73,7 +73,7 @@ public class Main {
 							(instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"),
 							instructionMatcher.group("sca22"),
 							line
-							*/
+							
 						);
 					}
 				} catch (IllegalStateException e) {}
