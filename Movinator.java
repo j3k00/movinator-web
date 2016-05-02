@@ -27,7 +27,7 @@ public class Movinator {
 	}
 	
 	private void addLine(String... params){
-		addLine(true, false, params);
+		addLine(true, true, params);
 	}
 	
 	public String getProgram() {

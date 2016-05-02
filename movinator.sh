@@ -55,8 +55,6 @@ echo "                \_|  |_/\___/ \_/ |_|_| |_|\__,_|\__\___/|_|              
 echo "                                                                                ";
 echo "                                                                                ";
 
-
-
 #Check structure
 echo -n "Checking Movinator structure."
 
