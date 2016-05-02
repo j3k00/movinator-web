@@ -362,14 +362,15 @@ public class Movinator {
 	) {
 		String regSwap  = "%edx"; //TODO usare stack
 		String regSwap2 = "%ecx"; //usare stack
-		
+
 		//add intReg --> add $3,%eax --> FIXATO
 		if (
 			num1 != null && 
 			reg21 != null && 
 			!isMemoryAddress(reg21) && 
 			sca21 == null && 
-			sca22 == null
+			sca22 == null &&
+			reg22 == null
 		) {
 			//control who the reg21 isn't equals to edx
 			if (reg21.contains("%edx")) {
@@ -417,7 +418,6 @@ public class Movinator {
 					regSwap2 = "%ebx";
 				}
 			}
-			
 			//save value into temp register
 			generateMov(regSwap, "temp");
 			generateMov(regSwap2, "temp2");
@@ -868,6 +868,15 @@ public class Movinator {
 			reg2 == null 
 		) {
 			result = sca1 + "(, " + reg1 + ", " + sca2 + ")";
+		
+		// (%esp,%eax)
+		}else if ( 
+			sca1 == null &&
+			sca2 == null &&
+			reg1 != null &&
+			reg2 != null 
+		) {
+			result = "(" + reg2 + "," + reg1 + ")";
 			
 		// (%esp, %esi, 4)
 		} else if (
