@@ -955,10 +955,10 @@ public class Movinator {
 	
 	private void constructData_temp() {
 		addLine(true, false,"temp:");
-		addLine(false, true, ".long 0");
+		addLine(true, true, ".long 0");
 		
 		addLine(true, false,"temp2:");
-		addLine(false, true, ".long 0");
+		addLine(true, true, ".long 0");
 	}
 	
 	private Boolean isMemoryAddress(String s){
