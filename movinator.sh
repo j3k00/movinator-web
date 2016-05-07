@@ -83,7 +83,7 @@ else
 	fi
 fi
 
-if [ ! -f $PROG_CLS_MOVINATOR ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then 
+if [ ! -f $PROG_CLS_MOVINATOR ] || [ "$CREATE_INFRASTRUCTURE" -eq "1" ]; then 
 	
 	javac $PROG_SRC_MOVINATOR 2> $PROG_ERR
 	
@@ -98,7 +98,7 @@ if [ ! -f $PROG_CLS_MOVINATOR ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then
 	sleep 1
 fi
 
-if [ ! -f $PROG_CLS_MAIN ] || [ "$CREATE_INFRASTRUCTURE"=="1" ]; then 
+if [ ! -f $PROG_CLS_MAIN ] || [ "$CREATE_INFRASTRUCTURE" -eq "1" ]; then 
 	
 	javac $PROG_SRC_MAIN 2> $PROG_ERR
 	
