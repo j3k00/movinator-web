@@ -2,6 +2,7 @@
 public class Movinator {
 	
 	public int stackElements = 0;
+	public int imullCall = 0;
 	String program = "";
 	
 	public Movinator(int max) {
@@ -114,7 +115,6 @@ public class Movinator {
 				);
 				break;
 				
-			
 			case "sub":
 			case "subl":
 				addLine("# ", line);
@@ -134,8 +134,30 @@ public class Movinator {
 			case "xor":
 				addLine("# ", line);
 				xor32(
-					reg11,
-					reg21
+					 num1,
+					 sca11,
+					 reg11,
+					 reg12,
+					 sca12,
+					 sca21,
+					 reg21,
+					 reg22,
+					 sca22
+				);
+				break;
+			
+			case "imull":
+				addLine("# ",line);
+				imull32(
+					 num1,
+					 sca11,
+					 reg11,
+					 reg12,
+					 sca12,
+					 sca21,
+					 reg21,
+					 reg22,
+					 sca22
 				);
 				break;
 				
@@ -607,7 +629,7 @@ public class Movinator {
 			generateMov( num1 , regSwap2 );
 			
 			//recover negative value
-			generateMov("data_items_negative(," + regSwap2 + ",4)",regSwap2);
+			generateMov( "data_items_negative(," + regSwap2 + ",4)",regSwap2);
 			
 			generateMov( "data_items+512("+ regSwap + "," + regSwap2 + ",4)" , regSwap );
 			
@@ -728,6 +750,250 @@ public class Movinator {
 		}
 	}
 	
+	private void imull32(
+		String num1,
+		String sca11,
+		String reg11,
+		String reg12,
+		String sca12,
+		String sca21,
+		String reg21,
+		String reg22,
+		String sca22
+	){
+		 String regSwap  = "%edx";
+		 String regSwap2 = "%ecx";
+		
+		//imull $3,%eax
+		if ( 
+			num1  != null &&
+			reg21 != null &&
+			reg11 == null &&
+			reg12 == null &&
+			reg22 == null &&
+			sca11 == null &&
+			sca12 == null &&
+			sca21 == null &&
+			sca22 == null 
+		){
+			
+			//control who the reg21 isn't equals to edx
+			
+			if (reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			}
+			
+			if ( reg21.contains("%ecx") ) {
+				regSwap2 = "%ebx";
+			}
+			
+			imullCall++;
+			//save temporary variables
+			generateMov(regSwap,"temp_mull");
+			generateMov(regSwap2,"temp_mull2");
+			
+			generateMov(num1,regSwap);
+			generateMov(reg21,regSwap2);
+			
+			generateInstruction("imull_start" + imullCall + ":", null,null);
+			
+			//add %eax,%eax
+			add32(null,null,regSwap2,null,null,null,reg21,null,null);
+			
+			//decrement "%ecx"
+			dec32(null,regSwap,null,null);
+			generateInstruction("cmp","$1",regSwap);
+			generateInstruction("jne","imull_start" + imullCall,null);
+			generateInstruction("je","imull_end" + imullCall ,null);
+			
+			generateInstruction("imull_end" + imullCall + ":",null,null);
+			generateMov("temp_mull",regSwap);
+			generateMov("temp_mull2",regSwap2);
+			
+		// imull $1,mem
+		}else if(
+			num1  != null &&
+			reg21 != null &&
+			(isMemoryAddress(reg21) ||
+				( reg22 != null || 
+				  sca21 != null || 
+				  sca22 != null)
+			)
+		){
+		
+			if (reg22 == null){
+				if (reg21.contains("%edx") ) {
+					regSwap  = "%eax";
+				}
+			}else{
+			
+				if (reg21.contains("%edx") || reg22.contains("%edx") ) {
+					regSwap  = "%eax";
+				} 
+				if ( reg22.contains("%ecx") || reg21.contains("%ecx") ) {
+					regSwap2 = "%ebx";
+				}
+			}
+			imullCall++;
+			//save temporary variables
+			generateMov(regSwap,"temp_mull");
+			generateMov(regSwap2,"temp_mull2");
+			
+			generateMov(num1,regSwap);
+			generateMov(generateRightParam(sca21,reg21,reg22,sca22),regSwap2);
+			
+			generateInstruction("imull_start" + imullCall + ":", null,null);
+			
+			//add %eax,%eax
+			add32(null,null,regSwap2,null,null,sca21,reg21,reg22,sca22);
+			
+			//decrement "%ecx"
+			dec32(null,regSwap,null,null);
+			generateInstruction("cmp","$1",regSwap);
+			generateInstruction("jne","imull_start"  + imullCall ,null);
+			generateInstruction("je","imull_end"  + imullCall ,null);
+			
+			generateInstruction("imull_end"  + imullCall + ":",null,null);
+			generateMov("temp_mull",regSwap);
+			generateMov("temp_mull2",regSwap2);			
+		
+		// imull %eax,%ebx
+		}else if (
+			num1  == null &&
+			reg11 != null &&
+			reg12 == null &&
+			reg21 != null &&
+			reg22 == null &&
+			sca11 == null &&
+			sca12 == null &&
+			sca21 == null &&
+			sca22 == null &&
+			!isMemoryAddress(reg11)
+		){
+			if (reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			}
+			
+			imullCall++;
+			//save temporary variables
+			generateMov(reg11,"temp_mull");
+			generateMov(regSwap,"temp_mull2");
+			generateMov(reg21,regSwap);
+			
+			generateInstruction("imull_start" + imullCall + ":", null,null);
+			
+			//add %eax,%eax
+			add32(null,null,regSwap,null,null,null,reg21,null,null);
+			
+			//decrement "%ecx"
+			dec32(null,reg11,null,null);
+			generateInstruction("cmp","$1",reg11);
+			generateInstruction("jne","imull_start" + imullCall ,null);
+			generateInstruction("je","imull_end" + imullCall ,null);
+			
+			generateInstruction("imull_end" + imullCall + ":",null,null);
+			generateMov("temp_mull",reg11);
+			generateMov("temp_mull2",regSwap);
+			
+		//imull mem,reg
+		}else if (
+			num1  == null &&
+			reg11 != null &&
+			reg21 != null &&
+			reg22 == null &&
+			sca21 == null &&
+			sca22 == null &&
+			( isMemoryAddress(reg11) ||
+				(sca11 != null ||
+				 sca12 != null ||
+				 reg12 != null)
+			)
+		){
+			
+			if (reg22 == null){
+				if (reg21.contains("%edx") ) {
+					regSwap  = "%eax";
+				}
+			}else{
+			
+				if (reg21.contains("%edx") || reg22.contains("%edx") ) {
+					regSwap  = "%eax";
+				} 
+				if ( reg22.contains("%ecx") || reg21.contains("%ecx") ) {
+					regSwap2 = "%ebx";
+				}
+			}
+			
+			imullCall++;
+			//save regSwap registers
+			generateMov(regSwap , "temp_mull");
+			generateMov(regSwap2, "temp_mull2");
+			
+			generateMov(reg21,regSwap);
+			generateMov(generateRightParam(sca11,reg11,reg12,sca12),regSwap2);
+			
+			generateInstruction("imull_start" + imullCall + ":", null,null);
+			
+			add32(null,null,regSwap,null,null,null,reg21,null,null);
+			
+			dec32(null,regSwap2,null,null);
+			generateInstruction("cmp","$1",regSwap2);
+			generateInstruction("jne","imull_start" + imullCall ,null);
+			generateInstruction("je","imull_end" + imullCall ,null);
+			
+			generateInstruction("imull_end"  + imullCall + ":",null,null);
+			generateMov("temp_mull",regSwap);
+			generateMov("temp_mull2",regSwap2);
+		
+		//imull reg,mem
+		}else if (
+			num1  == null &&
+			reg11 != null &&
+			reg21 != null &&
+			reg12 == null &&
+			sca11 == null &&
+			sca12 == null &&
+			(isMemoryAddress(reg21) ||
+			(reg22 != null || sca21 != null || sca22 != null)
+			)
+		){
+			
+			if (reg22 == null){
+				if (reg21.contains("%edx") ) {
+					regSwap  = "%eax";
+				}
+			}else{
+			
+				if (reg21.contains("%edx") || reg22.contains("%edx") ) {
+					regSwap  = "%eax";
+				} 
+				if ( reg22.contains("%ecx") || reg21.contains("%ecx") ) {
+					regSwap2 = "%ebx";
+				}
+			}
+			imullCall++;
+			generateMov(regSwap,"temp_mull");
+			generateMov(regSwap2,"temp_mull2");
+			
+			generateMov(reg11,regSwap);
+			generateMov(generateRightParam(sca21,reg21,reg22,sca22),regSwap2);
+			
+			generateInstruction("imull_start "  + imullCall + ":", null,null);
+			
+			add32(null,null,regSwap2,null,null,sca21,reg21,reg22,sca22);
+			dec32(null,reg11,null,null);
+			generateInstruction("cmp","$1",reg11);
+			generateInstruction("jne","imull_start"  + imullCall,null);
+			generateInstruction("je","imull_end" + imullCall ,null);
+			
+			generateInstruction("imull_end"  + imullCall + ":",null,null);
+			generateMov("temp_mull",regSwap);
+			generateMov("temp_mull2",regSwap2);
+			
+		}else {
+			addLine("IMULL: parse Error");
+		}
+	}
 	
 	/*
 	 * Utils Method
@@ -752,6 +1018,32 @@ public class Movinator {
 	*/ 
 	private void generateMov(String param1, String param2) {
 		addLine("movl\t", param1, ", ", param2);
+	}
+	
+	private void generateInstruction(String instruction,String param1, String param2) {
+		if (
+			instruction != null &&
+			param1      != null &&
+			param2      != null
+		){
+			addLine(instruction + "\t" , param1, ", ", param2);
+			
+		}else if (
+			instruction != null &&
+			param1      != null &&
+			param2      == null
+		){
+			addLine(instruction + "\t" , param1);
+			
+		}else if (
+			instruction != null &&
+			param1      == null &&
+			param2      == null
+		){
+			addLine(instruction + "\t" );
+			
+		}
+		 
 	}
 	
 	/**
@@ -904,41 +1196,151 @@ public class Movinator {
 	}
 	
 	private void xor32(
+		String num1,
+		String sca11,
 		String reg11,
-		String reg21
+		String reg12,
+		String sca12,
+		String sca21,
+		String reg21,
+		String reg22,
+		String sca22
 	) {
 		String regSwap = "%edx";
 		String regSwap2 = "%ecx";
 		
-		if (reg11.contains("%edx") || reg21.contains("%edx") ) {
-			regSwap  = "%eax";
-		} 
-		if ( reg11.contains("%ecx") || reg21.contains("%ecx") ) {
-			regSwap2 = "%ebx";
+		//xor %eax,%eax
+		if (
+			reg11 != null &&
+			reg21 != null &&
+			reg12 == null &&
+			reg22 == null &&
+			sca12 == null &&
+			sca11 == null &&
+			sca21 == null &&
+			sca22 == null
+		){
+			if (reg11.contains("%edx") || reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			} 
+			if ( reg11.contains("%ecx") || reg21.contains("%ecx") ) {
+				regSwap2 = "%ebx";
+			}
+			
+			generateMov(regSwap  , "temp");
+			generateMov(regSwap2 , "temp2");
+			
+			generateMov(reg11 , regSwap);
+			generateMov(reg21 , regSwap2);
+			
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			
+			generateMov("$0","data_items+512(" + regSwap + ")" );
+			generateMov("$1","data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("data_items+512(" + regSwap + ")" , "%esi");
+			
+			generateMov(reg11 , "data_items+512(" + regSwap + ")" );
+			generateMov(reg21 , "data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("temp", regSwap  );
+			generateMov("temp2" ,regSwap2 );
+			
+		//xor mem,reg
+		}else if (
+			num1  == null &&
+			reg11 != null &&
+			reg21 != null &&
+			reg22 == null &&
+			sca21 == null &&
+			sca22 == null &&
+			( isMemoryAddress(reg11) ||
+				( sca11 != null ||
+				  sca12 != null ||
+				  reg12 != null )
+			)
+		){
+			
+			if (reg11.contains("%edx") || reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			} 
+			if ( reg11.contains("%ecx") || reg21.contains("%ecx") ) {
+				regSwap2 = "%ebx";
+			}
+			
+			generateMov(regSwap  , "temp");
+			generateMov(regSwap2 , "temp2");
+			
+			generateMov(generateRightParam(sca11,reg11,reg12,sca12) , regSwap);
+			generateMov(reg21 , regSwap2);
+			
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			
+			generateMov("$0","data_items+512(" + regSwap + ")" );
+			generateMov("$1","data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("data_items+512(" + regSwap + ")" , "%esi");
+			
+			generateMov(reg11 , "data_items+512(" + regSwap + ")" );
+			generateMov(reg21 , "data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("temp", regSwap  );
+			generateMov("temp2" ,regSwap2 );
+		
+		// xor reg,mem
+		}else if (
+			num1  == null &&
+			reg11 != null &&
+			reg21 != null &&
+			reg12 == null &&
+			sca11 == null &&
+			sca12 == null &&
+			(isMemoryAddress(reg21) ||
+				( reg22 != null || 
+				  sca21 != null || 
+				  sca22 != null )
+			)
+		){
+			
+			if (reg11.contains("%edx") || reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			} 
+			if ( reg11.contains("%ecx") || reg21.contains("%ecx") ) {
+				regSwap2 = "%ebx";
+			}
+			
+			generateMov(regSwap  , "temp");
+			generateMov(regSwap2 , "temp2");
+			
+			generateMov(reg11 , regSwap);
+			generateMov(generateRightParam(sca21,reg21,reg22,sca22), regSwap2);
+			
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			generateMov("data_items+512(," + regSwap + ",8)", regSwap);
+			
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
+			
+			generateMov("$0","data_items+512(" + regSwap + ")" );
+			generateMov("$1","data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("data_items+512(" + regSwap + ")" , "%esi");
+			
+			generateMov(reg11 , "data_items+512(" + regSwap + ")" );
+			generateMov(reg21 , "data_items+512(" + regSwap2 + ")" );
+			
+			generateMov("temp", regSwap  );
+			generateMov("temp2" ,regSwap2 );
+			
 		}
-		
-		generateMov(regSwap  , "temp");
-		generateMov(regSwap2 , "temp2");
-		
-		generateMov(reg11 , regSwap);
-		generateMov(reg21 , regSwap2);
-		
-		generateMov("data_items+512(," + regSwap + ",8)", regSwap);
-		generateMov("data_items+512(," + regSwap + ",8)", regSwap);
-		
-		generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
-		generateMov("data_items+512(," + regSwap2 + ",8)", regSwap2);
-		
-		generateMov("$0","data_items+512(" + regSwap + ")" );
-		generateMov("$1","data_items+512(" + regSwap2 + ")" );
-		
-		generateMov("data_items+512(" + regSwap +")","%esi");
-		
-		generateMov(reg11 , "data_items+512(" + regSwap + ")" );
-		generateMov(reg21 , "data_items+512(" + regSwap2 + ")" );
-		
-		generateMov("temp", regSwap  );
-		generateMov("temp2" ,regSwap2 );
 	}
 	
 	/**
