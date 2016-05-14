@@ -10,6 +10,7 @@ public class Movinator {
 		constructData_items(max);
 		constructData_temp();
 		constructData_items_negative(max);
+		addLine(true, false, ".section .text");
 		addLine(true, false, ".global _start");
 		addLine(true, false, "_start:");
 	}
@@ -161,6 +162,17 @@ public class Movinator {
 					 sca22
 				);
 				break;
+			
+			case "not":
+			case "notl":
+				addLine("#",line);
+				not32(
+					sca11,
+					reg11,
+					reg12,
+					sca12
+					);
+					break;
 				
 			default:
 				addLine("ERROR: Default case in switch: " + line);
@@ -583,7 +595,7 @@ public class Movinator {
 			generateMov(num1, regSwap);
 			
 			//recover negative value
-			generateMov("data_items_negative(," + regSwap + ",4)",regSwap);
+			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
 			
 			//recover the momory cell corresponding at the sum leftExp+RighExp
 			generateMov("data_items+512(" + reg21 + "," + regSwap + ",4)", reg21 );
@@ -630,7 +642,7 @@ public class Movinator {
 			generateMov( num1 , regSwap2 );
 			
 			//recover negative value
-			generateMov( "data_items_negative(," + regSwap2 + ",4)",regSwap2);
+			generateMov( "data_items_negative+512(," + regSwap2 + ",4)",regSwap2);
 			
 			generateMov( "data_items+512("+ regSwap + "," + regSwap2 + ",4)" , regSwap );
 			
@@ -661,12 +673,12 @@ public class Movinator {
 			generateMov(regSwap , "temp");
 			generateMov(reg11 ,regSwap);
 			
-			generateMov("data_items_negative(," + regSwap + ",4)",regSwap);
+			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
 			
 			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
 			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
 			
-			generateMov( "data_items(" + reg21 + "," + regSwap +",4)" ,reg21 );
+			generateMov( "data_items+512(" + reg21 + "," + regSwap +",4)" ,reg21 );
 			generateMov( "temp" , regSwap);
 			
 			
@@ -694,7 +706,7 @@ public class Movinator {
 			generateMov( "data_items+512(," + reg21 +",8)" , reg21 );
 			
 			generateMov(generateLeftParam(num1,sca11,reg11,reg12,sca12) , regSwap );
-			generateMov("data_items_negative(," + regSwap + ",4)",regSwap);
+			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
 			
 			generateMov( "data_items+512(" + reg21 + "," + regSwap +",4)" , reg21) ;
 			
@@ -734,7 +746,7 @@ public class Movinator {
 			generateMov(generateRightParam(sca21,reg21,reg22,sca22) , regSwap );
 			generateMov(reg11, regSwap2);
 			
-			generateMov("data_items_negative(," + regSwap2 + ",4)",regSwap2);
+			generateMov("data_items_negative+512(," + regSwap2 + ",4)",regSwap2);
 			
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
@@ -993,6 +1005,60 @@ public class Movinator {
 			
 		}else {
 			addLine("IMULL: parse Error");
+		}
+	}
+	
+	private void not32(
+		String sca11,
+		String reg11,
+		String reg12,
+		String sca12
+	){
+		String regSwap = "%edx";
+		String regSwap2= "%ecd";
+		
+		if (reg12 == null){
+			if (reg11.contains("%edx")) {
+				regSwap = "%eax";
+			}
+		}else {
+			if (reg11.contains("%edx") || reg12.contains("%edx")) {
+				regSwap = "%eax";
+			}
+			if (reg11.contains("%ecx") || reg12.contains("%ecx")) {
+				regSwap2 = "%ebx";
+			}
+		}
+		
+		//not reg
+		if (
+			reg11 != null &&
+			reg12 == null &&
+			sca11 == null &&
+			sca12 == null &&
+			!isMemoryAddress(reg11)
+		){
+			
+			generateMov("data_items_negative+512(," + reg11 + ", 4)",reg11);
+			dec32(sca11,reg11,reg12,sca12);
+			
+		//not mem
+		}else {
+			
+			generateMov((isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11),"temp3");
+			generateMov(regSwap,"temp4");
+			
+			generateMov(generateRightParam(sca11,reg11,reg12,sca12),(isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11));
+			generateMov("data_items_negative+512(," + (isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11) + ", 4)",(isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11));
+			
+			dec32(null,(isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11),null,null);
+			
+			generateMov((isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11),regSwap);
+			generateMov("temp3",(isMemoryAddress(reg11) ? reg11.substring(1,5) : reg11));
+			
+			generateMov(regSwap,generateRightParam(sca11,reg11,reg12,sca12));
+			generateMov("temp4",regSwap);
+			
 		}
 	}
 	
