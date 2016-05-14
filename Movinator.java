@@ -9,6 +9,7 @@ public class Movinator {
 		addLine(true, false, ".section .data");
 		constructData_items(max);
 		constructData_temp();
+		constructData_items_negative(max);
 		addLine(true, false, ".global _start");
 		addLine(true, false, "_start:");
 	}
@@ -1362,6 +1363,19 @@ public class Movinator {
 		}
 		
 		addLine(true, false, "");
+	}
+	
+	private void constructData_items_negative(int max){
+		addLine(true,false,"data_items_negative:");
+		addLine(false,true,".long");
+		
+		int numMax = max/2;
+		
+		for (int i = 0; i<max ;i++){
+			addLine(false,false," " + numMax-- + ((i < max-1) ? "," : ""));
+		}
+		
+		addLine(true,false,"");
 	}
 	
 	private void constructData_temp() {
