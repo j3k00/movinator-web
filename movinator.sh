@@ -42,6 +42,7 @@ PROG_CLS_MAIN="Main.class"
 PROG_CLS_MOVINATOR="Movinator.class"
 
 PROG_ERR="/tmp/movinator_error"
+PROG_NULL="/tmp/movinator_null"
 ASM_OUT="ass"
 
 # ASCII art
@@ -85,6 +86,7 @@ fi
 
 if [ ! -f $PROG_CLS_MOVINATOR ] || [ "$CREATE_INFRASTRUCTURE" -eq "1" ]; then 
 	
+	rm $PROG_CLS_MOVINATOR 2> $PROG_NULL
 	javac $PROG_SRC_MOVINATOR 2> $PROG_ERR
 	
 	if [ ! -f $PROG_CLS_MOVINATOR ]; then
@@ -100,6 +102,7 @@ fi
 
 if [ ! -f $PROG_CLS_MAIN ] || [ "$CREATE_INFRASTRUCTURE" -eq "1" ]; then 
 	
+	rm $PROG_CLS_MAIN 2> $PROG_NULL
 	javac $PROG_SRC_MAIN 2> $PROG_ERR
 	
 	if [ ! -f $PROG_CLS_MAIN ]; then 

@@ -5,7 +5,7 @@ public class Movinator {
 	public int imullCall = 0;
 	String program = "";
 	
-	public Movinator(int max) {
+	public Movinator(long max) {
 		addLine(true, false, ".section .data");
 		constructData_items(max);
 		constructData_temp();
@@ -1351,13 +1351,13 @@ public class Movinator {
 	* 
 	* @return String This returns the assembly initialization of array.
 	*/
-	private void constructData_items(int max) {
+	private void constructData_items(long max) {
 		addLine(true, false,"data_items:");
 		addLine(false, true, ".long");
 		
-		int numMax = max/2;
+		long numMax = max/2;
 		
-		for (int i = -numMax; i < numMax; i ++) {
+		for (long i = -numMax; i < numMax; i ++) {
 			addLine(false, false, " " + i + ((i < numMax-1) ? "," : ""));
 		}
 		
