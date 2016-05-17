@@ -12,6 +12,8 @@ Instructions that has been implemented:
 * Dec 32 bit (decl)
 * Push 32 bit (push)
 * Pop 32 bit (pop)
+* Mull 32 bit (imul)
+* Not 32 bit (notl)
 
 ## Author
 
