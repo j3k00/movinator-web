@@ -1,0 +1,5 @@
+//TODO
+Completare imull
+Completare idiv
+Sistemare la regular expression con variabili (es temp)
+Sistemare le operazioni con aggiunga di operazioni (addl $4,temp)
