@@ -34,7 +34,9 @@ public class Main {
 			BufferedReader bufferedFile = new BufferedReader(new FileReader(file));
 			
 			
-			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
+			//Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
+			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?)|(?:(?<var1>[$]?[\\w]+)))\\s*(?:,(?:\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?))|(?:(?<var2>[$]?[\\w]+))))?\\s*$");
+			
 			Pattern emptyLine = Pattern.compile("^$|^(\\s*(?:(?<comm>[#]\\w*)|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*)$");
 			Matcher instructionMatcher;
 			Movinator checker = new Movinator(256);
@@ -56,10 +58,12 @@ public class Main {
 						System.out.println("reg12: " + instructionMatcher.group("reg12"));
 						System.out.println("reg11: " + ((instructionMatcher.group("reg1") == null )?instructionMatcher.group("reg11"):instructionMatcher.group("reg1")));  
 						System.out.println("sca12: " + instructionMatcher.group("sca12"));
+						System.out.println("var1: " + instructionMatcher.group("var1"));
 						System.out.println("sca21: " + instructionMatcher.group("sca21"));
 						System.out.println("reg22: " + instructionMatcher.group("reg22"));
 						System.out.println("reg21: " + ((instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"))); 
 						System.out.println("sca22: " + instructionMatcher.group("sca22"));
+						System.out.println("var2: " + instructionMatcher.group("var2"));
 						*/
 						
 						checker.parseInstruction(
@@ -69,10 +73,12 @@ public class Main {
 							instructionMatcher.group("reg12"), 
 							(instructionMatcher.group("reg1") == null )?instructionMatcher.group("reg11"):instructionMatcher.group("reg1"),
 							instructionMatcher.group("sca12"),
+							instructionMatcher.group("var1"),
 							instructionMatcher.group("sca21"),  
 							instructionMatcher.group("reg22"), 
 							(instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"),
 							instructionMatcher.group("sca22"),
+							instructionMatcher.group("var2"),
 							line
 						);
 					}
@@ -86,3 +92,9 @@ public class Main {
 	}
 }
 
+
+//javascript regular expression
+//^\s*([\w*]+)\s*(?:([$]-?[0x\d]+)|([(][%][\w]+[)])|(?:(-?[\d]+)?\s*(?:[(]\s*([%][\w]+)?)?\s*,?\s*([%][\w]+)\s*,?\s*([\d]+)?[)]?)|(?:([$]?[\w]+)))\s*(?:,(?:\s*(?:([(][%][\w]+[)])|(?:(-?[\d]+)?\s*[(]?\s*([%][\w]+)?\s*,?\s*([%][\w]+)\s*,?\s*([\d]+)?[)]?))|(?:([$]?[\w]+))))?\s*$
+
+//java regular expression
+//^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?)|(?:(?<var1>[$]?[\\w]+)))\\s*(?:,(?:\\s*(?:(<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?))|(?:(<var2>[$]?[\\w]+))))?\\s*$
