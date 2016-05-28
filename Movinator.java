@@ -81,7 +81,7 @@ public class Movinator {
 					sca12
 				);
 				break;
-			
+			case "dec":
 			case "decl":
 				addLine("# ", line);
 				dec32(
@@ -112,10 +112,12 @@ public class Movinator {
 					 reg11,
 					 reg12,
 					 sca12,
+					 var1,
 					 sca21, 
 					 reg21, 
 					 reg22,
-					 sca22
+					 sca22,
+					 var2
 				);
 				break;
 				
@@ -249,13 +251,13 @@ public class Movinator {
 			
 		} else {
 			generateMov(
+				stackRegister,
 				generateRightParam(
-					sca11,
-					reg11,
-					reg12,
-					sca12
-				),
-				stackRegister 
+						sca11,
+						reg11,
+						reg12,
+						sca12
+				), 
 			);
 		}
 	}
@@ -300,7 +302,7 @@ public class Movinator {
 			
 			generateMov(regSwap , "temp");
 			generateMov("$4", regSwap);
-			generateMov("data_items+512(" + regSwap + ", " + reg11 + ", 4)", reg11);
+			generateMov("data_items+512(" + regSwap + ", " + construct_register(reg11) + ", 4)", reg11);
 			generateMov("temp", regSwap);
 			
 		//incl mem
@@ -361,7 +363,7 @@ public class Movinator {
 			
 			generateMov(regSwap , "temp");
 			generateMov("$-4", regSwap);
-			generateMov("data_items+512(" + regSwap + ", " + reg11 + ", 4)", reg11);
+			generateMov("data_items+512(" + regSwap + ", " + construct_register(reg11) + ", 4)", reg11);
 			generateMov("temp", regSwap);
 			
 		//decl mem
@@ -402,14 +404,16 @@ public class Movinator {
 		String reg11,
 		String reg12,
 		String sca12,
+		String var1,
 		String sca21,
 		String reg21,
 		String reg22,
-		String sca22
+		String sca22,
+		String var2
 	) {
 		String regSwap  = "%edx"; //TODO usare stack
 		String regSwap2 = "%ecx"; //usare stack
-
+		
 		//add intReg --> add $3,%eax --> FIXATO
 		if (
 			num1 != null && 
@@ -425,8 +429,8 @@ public class Movinator {
 			}
 			
 			//move into reg21 the value corresponding of its memory cell. Es. value 4 is stored in memory cell 16
-			generateMov("data_items+512(," + reg21 +",8)", reg21);
-			generateMov("data_items+512(," + reg21 +",8)", reg21);
+			generateMov("data_items+512(," + construct_register(reg21) +",8)", reg21);
+			generateMov("data_items+512(," + construct_register(reg21) +",8)", reg21);
 			
 			//Save content of edx in a temporary variable
 			generateMov(regSwap, "temp");
@@ -435,11 +439,31 @@ public class Movinator {
 			generateMov(num1, regSwap);
 			
 			//recover the momory cell corresponding at the sum leftExp+RighExp
-			generateMov("data_items+512(" + reg21 + "," + regSwap + ",4)", reg21 );
+			generateMov("data_items+512(" + construct_register(reg21) + "," + regSwap + ",4)", reg21 );
 			
 			//restore the value of edx
 			generateMov("temp" , regSwap );
-		
+			
+		//add $4,temp
+		}else if (
+			num1 != null &&
+			var2 != null
+		){
+			generateMov("%eax","temp");
+			generateMov("%edx","temp2");
+			generateMov(num1,"%eax");
+			generateMov(var2,"%edx");
+			
+			generateMov("data_items+512(,%eax,8)", "%eax");
+			generateMov("data_items+512(,%eax,8)", "%eax");
+			
+			generateMov("data_items+512(%eax,%edx,4)","%edx");
+			
+			generateMov("%edx",var2);
+			
+			generateMov("temp","%eax");
+			generateMov("temp2","%edx");
+			
 		//add intMem --> add $3,(%eax) , add $3, 4(%eax) , ...
 		}else if (
 			num1  != null &&
@@ -485,6 +509,43 @@ public class Movinator {
 			generateMov("temp", regSwap);
 			generateMov("temp2", regSwap2);
 		
+		//add temp,reg
+		}else if ( var1 != null ){
+			
+			if (reg21.contains("%edx") ) {
+				regSwap  = "%eax";
+			}
+			
+			generateMov(regSwap, "temp");
+			generateMov(var1,regSwap);
+			
+			generateMov( "data_items+512(," + regSwap + ",8)" , regSwap ); 
+			generateMov( "data_items+512(," + regSwap + ",8)" , regSwap ); 
+			
+			generateMov( "data_items+512("+ regSwap + "," + construct_register(reg21) + ",4)" , reg21 );
+			
+			generateMov("temp",regSwap);
+			
+		//add reg,temp
+		}else if( var2 != null){
+			
+			if (reg11.contains("%edx") ) {
+				regSwap  = "%eax";
+			}
+			
+				
+			generateMov(regSwap, "temp");
+			generateMov(var2,regSwap);
+			
+			generateMov( "data_items+512(," + regSwap + ",8)" , regSwap ); 
+			generateMov( "data_items+512(," + regSwap + ",8)" , regSwap ); 
+			
+			generateMov( "data_items+512("+ regSwap + "," + construct_register(reg11) + ",4)" , regSwap );
+			
+			generateMov(regSwap,var2);
+			generateMov("temp",regSwap);
+			
+			
 		//add reg,reg --> add %eax,%ebx
 		}else if (
 			num1  == null &&
@@ -500,10 +561,10 @@ public class Movinator {
 			!isMemoryAddress(reg21) 
 		){
 			
-			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
-			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" ,  reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" ,  reg21 );
 			
-			generateMov( "data_items+512(" + reg21 + "," + reg11 +",4)" ,reg21 );
+			generateMov( "data_items+512(" + construct_register(reg21) + "," + construct_register(reg11) +",4)" ,reg21 );
 			
 		//addl mem,reg --> add (%eax),%ebx, add 4(%eax),%ebx, ... 
 		}else if (
@@ -525,12 +586,12 @@ public class Movinator {
 			
 			generateMov(regSwap, "temp");
 			
-			generateMov( "data_items+512(," + reg21 +",8)" , reg21 );
-			generateMov( "data_items+512(," + reg21 +",8)" , reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" , reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" , reg21 );
 			
 			generateMov(generateLeftParam(num1,sca11,reg11,reg12,sca12) , regSwap );
 			
-			generateMov( "data_items+512(" + reg21 + "," + regSwap +",4)" , reg21) ;
+			generateMov( "data_items+512(" + construct_register(reg21) + "," + regSwap +",4)" , reg21) ;
 			
 			generateMov("temp", regSwap);
 			
@@ -559,7 +620,7 @@ public class Movinator {
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
 			
-			generateMov("data_items+512(" + regSwap + "," + reg11 + ",4)" , regSwap );
+			generateMov("data_items+512(" + regSwap + "," + construct_register(reg11) + ",4)" , regSwap );
 			generateMov(regSwap , generateRightParam(sca21,reg21,reg22,sca22));
 			
 			generateMov("temp" , regSwap);
@@ -597,8 +658,8 @@ public class Movinator {
 			}
 			
 			//move into reg21 the value corresponding of its memory cell. Es. value 4 is stored in memory cell 16
-			generateMov("data_items+512(," + reg21 +",8)", reg21);
-			generateMov("data_items+512(," + reg21 +",8)", reg21);
+			generateMov("data_items+512(," + construct_register(reg21) +",8)", reg21);
+			generateMov("data_items+512(," + construct_register(reg21) +",8)", reg21);
 			
 			//Save content of edx in a temporary variable
 			generateMov(regSwap, "temp");
@@ -610,7 +671,7 @@ public class Movinator {
 			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
 			
 			//recover the momory cell corresponding at the sum leftExp+RighExp
-			generateMov("data_items+512(" + reg21 + "," + regSwap + ",4)", reg21 );
+			generateMov("data_items+512(" + construct_register(reg21) + "," + regSwap + ",4)", reg21 );
 			
 			//restore the value of edx
 			generateMov("temp" , regSwap );
@@ -678,6 +739,12 @@ public class Movinator {
 			!isMemoryAddress(reg21) 
 		){
 			
+			if (reg21.equals(reg21.substring(0,2) + "x")){
+				regSwap = "%dx";
+			}else if(reg21.equals(reg21.substring(0,2) + "l")){
+				regSwap = "%dl";
+			}
+			
 			if (reg21.contains("%edx")) {
 				regSwap = "%eax";
 			}
@@ -685,12 +752,12 @@ public class Movinator {
 			generateMov(regSwap , "temp");
 			generateMov(reg11 ,regSwap);
 			
-			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
+			generateMov("data_items_negative+512(," + construct_register(regSwap) + ",4)",construct_register(regSwap));
 			
-			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
-			generateMov( "data_items+512(," + reg21 +",8)" ,  reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" ,  reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" ,  reg21 );
 			
-			generateMov( "data_items+512(" + reg21 + "," + regSwap +",4)" ,reg21 );
+			generateMov( "data_items+512(" + construct_register(reg21) + "," + construct_register(regSwap) +",4)" ,reg21 );
 			generateMov( "temp" , regSwap);
 			
 			
@@ -714,13 +781,13 @@ public class Movinator {
 			
 			generateMov(regSwap, "temp");
 			
-			generateMov( "data_items+512(," + reg21 +",8)" , reg21 );
-			generateMov( "data_items+512(," + reg21 +",8)" , reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" , reg21 );
+			generateMov( "data_items+512(," + construct_register(reg21) +",8)" , reg21 );
 			
 			generateMov(generateLeftParam(num1,sca11,reg11,reg12,sca12) , regSwap );
-			generateMov("data_items_negative+512(," + regSwap + ",4)",regSwap);
+			generateMov("data_items_negative+512(," + regSwap + ",4)",construct_register(regSwap));
 			
-			generateMov( "data_items+512(" + reg21 + "," + regSwap +",4)" , reg21) ;
+			generateMov( "data_items+512(" + construct_register(reg21) + "," + regSwap +",4)" , reg21) ;
 			
 			generateMov("temp", regSwap);
 			
@@ -756,14 +823,22 @@ public class Movinator {
 			generateMov(regSwap2, "temp2");
 			
 			generateMov(generateRightParam(sca21,reg21,reg22,sca22) , regSwap );
+			
+			if (reg11.equals(reg11.substring(0,2) + "x")){
+				regSwap2 = "%" + regSwap2.substring(2,3) + "x";
+			}else if(reg11.equals(reg11.substring(0,2) + "l")){
+				regSwap2 = "%" + regSwap2.substring(2,3) + "l";
+			}
+			
+			
 			generateMov(reg11, regSwap2);
 			
-			generateMov("data_items_negative+512(," + regSwap2 + ",4)",regSwap2);
+			generateMov("data_items_negative+512(," + construct_register(regSwap2) + ",4)",construct_register(regSwap2));
 			
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
 			generateMov("data_items+512(," + regSwap + ",8)" , regSwap );
 			
-			generateMov("data_items+512(" + regSwap + "," + regSwap2 + ",4)" , regSwap );
+			generateMov("data_items+512(" + regSwap + "," + construct_register(regSwap2) + ",4)" , regSwap );
 			
 			generateMov(regSwap , generateRightParam(sca21,reg21,reg22,sca22));
 			
@@ -774,6 +849,7 @@ public class Movinator {
 			addLine("Errore: parse add instruction");
 		}
 	}
+	
 	
 	private void imull32(
 		String num1,
@@ -823,7 +899,7 @@ public class Movinator {
 			generateInstruction("imull_start" + imullCall + ":", null,null);
 			
 			//add %eax,%eax
-			add32(null,null,regSwap2,null,null,null,reg21,null,null);
+			add32(null,null,regSwap2,null,null,null,null,reg21,null,null,null);
 			
 			//decrement "%ecx"
 			dec32(null,regSwap,null,null);
@@ -870,7 +946,7 @@ public class Movinator {
 			generateInstruction("imull_start" + imullCall + ":", null,null);
 			
 			//add %eax,%eax
-			add32(null,null,regSwap2,null,null,sca21,reg21,reg22,sca22);
+			add32(null,null,regSwap2,null,null,null,sca21,reg21,reg22,sca22,null);
 			
 			//decrement "%ecx"
 			dec32(null,regSwap,null,null);
@@ -908,7 +984,7 @@ public class Movinator {
 			generateInstruction("imull_start" + imullCall + ":", null,null);
 			
 			//add %eax,%eax
-			add32(null,null,regSwap,null,null,null,reg21,null,null);
+			add32(null,null,regSwap,null,null,null,null,reg21,null,null,null);
 			
 			//decrement "%ecx"
 			dec32(null,reg11,null,null);
@@ -959,7 +1035,7 @@ public class Movinator {
 			
 			generateInstruction("imull_start" + imullCall + ":", null,null);
 			
-			add32(null,null,regSwap,null,null,null,reg21,null,null);
+			add32(null,null,regSwap,null,null,null,null,reg21,null,null,null);
 			
 			dec32(null,regSwap2,null,null);
 			generateInstruction("cmp","$1",regSwap2);
@@ -1005,7 +1081,7 @@ public class Movinator {
 			
 			generateInstruction("imull_start "  + imullCall + ":", null,null);
 			
-			add32(null,null,regSwap2,null,null,sca21,reg21,reg22,sca22);
+			add32(null,null,regSwap2,null,null,null,sca21,reg21,reg22,sca22,null);
 			dec32(null,reg11,null,null);
 			generateInstruction("cmp","$1",reg11);
 			generateInstruction("jne","imull_start"  + imullCall,null);
@@ -1115,7 +1191,7 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void generateMov(String param1, String param2) {
-		addLine("movl\t", param1, ", ", param2);
+		addLine("mov\t", param1, ", ", param2);
 	}
 	
 	private void generateInstruction(String instruction,String param1, String param2) {
@@ -1475,6 +1551,11 @@ public class Movinator {
 		addLine(true,false,"");
 	}
 	
+	private String construct_register(String s) {
+		if(!(s.equals("%eax") || s.equals("%ebx") || s.equals("%ecx") ||  s.equals("%edx")))
+			return (s.equals(s.substring(1,2)+"x") ? "%e" + s.substring(1,2) : "%e" + s.substring(1,2) + "x");
+		return s;
+	}
 	private void constructData_temp() {
 		addLine(true, false,"temp:");
 		addLine(true, true, ".long 0");
