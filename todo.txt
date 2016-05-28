@@ -1,5 +1,130 @@
 //TODO
-Completare imull
+Testare imull
 Completare idiv
-Sistemare la regular expression con variabili (es temp)
-Sistemare le operazioni con aggiunga di operazioni (addl $4,temp)
+Completare tutte le operazione con le operazioni con le variabili temporanee(no add)
+
+//set implemented instruction
+//add
+add $4, %eax					OK
+add $4, temp					OK  
+add temp, %eax					OK
+add $4, (%eax)					OK
+add $4, 4(%eax)					OK
+add $4, (%eax,%ebx)				OK
+add $4, 4(%eax,%ebx)			OK
+add $4, (%eax,%ebx,4)			OK
+add $4, 4(%eax,%ebx,4)			OK
+add %eax,%ebx					OK
+add (%eax), %eax				OK
+add 4(%eax), %eax				OK
+add (%eax,%ebx), %eax			OK
+add 4(%eax,%ebx), %eax			OK
+add (%eax,%ebx,4), %eax			OK
+add 4(%eax,%ebx,4), %eax		OK
+
+//subb
+sub $4, %eax					OK
+sub $4, temp						NO  
+sub temp, %eax						NO
+sub $4, (%eax)					OK
+sub $4, 4(%eax)					OK
+sub $4, (%eax,%ebx)				OK
+sub $4, 4(%eax,%ebx)			OK
+sub $4, (%eax,%ebx,4)			OK
+sub $4, 4(%eax,%ebx,4)			OK
+sub %eax,%ebx					OK
+sub (%eax), %eax				OK
+sub 4(%eax), %eax				OK
+sub (%eax,%ebx), %eax			OK
+sub 4(%eax,%ebx), %eax			OK
+sub (%eax,%ebx,4), %eax			OK
+sub 4(%eax,%ebx,4), %eax		OK
+
+//Xor
+xor $4, %eax					OK
+xor $4, temp						NO  
+xor temp, %eax						NO
+xor $4, (%eax)					OK
+xor $4, 4(%eax)					OK
+xor $4, (%eax,%ebx)				OK
+xor $4, 4(%eax,%ebx)			OK
+xor $4, (%eax,%ebx,4)			OK
+xor $4, 4(%eax,%ebx,4)			OK
+xor %eax,%ebx					OK
+xor (%eax), %eax				OK
+xor 4(%eax), %eax				OK
+xor (%eax,%ebx), %eax			OK
+xor 4(%eax,%ebx), %eax			OK
+xor (%eax,%ebx,4), %eax			OK
+xor 4(%eax,%ebx,4), %eax		OK
+
+//inc 
+inc temp							NO
+inc %eax						OK
+inc (%eax)						Ok
+inc 4(%eax)						Ok
+inc (%eax,%ebx)					Ok
+inc 4(%eax,%ebx)				OK
+inc (%eax,%ebx,4)				Ok
+inc 4(%eax,%ebx,4)				OK
+
+//dec
+dec temp							NO
+dec %eax						OK
+dec (%eax)						Ok
+dec 4(%eax)						Ok
+dec (%eax,%ebx)					Ok
+dec 4(%eax,%ebx)				OK
+dec (%eax,%ebx,4)				Ok
+dec 4(%eax,%ebx,4)				OK
+
+//pop
+pop temp							NO
+pop %eax						OK
+pop (%eax)						Ok
+pop 4(%eax)						Ok
+pop (%eax,%ebx)					Ok
+pop 4(%eax,%ebx)				OK
+pop (%eax,%ebx,4)				Ok
+pop 4(%eax,%ebx,4)				OK
+
+//not
+not temp							NO
+not %eax						OK
+not (%eax)						Ok
+not 4(%eax)						Ok
+not (%eax,%ebx)					Ok
+not 4(%eax,%ebx)				OK
+not (%eax,%ebx,4)				Ok
+not 4(%eax,%ebx,4)				OK
+
+//push
+push temp							NO
+push $4							OK
+push %eax						OK
+push (%eax)						Ok
+push 4(%eax)					Ok
+push (%eax,%ebx)				Ok
+push 4(%eax,%ebx)				OK
+push (%eax,%ebx,4)				Ok
+push 4(%eax,%ebx,4)				OK
+
+
+//imull
+add $4, %eax					OK
+add $4, (%eax)					OK
+add $4, 4(%eax)					OK
+add $4, (%eax,%ebx)				OK
+add $4, 4(%eax,%ebx)			OK
+add $4, (%eax,%ebx,4)			OK
+add $4, 4(%eax,%ebx,4)			OK
+add %eax,%ebx					OK
+add (%eax), %eax				OK
+add 4(%eax), %eax				OK
+add (%eax,%ebx), %eax			OK
+add 4(%eax,%ebx), %eax			OK
+add (%eax,%ebx,4), %eax			OK
+add 4(%eax,%ebx,4), %eax		OK
+
+//idiv
+//TODO

@@ -1,8 +1,8 @@
-
 public class Movinator {
 	
 	public int stackElements = 0;
 	public int imullCall = 0;
+	public int idivCall = 0;
 	String program = "";
 	
 	public Movinator(long max) {
@@ -44,10 +44,12 @@ public class Movinator {
 		String reg12,
 		String reg11,
 		String sca12,
+		String var1,
 		String sca21,
 		String reg22, 
 		String reg21, 
 		String sca22,
+		String var2,
 		String line
 	) {
 		
@@ -174,6 +176,15 @@ public class Movinator {
 				);
 				break;
 				
+			case "idiv":
+				addLine("#",line);
+				idiv32(
+					sca11,
+					reg11,
+					reg12,
+					sca12
+					);
+				break;
 			default:
 				addLine("ERROR: Default case in switch: " + line);
 		}
@@ -1060,6 +1071,25 @@ public class Movinator {
 			generateMov(regSwap,generateRightParam(sca11,reg11,reg12,sca12));
 			generateMov("temp4",regSwap);
 		}
+	}
+	
+	//idiv %ebx -> %eax/%ebx
+	private void idiv32(
+		String sca11,
+		String reg11,
+		String reg12,
+		String sca12
+	){
+		//TODO arrotondiamo all intero superiore
+		
+		generateInstruction("initialdiv" + idivCall + ":",null,null);
+		sub32(null,null,reg11,null,null,null,"%eax",null,null);
+		generateInstruction("incl","divresult",null);
+		generateInstruction("cmp","%eax","0");
+		generateInstruction("jg","initialdiv" + idivCall,null);
+		generateInstruction("jle","enddiv"+ idivCall,null);
+		generateInstruction("enddiv" + idivCall + ":",null,null);
+		generateMov("divresult","%eax");
 	}
 	
 	/*

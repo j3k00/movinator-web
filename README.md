@@ -14,6 +14,8 @@ Instructions that has been implemented:
 * Pop 32 bit (pop)
 * Mull 32 bit (imul)
 * Not 32 bit (notl)
+* Not 32 bit (not)
+* Div 32 bit (idiv)
 
 ## Author
 
