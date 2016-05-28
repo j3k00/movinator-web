@@ -237,13 +237,13 @@ public class Movinator {
 			
 		} else {
 			generateMov(
+				stackRegister, 
 				generateRightParam(
 					sca11,
 					reg11,
 					reg12,
 					sca12
-				),
-				stackRegister 
+				)
 			);
 		}
 	}

@@ -31,14 +31,18 @@ public class Main {
 			String program = "";
 			
 			File file = new File(args[0]);
-			BufferedReader bufferedFile = new BufferedReader(new FileReader(file));
+			BufferedReader buffIn = new BufferedReader(new FileReader(file));
 			
+			if (args[1]) {
+				File fileOut = new File(args[1]);
+				// Create fileWriter
+			}
 			
 			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
 			Pattern emptyLine = Pattern.compile("^$|^(\\s*(?:(?<comm>[#]\\w*)|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*)$");
 			Matcher instructionMatcher;
 			Movinator checker = new Movinator(256);
-			while ((line = bufferedFile.readLine()) != null ) {
+			while ((line = buffIn.readLine()) != null ) {
 				instructionMatcher = emptyLine.matcher(line);
 				
 				try {
@@ -78,6 +82,7 @@ public class Main {
 				} catch (IllegalStateException e) {}
 			}
 			System.out.println(checker.getProgram());
+			// Stampa programma su file
 			
 		} catch (Exception e){
 			System.out.println("Errore: " + e.getMessage());
