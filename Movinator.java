@@ -177,10 +177,10 @@ public class Movinator {
 					sca12
 					);
 					break;
-			//idiv 
-			case "idiv":
+			//div 
+			case "div":
 				addLine("#",line);
-				idiv32(
+				div32(
 					sca11,
 					reg11,
 					reg12,
@@ -189,7 +189,8 @@ public class Movinator {
 					break;
 			
 			default:
-				addLine("ERROR: Default case in switch: " + line);
+				//addLine("ERROR: Default case in switch: " + line);
+				addLine(true,false,line);
 		}
 	}
 	
@@ -1151,22 +1152,25 @@ public class Movinator {
 	}
 	
 	//idiv %ebx -> %eax/%ebx
-	private void idiv32(
+	private void div32(
 		String sca11,
 		String reg11,
 		String reg12,
 		String sca12
 	){
-		//TODO arrotondiamo all intero superiore
 		
 		generateInstruction("initialdiv" + idivCall + ":",null,null);
 		sub32(null,null,reg11,null,null,null,"%eax",null,null);
+		generateInstruction("cmp",reg11,"%eax");
+		generateInstruction("jle","resto"+idivCall,null);
 		generateInstruction("incl","divresult",null);
-		generateInstruction("cmp","%eax","0");
+		generateInstruction("cmp","$0","%eax");
 		generateInstruction("jg","initialdiv" + idivCall,null);
 		generateInstruction("jle","enddiv"+ idivCall,null);
 		generateInstruction("enddiv" + idivCall + ":",null,null);
 		generateMov("divresult","%eax");
+		generateInstruction("resto:"+idivCall,null,null);
+		generateMov("%ax","%dx");
 	}
 	
 	/*
