@@ -1159,18 +1159,47 @@ public class Movinator {
 		String sca12
 	){
 		
-		generateInstruction("initialdiv" + idivCall + ":",null,null);
-		sub32(null,null,reg11,null,null,null,"%eax",null,null);
-		generateInstruction("cmp",reg11,"%eax");
-		generateInstruction("jle","resto"+idivCall,null);
-		generateInstruction("incl","divresult",null);
-		generateInstruction("cmp","$0","%eax");
-		generateInstruction("jg","initialdiv" + idivCall,null);
-		generateInstruction("jle","enddiv"+ idivCall,null);
-		generateInstruction("enddiv" + idivCall + ":",null,null);
-		generateMov("divresult","%eax");
-		generateInstruction("resto:"+idivCall,null,null);
-		generateMov("%ax","%dx");
+		String regSwap = "%edx";
+		if(
+			sca11 == null &&
+			reg11 != null &&
+			reg12 == null &&
+			sca12 == null &&
+			!isMemoryAddress(reg11)
+		){
+			
+			generateInstruction("initialdiv" + idivCall + ":",null,null);
+			sub32(null,null,reg11,null,null,null,"%eax",null,null);
+			generateInstruction("cmp",reg11,"%eax");
+			generateInstruction("jle","resto"+idivCall,null);
+			generateInstruction("incl","divresult",null);
+			generateInstruction("cmp","$0","%eax");
+			generateInstruction("jg","initialdiv" + idivCall,null);
+			generateInstruction("jle","enddiv"+ idivCall,null);
+			generateInstruction("enddiv" + idivCall + ":",null,null);
+			generateMov("divresult","%eax");
+			generateInstruction("resto:"+idivCall,null,null);
+			generateMov("%ax","%dx");
+			
+		}else{
+			
+			generateMov(regSwap,"temp");
+			generateMov(generateRightParam(sca11,reg11,reg12,sca12),regSwap);
+			generateInstruction("initialdiv" + idivCall + ":",null,null);
+			sub32(null,null,reg11,null,null,null,"%eax",null,null);
+			generateInstruction("cmp",reg11,"%eax");
+			generateInstruction("jle","resto"+idivCall,null);
+			generateInstruction("incl","divresult",null);
+			generateInstruction("cmp","$0","%eax");
+			generateInstruction("jg","initialdiv" + idivCall,null);
+			generateInstruction("jle","enddiv"+ idivCall,null);
+			generateInstruction("enddiv" + idivCall + ":",null,null);
+			generateMov("divresult","%eax");
+			generateInstruction("resto:"+idivCall,null,null);
+			generateMov("%ax","%dx");
+			generateMov("temp",regSwap);
+			
+		}
 	}
 	
 	/*
