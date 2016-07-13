@@ -125,17 +125,16 @@ class User extends CActiveRecord {
 	public function search() {
 		$criteria = new CDbCriteria();
 		
-		$criteria->compare('username', $this->username);
-		$criteria->compare('password', $this->password);
-		$criteria->compare('email', $this->email);
+		$criteria->compare('username', $this->username, TRUE);
+		$criteria->compare('email', $this->email, TRUE);
 		$criteria->compare('state', $this->state);
 		$criteria->compare('sex', $this->sex);
 		$criteria->compare('job', $this->job);
 		
 		return new CActiveDataProvider('User', array(
-			'criteria' => $criteria,
+			'criteria'													=> $criteria,
 			'sort' => array(
-				'defaultOrder' => 'username ASC',
+				'defaultOrder'											=> 'username ASC',
 			),
 		));
 	}

@@ -119,7 +119,7 @@ class UserController extends Controller {
 		}
 		
 		if (isset($_GET['User'])){
-			$model->setAttributes = ($_GET['User']);
+			$model->attributes = $_GET['User'];
 		}
 		$this->render('admin', array(
 			'model'														=> $model,

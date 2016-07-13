@@ -3,20 +3,26 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<meta name="language" content="en">	
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/custom.css">
+	<meta name="language" content="en">
+	
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
+	
+	<!-- CSS -->
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/bootstrap.min.css">
+	
+	<!-- Custom CSS -->
+	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/custom.css">
+	
+	<!-- JavaScript -->
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/bootstrap.min.js"></script>
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/dropzone.js"></script>
 	
 	<!-- jQuery -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/jquery.min.js"></script>
 	
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/dropzone.js"></script>
-
-	<!-- Bootstrap Core JavaScript -->
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/bootstrap.min.js"></script>
-	
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/custom.js"></script>
+	<!-- Custom JavaScript -->
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/custom.js"></script>
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/jquery.ba-bbq.js"></script>
 </head>
 
 <?php 
