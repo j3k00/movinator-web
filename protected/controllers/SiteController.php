@@ -17,7 +17,7 @@ class SiteController extends Controller {
 			),
 		);
 	}
-
+	
 	/**
 	 * This is the action to handle external exceptions.
 	 */
@@ -80,7 +80,7 @@ class SiteController extends Controller {
 			if ($model->login()) {
 				$this->redirect(Yii::app()->user->returnUrl);
 			} else {
-				Yii::app()->user->setFlash('danger', '<strong>Username or password wrong.s</strong>');
+				Yii::app()->user->setFlash('danger', '<strong>Username or password wrong</strong>');
 			}
 		}
 		// display the login form

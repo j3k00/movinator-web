@@ -50,7 +50,7 @@
 								),  
 								array('class' => 'form-control')
 							); ?>
-							<?php echo $form->error($model, 'job'); ?>
+							<?php echo $form->error($model, 'state'); ?>
 						</div>
 						
 						<div class="form-group">

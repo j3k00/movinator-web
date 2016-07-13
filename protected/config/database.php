@@ -5,6 +5,6 @@ return array(
 	'connectionString'													=> 'mysql:host=localhost;dbname=movinator',
 	'emulatePrepare'													=> TRUE,
 	'username'															=> 'root',
-	'password'															=> 'root',
+	'password'															=> '94cammello94',
 	'charset'															=> 'utf8',
 );

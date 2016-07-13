@@ -1,9 +1,9 @@
 <?php
 
 return array(
-	'Grecee',
-	'Italy',
-	'United States',
-	'United Kingdom',
-	'Australia'
+	'Grecee'															=> 'Greece',
+	'Italy'																=> 'Italy',
+	'United States'														=> 'United States',
+	'United Kingdom'													=> 'United Kingdom',
+	'Australia'															=> 'Australia'
 );

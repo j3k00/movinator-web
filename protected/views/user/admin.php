@@ -1,10 +1,11 @@
 <h1>Users</h1>
 
 <?php $this->widget('bootstrap.widgets.TbGridView', array(
+	'type'																=> 'striped',
 	'id'																=> 'user-grid',
 	'dataProvider'														=> $model->search(),
+	'filter'															=> $model,
 	//'template'															=> '{items}',
-	'filter' => $model,
 	'columns' => array(
 		'username',
 		'email',
@@ -21,9 +22,6 @@
 			'name'														=> 'job',
 			'filter'													=> Yii::app()->params->jobs,
 			'value'														=> 'Yii::app()->params->jobs[$data["job"]]'
-		),
-		array(
-			'class'														=> 'TbButtonColumn',
 		),
 	),
 )); ?>

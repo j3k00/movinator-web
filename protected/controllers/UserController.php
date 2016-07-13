@@ -62,7 +62,7 @@ class UserController extends Controller {
 				'username'													=> $model->username
 			));
 			
-			if (!isset($user)) {
+			if (isset($user)) {
 				$error = 'Username already present';
 			}
 			
@@ -70,15 +70,25 @@ class UserController extends Controller {
 				$error = 'Data are invalid';
 			}
 			
-			if (!in_array(Yii::app()->params->states, $_POST['User']['state'])) {
+			
+			if (
+				!isset($_POST['User']['state']) ||
+				!array_key_exists($_POST['User']['state'],Yii::app()->params->states)
+			) {
 				$error = 'State are invalid';
 			}
 			
-			if (!in_array(Yii::app()->params->jobs, $_POST['User']['job'])) {
+			if (
+				!isset($_POST['User']['job']) ||
+				!array_key_exists($_POST['User']['job'],Yii::app()->params->jobs)
+			) {
 				$error = 'Job are invalid';
 			}
 			
-			if (!in_array(Yii::app()->params->sexs, $_POST['User']['sex'])) {
+			if (
+				!isset($_POST['User']['sex']) ||
+				!array_key_exists($_POST['User']['sex'],Yii::app()->params->sexs)
+			) {
 				$error = 'Sex are invalid';
 			}
 			
@@ -110,7 +120,7 @@ class UserController extends Controller {
 		}
 		
 		if (isset($_GET['User'])){
-			$model->attributes = ($_GET['User']);
+			$model->setAttributes = ($_GET['User']);
 		}
 		$this->render('admin', array(
 			'model'														=> $model,
