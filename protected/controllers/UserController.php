@@ -70,7 +70,6 @@ class UserController extends Controller {
 				$error = 'Data are invalid';
 			}
 			
-			
 			if (
 				!isset($_POST['User']['state']) ||
 				!array_key_exists($_POST['User']['state'],Yii::app()->params->states)

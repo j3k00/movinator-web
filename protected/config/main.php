@@ -110,7 +110,7 @@ return array(
 	),
 	
 	'params' => array(
-		'pathUpload' => '/var/www/html/movinator/malware/',
+		'pathUpload' => '/home/jeko/Desktop/movinator/malaware',
 		'states' => require(dirname(__FILE__).'/states.php'),
 		
 		// this is used in contact page
