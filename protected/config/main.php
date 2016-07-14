@@ -111,7 +111,7 @@ return array(
 	),
 	
 	'params' => array(
-		'pathUpload' 													=> '/home/jeko/Desktop/movinator/malaware/',
+		'pathUpload' 													=> '/home/tommaso/Desktop/movinator/malware/',
 		'states' 														=> require(dirname(__FILE__).'/states.php'),
 		'ipPath' 														=> 'http://ipinfo.io/%s/json',
 		// this is used in contact page
