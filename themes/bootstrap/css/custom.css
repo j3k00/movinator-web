@@ -49,7 +49,7 @@
 .panel-login input[type="text"],
 .panel-login input[type="email"],
 .panel-login input[type="password"],
-#User_state,
+#User_country,
 #User_sex,
 #User_job {
 	height: 45px;

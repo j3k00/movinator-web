@@ -268,17 +268,6 @@ class Input extends CApplicationComponent{
 		}
 		
 		$values = Yii::app()->request->getPost($key, $defaultValue);
-		$empty = TRUE;
-		
-		foreach ($values as $value_key => $value) {
-			if ($value) {
-				$empty = FALSE;
-			}
-		}
-		
-		if ($empty) {
-			throw new CHttpException(404, 'The specified post cannot be found: ' . $key);
-		}
 		
 		if(
 			$clean === TRUE && 
