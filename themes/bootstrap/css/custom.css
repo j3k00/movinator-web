@@ -281,6 +281,7 @@ a.search-button:hover{	text-decoration: none;}
 	transition: all 0.1s linear;
 	
 }
+
 .nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus{
 	text-decoration:none !important;
 	box-shadow: none;

@@ -716,7 +716,7 @@ class Movinator extends CFormModel  {
 			$this->generateMov( "data_items+512(," . $reg21 .",8)" ,  $reg21 );
 			$this->generateMov( "data_items+512(," . $reg21 .",8)" ,  $reg21 );
 			
-			$this->generateMov( "data_items(" . $reg21 . "," . $regSwap  . ",4)" ,$reg21 );
+			$this->generateMov( "data_items+512(" . $reg21 . "," . $regSwap  . ",4)" ,$reg21 );
 			$this->generateMov( "temp" , $regSwap);
 			
 			
