@@ -112,19 +112,16 @@ return array(
 	
 	'params' => array(
 		'pathUpload' 													=> '/home/tommaso/Desktop/movinator/malware/',
-		'states' 														=> require(dirname(__FILE__).'/states.php'),
+		'countries' 													=> require(dirname(__FILE__).'/countries.php'),
 		'ipPath' 														=> 'http://ipinfo.io/%s/json',
-		// this is used in contact page
-		'adminEmail' => 'webmaster@example.com',
 		'sexs' => array (
-			'm' => 'Man',
-			'f' => 'Woman'
+			'm'															=> 'Man',
+			'f'															=> 'Woman'
 		),
-		
 		'jobs' => array (
-			'black hat' => 'Black Hat',
-			'white hat' => 'White Hat',
-			'others' => 'Others',
+			'black hat'													=> 'Black Hat',
+			'white hat'													=> 'White Hat',
+			'others'													=> 'Others',
 		),
 		
 	),

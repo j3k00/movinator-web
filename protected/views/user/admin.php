@@ -1,5 +1,5 @@
 <h1>Users</h1>
-
+<?php ?>
 <?php $this->widget('bootstrap.widgets.TbGridView', array(
 	'type'																=> 'striped',
 	'id'																=> 'user-grid',
@@ -10,13 +10,14 @@
 		'username',
 		'email',
 		array(
-			'name'														=> 'state',
+			'name'														=> 'country',
 			'filter' => array_merge(
 				array(
 					'' => 'All'
 				),
-				Yii::app()->params->states
-			)
+				Yii::app()->params->countries
+			),
+			'value'														=> 'Yii::app()->params->countries[$data["country"]]'
 		),
 		array(
 			'name'														=> 'sex',

@@ -41,16 +41,16 @@
 						<div class="form-group">
 							<?php echo $form->dropDownList(
 								$model,
-								'state',
+								'country',
 								array_merge(
 									array(
-										''								=> 'State'
+										''								=> 'Country'
 									),
-									Yii::app()->params->states
+									Yii::app()->params->countries
 								),  
 								array('class' => 'form-control')
 							); ?>
-							<?php echo $form->error($model, 'state'); ?>
+							<?php echo $form->error($model, 'country'); ?>
 						</div>
 						
 						<div class="form-group">

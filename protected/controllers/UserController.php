@@ -71,8 +71,8 @@ class UserController extends Controller {
 			}
 			
 			if (
-				!isset($_POST['User']['state']) ||
-				!array_key_exists($_POST['User']['state'],Yii::app()->params->states)
+				!isset($_POST['User']['country']) ||
+				!array_key_exists($_POST['User']['country'],Yii::app()->params->countries)
 			) {
 				$error = 'State are invalid';
 			}

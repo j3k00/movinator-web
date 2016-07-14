@@ -27,9 +27,9 @@ class User extends CActiveRecord {
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('username, password, email, state, sex, job', 'required'),
+			array('username, password, email, country, sex, job', 'required'),
 			array('username, password, email', 'length', 'max' => 128),
-			array('state', 'length', 'max' => 128),
+			array('country', 'length', 'max' => 128),
 			array('sex', 'in', 'range' => array('m', 'f')),
 			array('job', 'in', 'range' => array('black hat', 'white hat', 'others')),
 			
@@ -61,7 +61,7 @@ class User extends CActiveRecord {
 			'username'													=> 'Username',
 			'password'													=> 'Password',
 			'email'														=> 'Email',
-			'state'														=> 'State',
+			'country'													=> 'Country',
 			'sex'														=> 'Sex',
 			'job'														=> 'Job',
 		);
@@ -128,7 +128,7 @@ class User extends CActiveRecord {
 		
 		$criteria->compare('username', $this->username, TRUE);
 		$criteria->compare('email', $this->email, TRUE);
-		$criteria->compare('state', $this->state);
+		$criteria->compare('country', $this->country);
 		$criteria->compare('sex', $this->sex);
 		$criteria->compare('job', $this->job);
 		
