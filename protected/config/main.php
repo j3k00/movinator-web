@@ -112,9 +112,9 @@ return array(
 	),
 	
 	'params' => array(
-		'pathUpload' => '/home/jeko/Desktop/movinator/malware/',
-		'states' => require(dirname(__FILE__).'/states.php'),
-		
+		'pathUpload' 													=> '/home/jeko/Desktop/movinator/malaware/',
+		'states' 														=> require(dirname(__FILE__).'/states.php'),
+		'ipPath' 														=> 'http://ipinfo.io/%s/json',
 		// this is used in contact page
 		'adminEmail' => 'webmaster@example.com',
 		'sexs' => array (

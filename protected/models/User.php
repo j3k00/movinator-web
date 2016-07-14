@@ -32,6 +32,7 @@ class User extends CActiveRecord {
 			array('state', 'length', 'max' => 128),
 			array('sex', 'in', 'range' => array('m', 'f')),
 			array('job', 'in', 'range' => array('black hat', 'white hat', 'others')),
+			
 			// rememberMe needs to be a boolean
 			array('rememberMe', 'boolean'),
 			// password needs to be authenticated
