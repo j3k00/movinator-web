@@ -43,17 +43,38 @@ class Movinator extends CFormModel  {
 					$reg12= isset($patternGroup[5]) ? $patternGroup[5] : NULL;
 					
 					$pattern6 = isset($patternGroup[6]) ? $patternGroup[6] : NULL;
-					$reg11= !isset($patternGroup[3]) ? $pattern6 : $patternGroup[3];
-
+					if (isset($patternGroup[3])) {
+						$reg11= isset($patternGroup[3]) ? $pattern6 : $patternGroup[3];
+					} else {
+						$reg11= !isset($patternGroup[3]) ? $pattern6 : $patternGroup[3];
+					}
 					$sca12= isset($patternGroup[7])? $patternGroup[7] : NULL;
 					$sca21= isset($patternGroup[9]) ? $patternGroup[8] : NULL;
 					$reg22= isset($patternGroup[10]) ? $patternGroup[10] : NULL;
 					
 					$pattern11= isset($patternGroup[11]) ? $patternGroup[11] : NULL;
-					$reg21= !isset($patternGroup[8]) ? $pattern11 : $patternGroup[8];
 					
+					if (isset($patternGroup[8])) {
+						$reg21= isset($patternGroup[8]) ? $pattern11 : $patternGroup[8];
+					} else {
+						$reg21= !isset($patternGroup[8]) ? $pattern11 : $patternGroup[8];
+					}
 					$sca22= isset($patternGroup[12]) ? $patternGroup[12] : NULL;
 					
+					/* test regular expression
+					print_r( "ins: ". $ins . "</br>" . 
+							"num1:" . $num1 . "</br>" . 
+							"sca11:" . $sca11 . "</br>" .
+							"reg12:" . $reg12 . "</br>" . 
+							"pattern6" .$pattern6 . "</br>" .
+							"reg11" .$reg11 . "</br>" .
+							"sca12" . $sca12 . "</br>" .
+							"sca21" . $sca21 . "</br>" .
+							"reg22" .$reg22 . "</br>" .
+							"pattern11" .$pattern11 . "</br>" .
+							"reg21" .$reg21 . "</br>" .
+							"sca22" .$sca22 . "</br>" );
+						*/
 					$this->parseInstruction(
 						$ins,
 						$num1,
@@ -87,7 +108,18 @@ class Movinator extends CFormModel  {
 		$sca22,
 		$line
 	) {
-		
+		/* test input param
+		print_r( "ins: ". $ins . "</br>" . 
+		"num1:" . $num1 . "</br>" . 
+		"sca11:" . $sca11 . "</br>" .
+		"reg12:" . $reg12 . "</br>" . 
+		"reg11" .$reg11 . "</br>" .
+		"sca12" . $sca12 . "</br>" .
+		"sca21" . $sca21 . "</br>" .
+		"reg22" .$reg22 . "</br>" .
+		"reg21" .$reg21 . "</br>" .
+		"sca22" .$sca22 . "</br>" );
+		*/
 		switch ($ins) {
 			case "mov":
 			case "movl":
@@ -873,6 +905,7 @@ class Movinator extends CFormModel  {
 		$reg2,
 		$sca2
 	) {
+		
 		$result = "";
 		// %esp, (%esp)
 		if (
