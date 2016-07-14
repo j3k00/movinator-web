@@ -5,7 +5,6 @@
 	'id'																=> 'user-grid',
 	'dataProvider'														=> $model->search(),
 	'filter'															=> $model,
-	//'template'															=> '{items}',
 	'columns' => array(
 		'username',
 		'email',
@@ -39,5 +38,8 @@
 			),
 			'value'														=> 'Yii::app()->params->jobs[$data["job"]]'
 		),
+		array(
+			'class'														=> 'bootstrap.widgets.TbButtonColumn',
+		)
 	),
 )); ?>

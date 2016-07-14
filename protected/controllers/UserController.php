@@ -117,6 +117,7 @@ class UserController extends Controller {
 		if (isset($_GET['User'])){
 			$model->attributes = Yii::app()->input->get('User');
 		}
+		
 		$this->render('admin', array(
 			'model'														=> $model,
 		));

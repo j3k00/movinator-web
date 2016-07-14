@@ -1,12 +1,33 @@
 <?php
 
 class SiteController extends Controller {
+	public function filters() {
+		return array(
+			'accessControl', // perform access control for CRUD operations
+		);
+	}
+	
+	public function accessRules() {
+		return array(
+			array('allow',
+				'actions' => array('index', 'login', 'error'),
+				'users' => array('*'),
+			),
+			array('allow',
+				'actions' => array('logout'),
+				'users' => array('@'),
+			),
+			array('deny',
+				'users' => array('*'),
+			),
+		);
+	}
+	
 	/**
 	 * Declares class-based actions.
 	 */
 	public function actions() {
 		return array(
-		
 			'captcha' => array(
 				'class'													=> 'CCaptchaAction',
 				'backColor'												=> 0xFFFFFF,
