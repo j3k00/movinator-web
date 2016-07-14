@@ -70,9 +70,11 @@ return array(
 			'urlFormat'=>'path',
 			//'showScriptName' => FALSE,
 			'rules'=>array(
+			
 				// Malware
 				'movinize' => 'malware/create',
 				'malware/<id:\d+>/edit' => 'malware/update',
+				'malware/<id:\d+>/download' => 'malware/download',
 				
 				//Login
 				'login' => 'site/login',
@@ -110,7 +112,7 @@ return array(
 	),
 	
 	'params' => array(
-		'pathUpload' => '/home/jeko/Desktop/movinator/malaware',
+		'pathUpload' => '/home/jeko/Desktop/movinator/malware/',
 		'states' => require(dirname(__FILE__).'/states.php'),
 		
 		// this is used in contact page
