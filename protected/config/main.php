@@ -108,7 +108,6 @@ return array(
 				*/
 			),
 		),
-		
 	),
 	
 	'params' => array(
