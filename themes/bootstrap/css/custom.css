@@ -59,6 +59,11 @@
 	-moz-transition: all 0.1s linear;
 	transition: all 0.1s linear;
 }
+
+select {
+	cursor: pointer;
+}
+
 .panel-login input:hover,
 .panel-login input:focus {
 	outline:none;
@@ -239,4 +244,37 @@ button, html input[type=button], input[type=reset], input[type=submit]{
 	position: absolute;
 	bottom: 0; 
 	left: 0
+}
+
+
+/* Home Page Image
+************************************************************************/
+
+#bg {
+	background-image: url('../img/clock.jpg');
+	position: fixed;
+	width: 100%; 
+	height: 100%;
+}
+
+.user-buttons {
+	margin-top: 20%;
+}
+
+
+/* Miscellaneus
+************************************************************************/
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+p.home-style {
+	color: white; 
+	font-size: 27px;
+}
+
+h1.home-style {
+	color: white; 
+	font-size: 106px;
 }

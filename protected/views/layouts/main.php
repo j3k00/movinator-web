@@ -31,25 +31,23 @@ $action = Yii::app()->controller->action->id;
 ?>
 
 <body class="<?php echo $controller; ?> <?php echo $controller.'-'.$action ;?>">
-	<?php require(dirname(__FILE__).'/_mainMenu.php'); ?>
 
+<?php if (!($controller == 'site' && $action == 'index')) { ?>
+<?php require(dirname(__FILE__).'/_mainMenu.php'); ?>
 
-<div class="container">
-	<?php if(isset($this->breadcrumbs)):?>
-	<?php endif?>
-	
+<div class="container">	
 	<?php echo $content; ?>
-	
-
 </div><!-- page -->
 
 
 <footer class="footer">
 	<div class="container">
 		<p class="text-muted text-center">Copyright &copy; <?php echo date('Y'); ?> by Università degli Studi di Verona. All Rights Reserved.<br/>
-	Powered by Tommaso Bonetti, Andrea Colato, Roberto Giacobazzi</p>
+	Powered by Tommaso Bonetti & Andrea Colato</p>
 	</div>
 </footer>
-
+<?php  } else { 
+	echo $content;
+} ?>
 </body>
 </html>
