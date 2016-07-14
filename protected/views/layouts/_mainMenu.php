@@ -9,7 +9,7 @@ if (!$isGuest) {
 <nav class="navbar navbar-default navbar-static-top">
 	<div class="container">
 		<div class="navbar-header">
-			<a class="navbar-brand" href="#"><?php echo Chtml::encode(Yii::app()->name); ?></a>
+			<a class="navbar-brand" href="/"><?php echo Chtml::encode(Yii::app()->name); ?></a>
 		</div>
 		<div id="navbar" class="navbar-collapse collapse">
 			<?php $this->widget('bootstrap.widgets.TbMenu', array(
