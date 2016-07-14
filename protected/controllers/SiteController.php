@@ -67,20 +67,15 @@ class SiteController extends Controller {
 	public function actionLogin() {
 		$model = new User();
 		
-		if (isset($_GET['User'])) {
-			$model->attributes = $_GET['User'];
-		}
-		
 		// collect user input data
 		if(isset($_POST['User'])) {
-			$model->attributes = $_POST['User'];
-			
-			// validate user input and redirect to the previous page if valid
+			$model->attributes = Yii::app()->input->post('User');
 			
 			if ($model->login()) {
 				$this->redirect(Yii::app()->user->returnUrl);
+				
 			} else {
-				Yii::app()->user->setFlash('danger', '<strong>Username or password wrong</strong>');
+				$this->setFlash('Username or password wrong');
 			}
 		}
 		// display the login form

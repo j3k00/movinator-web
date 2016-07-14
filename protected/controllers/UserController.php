@@ -56,7 +56,7 @@ class UserController extends Controller {
 		if (isset($_POST['User'])) {
 			$error = FALSE;
 			
-			$model->attributes = $_POST['User'];
+			$model->attributes = Yii::app()->input->post('User');
 			
 			$user = User::model()->findByAttributes(array(
 				'username'													=> $model->username
@@ -96,7 +96,7 @@ class UserController extends Controller {
 				$model->save();
 				$this->redirect(array('site/login'));
 			} else {
-				Yii::app()->user->setFlash('danger', '<strong>'.$error.'</strong>');
+				$this->setFlash($error);
 			}
 		}
 		
@@ -119,7 +119,7 @@ class UserController extends Controller {
 		}
 		
 		if (isset($_GET['User'])){
-			$model->attributes = $_GET['User'];
+			$model->attributes = Yii::app()->input->get('User');
 		}
 		$this->render('admin', array(
 			'model'														=> $model,
