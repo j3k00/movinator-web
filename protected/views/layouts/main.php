@@ -32,7 +32,11 @@ $action = Yii::app()->controller->action->id;
 
 <body class="<?php echo $controller; ?> <?php echo $controller.'-'.$action ;?>">
 
-<?php if (!($controller == 'site' && $action == 'index')) { ?>
+<?php if (
+	!($controller == 'site' && 
+	$action == 'index' && 
+	Yii::app()->user->isGuest)
+) { ?>
 <?php require(dirname(__FILE__).'/_mainMenu.php'); ?>
 
 <div class="container">	

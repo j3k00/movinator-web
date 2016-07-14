@@ -38,7 +38,6 @@ class SiteController extends Controller {
 		$renderUrl = 'index';
 		$params = array();
 		
-		
 		if (
 			!Yii::app()->user->isGuest &&
 			Yii::app()->user->isAdmin
@@ -58,6 +57,7 @@ class SiteController extends Controller {
 			$renderUrl = 'indexUser';
 			// Lastest Malaware
 		}
+		
 		$this->render($renderUrl, $params);
 	}
 	

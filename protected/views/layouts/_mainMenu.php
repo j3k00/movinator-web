@@ -20,6 +20,7 @@ if (!$isGuest) {
 					array(
 						'label'											=> 'Home', 
 						'url'											=> array('/site/index'),
+						'visible'										=> !$isGuest,
 						'htmlOptions'									=> array('class' => 'menu'),
 					),
 					array(

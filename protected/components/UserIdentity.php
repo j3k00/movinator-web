@@ -34,6 +34,7 @@ class UserIdentity extends CUserIdentity {
 				Yii::app()->user->setState('isAdmin', FALSE);
 				Yii::app()->user->setState('isUser', TRUE);
 				Yii::app()->user->setState('role', ROLE_USER);
+				Yii::app()->user->setState('username', $this->username);
 			}
 		}
 		

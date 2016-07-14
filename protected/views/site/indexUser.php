@@ -4,21 +4,10 @@
 $this->pageTitle=Yii::app()->name;
 ?>
 
-<h1>User</h1>
-<h1>Welcome to <i><?php echo CHtml::encode(Yii::app()->name); ?></i></h1>
+<h2>Welcome back <b><?php echo CHtml::encode(Yii::app()->user->username); ?></b></h2>
 
-<h2></a>Author</h2>
-
-<ul>
-<li>Andrea Colato</li>
-<li>Tommaso Bonetti</li>
-<li>Roberto Giacobazzi</li>
-</ul>
-
-
-<h2>Description</h2>
-
-<p>The Movinator is written in Java and it compiles the following instructions into "mov" instructions.</p>
+<p>You are on Movinator platform, where you can rewrite your malware only into mov instructions. <br />Check
+the following list to  stay up to date about our update</p>
 
 <h2></a>Functionallity</h2>
 
@@ -33,10 +22,7 @@ $this->pageTitle=Yii::app()->name;
 <li>Pop 32 bit (pop)</li>
 </ul>
 
-<p>University of Verona,
-Department of Computer Science</p>
-
-<h2></a>References</h2>
+<h2></a>Academic References</h2>
 
 <ul>
 <li>The inspiration for the compiler is the paper <a href="http://www.cl.cam.ac.uk/%7Esd601/papers/mov.pdf">"mov is Turing-complete", 
