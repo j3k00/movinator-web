@@ -43,7 +43,7 @@ class Movinator extends CFormModel  {
 					$reg12= isset($patternGroup[5]) ? $patternGroup[5] : NULL;
 					
 					$pattern6 = isset($patternGroup[6]) ? $patternGroup[6] : NULL;
-					$reg11= isset($patternGroup[3]) ? $pattern6 : $patternGroup[3];
+					$reg11= !isset($patternGroup[3]) ? $pattern6 : $patternGroup[3];
 
 					$sca12= isset($patternGroup[7])? $patternGroup[7] : NULL;
 					$sca21= isset($patternGroup[9]) ? $patternGroup[8] : NULL;
