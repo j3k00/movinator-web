@@ -1,5 +1,4 @@
 <h1>Users</h1>
-<?php ?>
 <?php $this->widget('bootstrap.widgets.TbGridView', array(
 	'type'																=> 'striped',
 	'id'																=> 'user-grid',
