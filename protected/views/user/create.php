@@ -23,17 +23,21 @@
 							'id'																=> 'user-form',
 							'enableAjaxValidation'												=> false,
 						)); ?>
-			
+						
 						<div class="form-group">
 							<?php echo $form->textField($model,'username',array('class' => 'form-control', 'placeholder'=>'Username')); ?>
 							<?php echo $form->error($model,'username'); ?>
 						</div>
-
+						
 						<div class="form-group">
 							<?php echo $form->passwordField($model,'password',array('class' => 'form-control', 'placeholder'=>'Password')); ?>
 							<?php echo $form->error($model,'password'); ?>
 						</div>
-
+						
+						<div class="form-group">
+							<input class="form-control" placeholder="Repat password" id="User_password_repeat" maxlength="128" type="password">
+						</div>
+						
 						<div class="form-group">
 							<?php echo $form->textField($model,'email',array('class' => 'form-control', 'placeholder'=>'Email')); ?>
 							<?php echo $form->error($model,'email'); ?>
