@@ -22,6 +22,6 @@ class Controller extends CController
 	public $breadcrumbs=array();
 	
 	public function setFlash($message) {
-		return Yii::app()->user->setFlash('danger', '<strong>'.$message.' </strong>');
+		Yii::app()->user->setFlash('danger', '<strong>'.$message.' </strong>');
 	}
 }

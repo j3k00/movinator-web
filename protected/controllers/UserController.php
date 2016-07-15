@@ -134,7 +134,7 @@ class UserController extends Controller {
 			}
 			
 			if($this->_model === NULL) {
-				throw new CHttpException(404,'The requested page does not exist.');
+				throw new CHttpException(404, 'The requested page does not exist.');
 			}
 		}
 		return $this->_model;

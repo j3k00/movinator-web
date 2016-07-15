@@ -19,6 +19,7 @@
 	
 	<!-- jQuery -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/jquery.min.js"></script>
+	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/jquery.js"></script>
 	
 	<!-- Custom JavaScript -->
 	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/custom.js"></script>
@@ -38,10 +39,10 @@ $action = Yii::app()->controller->action->id;
 ) { ?>
 <?php require(dirname(__FILE__).'/_mainMenu.php'); ?>
 
-<div class ="container">	
+<div class ="container body">
 	<?php echo $content; ?>
 </div><!-- page -->	
-<footer class ="footer">
+<footer class="footer">
 	<div class="container">
 		<p class="text-muted text-center">Copyright &copy; <?php echo date('Y'); ?> by Università degli Studi di Verona. All Rights Reserved.<br/>
 	Powered by Tommaso Bonetti & Andrea Colato</p>

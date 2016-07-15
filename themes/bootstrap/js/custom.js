@@ -1,3 +1,14 @@
+function resize() {
+	var height = $(window).height();
+	$('.body').css('height', height-151);
+}
+$(document).ready(function() {
+	resize();
+});
+
+$( window ).resize(function() {
+	resize();
+});
 
 $( document ).ready(function() {
 	//if ($('body').hasClass('site site-login')) {
@@ -5,15 +16,30 @@ $( document ).ready(function() {
 	//}
 	
 	if ($('body').hasClass('user user-create')) {
-		$('#register-submit').click(function(e) {
-			if ($('#User_password_repeat').val() != $('#User_password').val()) {
-				e.preventDefault();
-				console.log('errore password non valida');
-				$('.flash-messages div a strong').text('Errore password non valida');
-				$('.flash-messages').show();
-			} else {
-				console.log('password valida');
-			}
+		$('#User_password_repeat').keyup(function() {
+			checkPassword();
+		});
+		
+		$('#User_password').keyup(function() {
+			checkPassword();
 		});
 	}
 });
+
+function checkPassword() {
+	if ($('#User_password_repeat').val() != $('#User_password').val()) {
+		if (!$('#User_password_repeat').hasClass('error')) {
+			$('#User_password_repeat').parent().append('<div class="errorMessage">Password mismatch</div>');
+		}
+		$('#User_password_repeat').addClass('error');
+		
+		$('#User_password').addClass('error');
+		$('#register-submit').prop('disabled', true);
+	} else {
+		$('#User_password').removeClass('error');
+		$('#User_password_repeat').removeClass('error');
+		
+		$('.errorMessage').remove();
+		$('#register-submit').prop('disabled', false);
+	}
+}
