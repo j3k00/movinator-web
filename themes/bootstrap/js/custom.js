@@ -1,16 +1,4 @@
-function resize() {
-	var height = $(window).height();
-	$('.body').css('height', height-151);
-}
 $(document).ready(function() {
-	resize();
-});
-
-$( window ).resize(function() {
-	resize();
-});
-
-$( document ).ready(function() {
 	//if ($('body').hasClass('site site-login')) {
 		$('.flash-messages').delay( 3000 ).fadeOut("slow");
 	//}

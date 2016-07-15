@@ -54,45 +54,44 @@ class UserController extends Controller {
 			
 			$model->attributes = Yii::app()->input->post('User');
 			
-			$user = User::model()->findByAttributes(array(
-				'username'													=> $model->username
-			));
+			if ($model->validate()) {
 			
-			if (isset($user)) {
-				$error = 'Username already present';
-			}
-			
-			if (!$model->validate()) {
-				$error = 'Data are invalid';
-			}
-			
-			if (
-				!isset($_POST['User']['country']) ||
-				!array_key_exists($_POST['User']['country'],Yii::app()->params->countries)
-			) {
-				$error = 'State are invalid';
-			}
-			
-			if (
-				!isset($_POST['User']['job']) ||
-				!array_key_exists($_POST['User']['job'],Yii::app()->params->jobs)
-			) {
-				$error = 'Job are invalid';
-			}
-			
-			if (
-				!isset($_POST['User']['sex']) ||
-				!array_key_exists($_POST['User']['sex'],Yii::app()->params->sexs)
-			) {
-				$error = 'Sex are invalid';
-			}
-			
-			if (!$error) {
-				$model->password = CPasswordHelper::hashPassword($model->password);
-				$model->save();
-				$this->redirect(array('site/login'));
-			} else {
-				$this->setFlash($error);
+				$user = User::model()->findByAttributes(array(
+					'username'													=> $model->username
+				));
+				
+				if (isset($user)) {
+					$error = 'Username already present';
+				}
+				
+				if (
+					$_POST['User']['country'] != '' &&
+					!array_key_exists($_POST['User']['country'],Yii::app()->params->countries)
+				) {
+					$error = 'State are invalid';
+				}
+				
+				if (
+					$_POST['User']['job'] != '' &&
+					!array_key_exists($_POST['User']['job'],Yii::app()->params->jobs)
+				) {
+					$error = 'Job are invalid';
+				}
+				
+				if (
+					$_POST['User']['sex'] != '' &&
+					!array_key_exists($_POST['User']['sex'],Yii::app()->params->sexs)
+				) {
+					$error = 'Sex are invalid';
+				}
+				
+				if (!$error) {
+					$model->password = CPasswordHelper::hashPassword($model->password);
+					$model->save();
+					$this->redirect(array('site/login'));
+				} else {
+					$this->setFlash($error);
+				}
 			}
 		}
 		

@@ -1,8 +1,33 @@
 /* Sticky footer styles
 -------------------------------------------------- */
 
+/* *Ovveride Colors*/
+.panel-default>.panel-heading {
+	background-color: rgba(28, 185, 78, 0.09);
+	border-color: #1cb94e;
+}
+
+li.active a{
+	color: #029f5b !important;
+}
+
+a {
+	color: #029f5b;
+	text-decoration: none;
+}
+
+a:hover {
+	color: #017744;
+	text-decoration: none;
+}
 
 /* pagination malware and user */
+@media screen (min-width: 1200px) {
+	.body{
+		min-height: 600px;
+	}
+}
+
 
 .pagination {
 	height: 36px;
