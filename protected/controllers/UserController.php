@@ -37,7 +37,7 @@ class UserController extends Controller {
 	public function actionView($id) {
 		$model = $this->loadModel($id);
 		
-		$this->render('view',array(
+		$this->render('view', array(
 			'model'														=> $model,
 		));
 	}
@@ -153,4 +153,6 @@ class UserController extends Controller {
 			Yii::app()->end();
 		}
 	}
+	
+	
 }

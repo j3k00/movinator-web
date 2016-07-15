@@ -64,10 +64,13 @@ class SiteController extends Controller {
 			Yii::app()->user->isAdmin
 		) {
 			$renderUrl = 'indexAdmin';
-			/*$params = array(
-				'model' => ,
-				'' => ,
-			);*/
+			
+			
+			$params = array(
+				'users'													=> User::getAll(),
+				'malwares'												=> Malware::getAll(),
+				'malwaresByCountry'										=> Malware::getNumberByCountry()
+			);
 			// Lastest Malaware
 		}
 		

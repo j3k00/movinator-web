@@ -109,7 +109,6 @@ class User extends CActiveRecord {
 	public function login() {
 		if ($this->_identity === NULL) {
 			$this->_identity = new UserIdentity($this->username, $this->password);
-			
 		}
 		
 		if($this->_identity->authenticate()) {
@@ -138,5 +137,15 @@ class User extends CActiveRecord {
 				'defaultOrder'											=> 'username ASC',
 			),
 		));
+	}
+	
+	public static function getAll() {
+		$users = User::model()->findAll();
+		
+		if (!$users) {
+			return FALSE;
+		}
+		
+		return $users;
 	}
 }
