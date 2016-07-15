@@ -31,7 +31,6 @@ $action = Yii::app()->controller->action->id;
 ?>
 
 <body class="<?php echo $controller; ?> <?php echo $controller.'-'.$action ;?>">
-<div class = "wrap">
 <?php if (
 	!($controller == 'site' && 
 	$action == 'index' && 
@@ -49,7 +48,6 @@ $action = Yii::app()->controller->action->id;
 	</div>
 </footer>
 
-</div>
 <?php  } else { 
 	echo $content;
 } ?>
