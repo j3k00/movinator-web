@@ -33,9 +33,10 @@ class Movinator extends CFormModel  {
 				
 				if(preg_match('/\s*([\w*]+)\s*(?:([$]-?[0x\d]+)|([(][%][\w]+[)])|(?:(-?[\d]+)?\s*(?:[(]\s*([%][\w]+)?)?\s*,?\s*([%][\w]+)\s*,?\s*([\d]+)?[)]?))\s*(?:,\s*(?:([(][%][\w]+[)])|(?:(-?[\d]+)?\s*[(]?\s*([%][\w]+)?\s*,?\s*([%][\w]+)\s*,?\s*([\d]+)?[)]?)))?\s*$/', $line, $patternGroup)){ 
 					
+					/*
 					foreach( $patternGroup as $key => $pattern) {
 						echo $key.': '.$pattern.'<br />'. $line;
-					}
+					}*/
 					
 					$ins  = isset($patternGroup[1]) ? $patternGroup[1] : NULL;
 					$num1 = isset($patternGroup[2]) ? $patternGroup[2] : NULL;
