@@ -3,6 +3,7 @@
 class Movinator extends CFormModel  {
 	
 	public $program;
+	private $stackElements = 0;
 	
 	public function generateCode($max, $file) {
 		$this->addLine(true, false, ".section .data");

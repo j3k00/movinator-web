@@ -10,9 +10,13 @@ class SiteController extends Controller {
 	public function accessRules() {
 		return array(
 			array('allow',
-				'actions' => array('index', 'login', 'error'),
+				'actions' => array('index', 'error', 'login'),
 				'users' => array('*'),
 			),
+			/*array('allow',
+				'actions' => array('login'),
+				'users' => array('?'),
+			),*/
 			array('allow',
 				'actions' => array('logout'),
 				'users' => array('@'),
@@ -89,6 +93,10 @@ class SiteController extends Controller {
 	 * Displays the login page
 	 */
 	public function actionLogin() {
+		if (!Yii::app()->user->isGuest) {
+			$this->redirect(Yii::app()->homeUrl);
+		}
+		
 		$model = new User();
 		
 		// collect user input data

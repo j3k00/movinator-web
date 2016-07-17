@@ -22,7 +22,7 @@ return array(
 	),
 	
 	'aliases' => array(
-		'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'), // change this if necessary
+		'bootstrap' => realpath(__DIR__ . '/../extensions/bootstrap'),
 		'user' => 'UserIdentity',
 	),
 	
@@ -68,7 +68,7 @@ return array(
 		
 		'urlManager'=>array(
 			'urlFormat'=>'path',
-			//'showScriptName' => FALSE,
+			'showScriptName' => FALSE,
 			'rules'=>array(
 			
 				// Malware
@@ -100,18 +100,12 @@ return array(
 					'class' => 'CFileLogRoute',
 					'levels' => 'error, warning',
 				),
-				// uncomment the following to show log messages on web pages
-				/*
-				array(
-					'class'=>'CWebLogRoute',
-				),
-				*/
 			),
 		),
 	),
 	
 	'params' => array(
-		'pathUpload' 													=> '/home/jeka/Desktop/movinator/malware/',
+		'pathUpload' 													=> '/home/jeko/Desktop/movinator/malware/',
 		'countries' 													=> require(dirname(__FILE__).'/countries.php'),
 		'ipPath' 														=> 'http://ipinfo.io/%s/json',
 		'sexs' => array (

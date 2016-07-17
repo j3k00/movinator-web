@@ -51,7 +51,6 @@ class UserController extends Controller {
 		
 		if (isset($_POST['User'])) {
 			$error = FALSE;
-			
 			$model->attributes = Yii::app()->input->post('User');
 			
 			if ($model->validate()) {
@@ -63,7 +62,6 @@ class UserController extends Controller {
 				if (isset($user)) {
 					$error = 'Username already present';
 				}
-				
 				if (
 					$_POST['User']['country'] != '' &&
 					!array_key_exists($_POST['User']['country'],Yii::app()->params->countries)
@@ -84,7 +82,6 @@ class UserController extends Controller {
 				) {
 					$error = 'Sex are invalid';
 				}
-				
 				if (!$error) {
 					$model->password = CPasswordHelper::hashPassword($model->password);
 					$model->save();
@@ -94,7 +91,6 @@ class UserController extends Controller {
 				}
 			}
 		}
-		
 		$this->render('create',array(
 			'model'														=> $model,
 		));
