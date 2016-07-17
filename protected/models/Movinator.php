@@ -62,20 +62,6 @@ class Movinator extends CFormModel  {
 					}
 					$sca22= isset($patternGroup[12]) ? $patternGroup[12] : NULL;
 					
-					/* test regular expression
-					print_r( "ins: ". $ins . "</br>" . 
-							"num1:" . $num1 . "</br>" . 
-							"sca11:" . $sca11 . "</br>" .
-							"reg12:" . $reg12 . "</br>" . 
-							"pattern6" .$pattern6 . "</br>" .
-							"reg11" .$reg11 . "</br>" .
-							"sca12" . $sca12 . "</br>" .
-							"sca21" . $sca21 . "</br>" .
-							"reg22" .$reg22 . "</br>" .
-							"pattern11" .$pattern11 . "</br>" .
-							"reg21" .$reg21 . "</br>" .
-							"sca22" .$sca22 . "</br>" );
-						*/
 					$this->parseInstruction(
 						$ins,
 						$num1,
