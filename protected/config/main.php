@@ -111,7 +111,7 @@ return array(
 	),
 	
 	'params' => array(
-		'pathUpload' 													=> '/home/jeka/Desktop/movinator/malware/',
+		'pathUpload' 													=> '/home/tommaso/Desktop/movinator/malware/',
 		'countries' 													=> require(dirname(__FILE__).'/countries.php'),
 		'ipPath' 														=> 'http://ipinfo.io/%s/json',
 		'sexs' => array (
