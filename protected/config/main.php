@@ -70,14 +70,19 @@ return array(
 			'urlFormat'=>'path',
 			'showScriptName' => FALSE,
 			'rules'=>array(
-			
+				//Site
+				'index' => 'site/index',
+				'login' => 'site/login',
+				'logout' => 'site/logout',
+				
+				// User
+				'register' => 'user/create',
+				
 				// Malware
-				'movinize' => 'malware/create',
+				'movinize' => 'create',
 				'malware/<id:\d+>/edit' => 'malware/update',
 				'malware/<id:\d+>/download' => 'malware/download',
-				
-				//Login
-				'login' => 'site/login',
+				'malware/<id:\d+>/delete' => 'malware/delete',
 				
 				'<controller:\w+>/<id:\d+>' => '<controller>/view',
 				'<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
