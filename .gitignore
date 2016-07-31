@@ -1,3 +1,4 @@
 ./protected/runtime/*
-./java/*
+./java/intel/*.class
+./java/at&t/*.class
 ./assets/*
