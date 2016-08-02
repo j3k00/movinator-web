@@ -11,6 +11,7 @@ $(document).ready(function() {
 		$('#User_password').keyup(function() {
 			checkPassword();
 		});
+		
 	}
 });
 

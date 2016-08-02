@@ -1,4 +1,4 @@
-<?php /* @var $this Controller */ ?>
+<?php $url = Yii::app()->request->baseUrl; ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,22 +8,22 @@
 	<title><?php echo CHtml::encode($this->pageTitle); ?></title>
 	
 	<!-- CSS -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo $url; ?>/themes/bootstrap/css/bootstrap.min.css">
 	
 	<!-- Custom CSS -->
-	<link rel="stylesheet" type="text/css" href="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/css/custom.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo $url; ?>/themes/bootstrap/css/custom.css">
 	
 	<!-- JavaScript -->
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/bootstrap.min.js"></script>
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/dropzone.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/bootstrap.min.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/dropzone.js"></script>
 	
 	<!-- jQuery -->
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/jquery.min.js"></script>
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>//themes/bootstrap/js/jquery.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/jquery.min.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/jquery.js"></script>
 	
 	<!-- Custom JavaScript -->
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/custom.js"></script>
-	<script src="<?php echo Yii::app()->request->baseUrl; ?>/themes/bootstrap/js/jquery.ba-bbq.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/custom.js"></script>
+	<script src="<?php echo $url; ?>/themes/bootstrap/js/jquery.ba-bbq.js"></script>
 </head>
 
 <?php 

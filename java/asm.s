@@ -3,10 +3,10 @@
 .global _start
 _start:
 
-push $4
-push $4
-push $4
-pop %eax
-pop %eax
-pop %eax
-xor %eax, %eax
+incl %eax
+incl (%eax)
+incl 4(%eax)
+incl (%eax,%ebx)
+incl 4(%eax,%ebx)
+incl (%eax,%ebx,4)
+incl 4(%eax,%ebx,4)
