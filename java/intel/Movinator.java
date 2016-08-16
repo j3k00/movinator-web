@@ -2,19 +2,19 @@
 public class Movinator {
 	
 	public int stackElements = 0;
-	String program = '';
+	String program = "";
 	
 	public Movinator(int max) {
-		addLine(true, false, '.section .data');
+		addLine(true, false, ".section .data");
 		constructData_items(max);
 		constructData_temp();
-		addLine(true, false, '.global _start');
-		addLine(true, false, '_start:');
+		addLine(true, false, ".global _start");
+		addLine(true, false, "_start:");
 	}
 	
 	private void addLine(Boolean newLine, Boolean tab, String... params){
 		if (tab) {
-			program += '\t';
+			program += "\t";
 		}
 		
 		for (String param: params) {
@@ -22,7 +22,7 @@ public class Movinator {
 		}
 		
 		if (newLine) {
-			program += '\n';
+			program += "\n";
 		}
 	}
 	
@@ -49,14 +49,14 @@ public class Movinator {
 	) {
 		
 		switch (ins) {
-			case 'mov':
-			case 'movl':
-				addLine('', line.replaceAll('^\\s*', ''));
+			case "mov":
+			case "movl":
+				addLine("", line.replaceAll("^\\s*", ""));
 				break;
 			
-			case 'push':
-			case 'pushl':
-				addLine('#mvn: ', line);
+			case "push":
+			case "pushl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*push(
 					num1,  
@@ -67,9 +67,9 @@ public class Movinator {
 				);*/
 				break;
 			
-			case 'pop':
-			case 'popl':
-				addLine('#mvn: ', line);
+			case "pop":
+			case "popl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*pop(
 					sca11, 
@@ -79,8 +79,8 @@ public class Movinator {
 				);*/
 				break;
 			
-			case 'decl':
-				addLine('#mvn: ', line);
+			case "decl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*dec32(
 					sca11,
@@ -90,9 +90,9 @@ public class Movinator {
 				);*/
 				break;
 				
-			case 'inc':
-			case 'incl':
-				addLine('#mvn: ', line);
+			case "inc":
+			case "incl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*inc32(
 					sca11,
@@ -102,9 +102,9 @@ public class Movinator {
 				);*/
 				break;
 				
-			case 'add':
-			case 'addl':
-				addLine('#mvn: ', line);
+			case "add":
+			case "addl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*add32(
 					 num1, 
@@ -120,9 +120,9 @@ public class Movinator {
 				break;
 				
 			
-			case 'sub':
-			case 'subl':
-				addLine('#mvn: ', line);
+			case "sub":
+			case "subl":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*sub32(
 					 num1,  
@@ -137,8 +137,8 @@ public class Movinator {
 				);*/
 				break;
 				
-			case 'xor':
-				addLine('#mvn: ', line);
+			case "xor":
+				addLine("#mvn: ", line);
 				addLine(line);
 				/*xor32(
 					reg11,
@@ -147,7 +147,7 @@ public class Movinator {
 				break;
 				
 			default:
-				addLine('#mvn ERR', line);
+				addLine("#mvn ERR", line);
 		}
 	}
 	
@@ -169,7 +169,7 @@ public class Movinator {
 		String reg11,
 		String sca12
 	) {
-		String stackRegister = ((stackElements!=0) ? stackElements*4 : '') + '(%esp)';
+		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
 		
 		generateMov(
 			generateLeftParam(
@@ -201,11 +201,11 @@ public class Movinator {
 		String sca12
 	) {
 		stackElements--;
-		String stackRegister = ((stackElements!=0) ? stackElements*4 : '') + '(%esp)';
+		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
 		
 		
 		if (stackElements < 0) {
-			addLine('ERROR: Pop instruction is invalid: there are no elements in stack');
+			addLine("ERROR: Pop instruction is invalid: there are no elements in stack");
 			
 		} else {
 			generateMov(
@@ -233,6 +233,7 @@ public class Movinator {
 		String reg12,
 		String sca12
 	) {
+		String regSwap = "edx";
 		//inc eax
 		if (
 			reg11 != null &&
@@ -247,10 +248,10 @@ public class Movinator {
 			sca11 != null ||
 			sca12 != null
 		) {
-			generateIstr("push", regSwap);
-			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )) //TODO GENERATE PARAM
+			//generateIstr("push", regSwap);
+			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )); //TODO GENERATE PARAM
 			generateMov(regSwap, "[data_items" + regSwap + "*4 + 516]");
-			generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 ));
+			//generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 ));
 		}
 	}
 	
@@ -268,6 +269,7 @@ public class Movinator {
 		String reg12,
 		String sca12
 	) {
+		String regSwap = "edx";
 		// dec eax
 		if (
 			reg11 != null &&
@@ -282,10 +284,10 @@ public class Movinator {
 			sca11 != null ||
 			sca12 != null
 		) {
-			generateIstr("push", regSwap);
+			//generateIstr("push", regSwap);
 			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )); //TODO GENERATE PARAM
 			generateMov(regSwap, "[data_items" + regSwap + "*4 + 508]");
-			generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 )); 
+			//generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 )); 
 		}
 	}
 	/**
@@ -327,8 +329,9 @@ public class Movinator {
 			sca21 == null &&
 			sca22 == null
 		){
+			String s = Integer.parseInt(num1)*4 + "";
 			// utilizzo lo spostamento per andare a sommare direttamente l intero contenuto nella variabile num1
-			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + num1*4 + "]");
+			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + "+" + s + "]");
 			
 		// add registro, registro
 		} else if (
@@ -376,8 +379,9 @@ public class Movinator {
 			sca21 == null &&
 			sca22 == null
 		) {
+			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
-			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 - num1*4 + "]");
+			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + "-" + s + "]");
 			
 		} else if (
 			num1  == null &&
@@ -395,12 +399,12 @@ public class Movinator {
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			
-			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]")
-			generateMov(reg11, "[" + reg11 + reg21 +"*4 + data_items + 512]");
+			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "[" + reg11 + reg21 + "*4 + data_items + 512]");
 			addLine("pop" + reg21);
 			
 		} else {
-			addLine('Errore: parse add instruction');
+			addLine("Errore: parse add instruction");
 		}
 	}
 	
@@ -427,7 +431,7 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void generateMov(String param1, String param2) {
-		addLine('movl\t', param1, ', ', param2);
+		addLine("movl\t", param1, ", ", param2);
 	}
 	
 	/**
@@ -448,7 +452,7 @@ public class Movinator {
 		String reg2,
 		String sca2
 	) {
-		String result = '';
+		String result = "";
 		
 		if (num1 != null) {
 			result = num1;
@@ -480,7 +484,7 @@ public class Movinator {
 		String reg2,
 		String sca2
 	) {
-		String result = '';
+		String result = "";
 		
 		result = generateParam(
 			sca1,
@@ -508,7 +512,7 @@ public class Movinator {
 		String reg2,
 		String sca2
 	) {
-		String result = '';
+		String result = "";
 		// %esp, (%esp)
 		if (
 			sca1 == null && 
@@ -516,7 +520,7 @@ public class Movinator {
 			reg1 != null &&
 			reg2 == null 
 		) {
-			result = reg1;
+			result = "[" + reg1 + "]";
 			
 		// 4(%esp)
 		} else if (
@@ -525,7 +529,7 @@ public class Movinator {
 			reg1 != null &&
 			reg2 == null 
 		) {
-			result = sca1 + '(' + reg1 + ')';
+			result = sca1 + "[" + reg1 + "]";
 			
 		// (, %esp, 4)
 		} else if (
@@ -534,7 +538,7 @@ public class Movinator {
 			reg1 != null &&
 			reg2 == null
 		) {
-			result = '(, ' + reg1 + ', ' + sca2 + ')';
+			result = "[" + reg1 + "+ " + sca2 + "]";
 			
 		// 4(, %esp, 4)
 		} else if (
@@ -543,7 +547,7 @@ public class Movinator {
 			reg1 != null &&
 			reg2 == null 
 		) {
-			result = sca1 + '(, ' + reg1 + ', ' + sca2 + ')';
+			result = "[ " + reg1 + "+ "+ sca1 + "+ " + sca2 + "]";
 			
 		// (%esp, %esi, 4)
 		} else if (
@@ -552,7 +556,7 @@ public class Movinator {
 			reg1 != null &&
 			reg2 != null 
 		) {
-			result = '(' + reg2 + ', ' + reg1 + ', ' + sca2 + ')';
+			result = "[" + reg2 + "+ " + reg1 + "+ " + sca2 + "]";
 			
 		// 4(%esp, %esi, 4)
 		} else if (
@@ -561,10 +565,10 @@ public class Movinator {
 			reg1 != null &&
 			reg2 != null 
 		) {
-			result = sca1 + '(' + reg2 + ', ' + reg1 + ', ' + sca2 + ')';
+			result = "[" + reg2 + "+ " + reg1 + "+" + sca1 + "+ " + sca2 + "]";
 			
 		} else {
-			result = 'ERROR FUNCTION: generateParam';
+			result = "ERROR FUNCTION: generateParam";
 		}
 		
 		return result;
@@ -574,71 +578,40 @@ public class Movinator {
 		String reg11,
 		String reg21
 	) {
-		String regSwap = '%edx';
-		String regSwap2 = '%ecx';
 		
-		if (reg11.contains('%edx') || reg21.contains('%edx') ) {
-			regSwap  = '%eax';
-		} 
-		if ( reg11.contains('%ecx') || reg21.contains('%ecx') ) {
-			regSwap2 = '%ebx';
-		}
-		
-		generateMov(regSwap  , 'temp');
-		generateMov(regSwap2 , 'temp2');
-		
-		generateMov(reg11 , regSwap);
-		generateMov(reg21 , regSwap2);
-		
-		generateMov('data_items+512(,' + regSwap + ',8)', regSwap);
-		generateMov('data_items+512(,' + regSwap + ',8)', regSwap);
-		
-		generateMov('data_items+512(,' + regSwap2 + ',8)', regSwap2);
-		generateMov('data_items+512(,' + regSwap2 + ',8)', regSwap2);
-		
-		generateMov('$0','data_items+512(' + regSwap + ')' );
-		generateMov('$1','data_items+512(' + regSwap2 + ')' );
-		
-		generateMov('data_items+512(' + regSwap +')','%esi');
-		
-		generateMov(reg11 , 'data_items+512(' + regSwap + ')' );
-		generateMov(reg21 , 'data_items+512(' + regSwap2 + ')' );
-		
-		generateMov('temp', regSwap  );
-		generateMov('temp2' ,regSwap2 );
 	}
 	
 	/**
 	* This method is used to create an array with
 	* as many elements as specified in input
 	* 
-	* @param max the max namber of the array's elements
+	* @param max the max namber of the array"s elements
 	* 
 	* @return String This returns the assembly initialization of array.
 	*/
 	private void constructData_items(int max) {
-		addLine(true, false,'data_items:');
-		addLine(false, true, '.long');
+		addLine(true, false,"data_items:");
+		addLine(false, true, ".long");
 		
 		int numMax = max/2;
 		
 		for (int i = -numMax; i < numMax; i ++) {
-			addLine(false, false, ' ' + i + ((i < numMax-1) ? ',' : ''));
+			addLine(false, false, " " + i + ((i < numMax-1) ? "," : ""));
 		}
 		
-		addLine(true, false, '');
+		addLine(true, false, "");
 	}
 	
 	private void constructData_temp() {
-		addLine(true, false,'temp:');
-		addLine(true, true, '.long 0');
+		addLine(true, false,"temp:");
+		addLine(true, true, ".long 0");
 		
-		addLine(true, false,'temp2:');
-		addLine(true, true, '.long 0');
+		addLine(true, false,"temp2:");
+		addLine(true, true, ".long 0");
 	}
 	
 	private Boolean isMemoryAddress(String s){
-		if (s.indexOf('(') < 0) {
+		if (s.indexOf("(") < 0) {
 			return false;
 		}
 		
