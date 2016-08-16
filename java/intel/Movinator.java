@@ -315,164 +315,40 @@ public class Movinator {
 		String reg22,
 		String sca22
 	) {
-		String regSwap  = '%edx'; //TODO usare stack
-		String regSwap2 = '%ecx'; //usare stack
-		
-		//add intReg --> add $3,%eax --> FIXATO
+		//add registro, intero
 		if (
-			num1 != null && 
-			reg21 != null && 
-			!isMemoryAddress(reg21) && 
-			sca21 == null && 
-			sca22 == null
-		) {
-			//control who the reg21 isn't equals to edx
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			
-			//move into reg21 the value corresponding of its memory cell. Es. value 4 is stored in memory cell 16
-			generateMov('data_items+512(,' + reg21 +',8)', reg21);
-			generateMov('data_items+512(,' + reg21 +',8)', reg21);
-			
-			//Save content of edx in a temporary variable
-			generateMov(regSwap, 'temp');
-			
-			//move leftExp into edx
-			generateMov(num1, regSwap);
-			
-			//recover the momory cell corresponding at the sum leftExp+RighExp
-			generateMov('data_items+512(' + reg21 + ',' + regSwap + ',4)', reg21 );
-			
-			//restore the value of edx
-			generateMov('temp' , regSwap );
-		
-		//add intMem --> add $3,(%eax) , add $3, 4(%eax) , ...
-		}else if (
 			num1  != null &&
-			reg21 != null &&
-			(isMemoryAddress(reg21) ||
-				(reg22 != null || 
-				sca21 != null || 
-				sca22 != null)
-			)
-		){
-			
-			//control swap Registers, don't lose the prevoius values
-			if (reg22 == null){
-				if (reg21.contains('%edx') ) {
-					regSwap  = '%eax';
-				}
-			}else{
-			
-				if (reg21.contains('%edx') || reg22.contains('%edx') ) {
-					regSwap  = '%eax';
-				} 
-				if ( reg22.contains('%ecx') || reg21.contains('%ecx') ) {
-					regSwap2 = '%ebx';
-				}
-			}
-			
-			//save value into temp register
-			generateMov(regSwap, 'temp');
-			generateMov(regSwap2, 'temp2');
-			
-			generateMov(generateRightParam(sca21 , reg21 , reg22 , sca22) , regSwap);
-			
-			//move the pointer value into itself
-			generateMov( 'data_items+512(,' + regSwap + ',8)' , regSwap ); 
-			generateMov( 'data_items+512(,' + regSwap + ',8)' , regSwap ); 
-			
-			generateMov( num1 , regSwap2 );
-			
-			generateMov( 'data_items+512('+ regSwap + ',' + regSwap2 + ',4)' , regSwap );
-			
-			generateMov( regSwap , generateRightParam( sca21 , reg21 , reg22 , sca22 ));
-			
-			//restore previuos values
-			generateMov('temp', regSwap);
-			generateMov('temp2', regSwap2);
-		
-		//add reg,reg --> add %eax,%ebx
-		}else if (
-			num1  == null &&
 			reg11 != null &&
-			reg21 != null &&
 			reg12 == null &&
+			reg21 == null &&
 			reg22 == null &&
 			sca11 == null &&
 			sca12 == null &&
 			sca21 == null &&
-			sca22 == null &&
-			!isMemoryAddress(reg11) &&
-			!isMemoryAddress(reg21) 
+			sca22 == null
 		){
+			// utilizzo lo spostamento per andare a sommare direttamente l intero contenuto nella variabile num1
+			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + num1*4 + "]");
 			
-			generateMov( 'data_items+512(,' + reg21 +',8)' ,  reg21 );
-			generateMov( 'data_items+512(,' + reg21 +',8)' ,  reg21 );
-			
-			generateMov( 'data_items+512(' + reg21 + ',' + reg11 +',4)' ,reg21 );
-			
-		//addl mem,reg --> add (%eax),%ebx, add 4(%eax),%ebx, ... 
-		}else if (
-			num1  == null &&
-			reg11 != null &&
-			reg21 != null &&
-			reg22 == null &&
-			sca21 == null &&
-			sca22 == null &&
-			( isMemoryAddress(reg11) ||
-				(sca11 != null || sca12 != null || reg12 != null)
-			)
-		) {
-			
-			//control who the reg21 isn't equals to edx
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			
-			generateMov(regSwap, 'temp');
-			
-			generateMov( 'data_items+512(,' + reg21 +',8)' , reg21 );
-			generateMov( 'data_items+512(,' + reg21 +',8)' , reg21 );
-			
-			generateMov(generateLeftParam(num1,sca11,reg11,reg12,sca12) , regSwap );
-			
-			generateMov( 'data_items+512(' + reg21 + ',' + regSwap +',4)' , reg21) ;
-			
-			generateMov('temp', regSwap);
-			
-		//addl reg,mem --> addl 
+		// add registro, registro
 		} else if (
 			num1  == null &&
 			reg11 != null &&
-			reg21 != null &&
 			reg12 == null &&
+			reg21 != null &&
+			reg22 == null &&
 			sca11 == null &&
 			sca12 == null &&
-			(isMemoryAddress(reg21) ||
-			(reg22 != null || sca21 != null || sca22 != null)
-			)
+			sca21 == null &&
+			sca22 == null
 		) {
 			
-			//control who the reg21 isn't equals to edx
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + reg21 +"*4 + data_items + 512]");
 			
-			generateMov(regSwap, 'temp');
-			
-			generateMov(generateRightParam(sca21,reg21,reg22,sca22) , regSwap );
-			
-			generateMov('data_items+512(,' + regSwap + ',8)' , regSwap );
-			generateMov('data_items+512(,' + regSwap + ',8)' , regSwap );
-			
-			generateMov('data_items+512(' + regSwap + ',' + reg11 + ',4)' , regSwap );
-			generateMov(regSwap , generateRightParam(sca21,reg21,reg22,sca22));
-			
-			generateMov('temp' , regSwap);
 		} else {
-			addLine('ERRORE: parse add instruction');
+			addLine(";Error parse add instruction");
 		}
 	}
 	
@@ -488,195 +364,40 @@ public class Movinator {
 		String reg22,
 		String sca22
 	) {
-		String regSwap  = '%edx'; 
-		String regSwap2 = '%ecx';
-		
-		//sub intReg --> sub $3,%eax
+		// sub registro intero
 		if (
-			num1 != null && 
-			reg21 != null && 
-			!isMemoryAddress(reg21) && 
-			sca21 == null && 
-			sca22 == null
-		) {
-			//control who the reg21 isn't equals to edx
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			
-			//move into reg21 the value corresponding of its memory cell. Es. value 4 is stored in memory cell 16
-			generateMov('data_items+512(,' + reg21 +',8)', reg21);
-			generateMov('data_items+512(,' + reg21 +',8)', reg21);
-			
-			//Save content of edx in a temporary variable
-			generateMov(regSwap, 'temp');
-			
-			//move leftExp into edx
-			generateMov(num1, regSwap);
-			
-			//recover negative value
-			generateMov('data_items_negative(,' + regSwap + ',4)',regSwap);
-			
-			//recover the momory cell corresponding at the sum leftExp+RighExp
-			generateMov('data_items+512(' + reg21 + ',' + regSwap + ',4)', reg21 );
-			
-			//restore the value of edx
-			generateMov('temp' , regSwap );
-		
-		//sub intMem --> sub $3,(%eax) , sub $3, 4(%eax) , ...
-		}else if (
 			num1  != null &&
-			reg21 != null &&
-			(isMemoryAddress(reg21) ||
-				(reg22 != null || 
-				sca21 != null || 
-				sca22 != null)
-			)
-		){
-			
-			//control swap Registers, don't lose the prevoius values
-			if (reg22 == null){
-				if (reg21.contains('%edx') ) {
-					regSwap  = '%eax';
-				}
-			}else{
-			
-				if (reg21.contains('%edx') || reg22.contains('%edx') ) {
-					regSwap  = '%eax';
-				} 
-				if ( reg22.contains('%ecx') || reg21.contains('%ecx') ) {
-					regSwap2 = '%ebx';
-				}
-			}
-			
-			//save value into temp register
-			generateMov(regSwap, 'temp');
-			generateMov(regSwap2, 'temp2');
-			
-			generateMov(generateRightParam(sca21 , reg21 , reg22 , sca22) , regSwap);
-			
-			//move the pointer value into itself
-			generateMov( 'data_items+512(,' + regSwap + ',8)' , regSwap ); 
-			generateMov( 'data_items+512(,' + regSwap + ',8)' , regSwap ); 
-			
-			generateMov( num1 , regSwap2 );
-			
-			//recover negative value
-			generateMov('data_items_negative(,' + regSwap2 + ',4)',regSwap2);
-			
-			generateMov( 'data_items+512('+ regSwap + ',' + regSwap2 + ',4)' , regSwap );
-			
-			generateMov( regSwap , generateRightParam( sca21 , reg21 , reg22 , sca22 ));
-			
-			//restore previuos values
-			generateMov('temp', regSwap);
-			generateMov('temp2', regSwap2);
-		//sub reg,reg --> sub %eax,%ebx
-		}else if (
-			num1  == null &&
 			reg11 != null &&
-			reg21 != null &&
 			reg12 == null &&
+			reg21 == null &&
 			reg22 == null &&
 			sca11 == null &&
 			sca12 == null &&
 			sca21 == null &&
-			sca22 == null &&
-			!isMemoryAddress(reg11) &&
-			!isMemoryAddress(reg21) 
-		){
-			
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			
-			generateMov(regSwap , 'temp');
-			generateMov(reg11 ,regSwap);
-			
-			generateMov('data_items_negative(,' + regSwap + ',4)',regSwap);
-			
-			generateMov( 'data_items+512(,' + reg21 +',8)' ,  reg21 );
-			generateMov( 'data_items+512(,' + reg21 +',8)' ,  reg21 );
-			
-			generateMov( 'data_items(' + reg21 + ',' + regSwap +',4)' ,reg21 );
-			generateMov( 'temp' , regSwap);
-			
-			
-		//sub mem,reg --> sub (%eax),%ebx, sub 4(%eax),%ebx, ... 
-		}else if (
-			num1  == null &&
-			reg11 != null &&
-			reg21 != null &&
-			reg22 == null &&
-			sca21 == null &&
-			sca22 == null &&
-			( isMemoryAddress(reg11) ||
-				(sca11 != null || sca12 != null || reg12 != null)
-			)
+			sca22 == null
 		) {
+			// sposto all indietro il puntatore del mio registro
+			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 - num1*4 + "]");
 			
-			//control who the reg21 isn't equals to edx
-			if (reg21.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			
-			generateMov(regSwap, 'temp');
-			
-			generateMov( 'data_items+512(,' + reg21 +',8)' , reg21 );
-			generateMov( 'data_items+512(,' + reg21 +',8)' , reg21 );
-			
-			generateMov(generateLeftParam(num1,sca11,reg11,reg12,sca12) , regSwap );
-			generateMov('data_items_negative(,' + regSwap + ',4)',regSwap);
-			
-			generateMov( 'data_items+512(' + reg21 + ',' + regSwap +',4)' , reg21) ;
-			
-			generateMov('temp', regSwap);
-			
-		//sub reg,mem --> sub 
 		} else if (
 			num1  == null &&
 			reg11 != null &&
-			reg21 != null &&
 			reg12 == null &&
+			reg21 != null &&
+			reg22 == null &&
 			sca11 == null &&
 			sca12 == null &&
-			(isMemoryAddress(reg21) ||
-			(reg22 != null || sca21 != null || sca22 != null)
-			)
+			sca21 == null &&
+			sca22 == null
 		) {
 			
-			//control who the reg21 isn't equals to edx
-			if (reg22 == null){
-				if (reg21.contains('%edx') ) {
-					regSwap  = '%eax';
-				}
-			}else{
+			addLine("push" + reg21);
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			
-				if (reg21.contains('%edx') || reg22.contains('%edx') ) {
-					regSwap  = '%eax';
-				} 
-				if ( reg22.contains('%ecx') || reg21.contains('%ecx') ) {
-					regSwap2 = '%ebx';
-				}
-			}
-			
-			generateMov(regSwap, 'temp');
-			generateMov(regSwap2, 'temp2');
-			
-			generateMov(generateRightParam(sca21,reg21,reg22,sca22) , regSwap );
-			generateMov(reg11, regSwap2);
-			
-			generateMov('data_items_negative(,' + regSwap2 + ',4)',regSwap2);
-			
-			generateMov('data_items+512(,' + regSwap + ',8)' , regSwap );
-			generateMov('data_items+512(,' + regSwap + ',8)' , regSwap );
-			
-			generateMov('data_items+512(' + regSwap + ',' + regSwap2 + ',4)' , regSwap );
-			
-			generateMov(regSwap , generateRightParam(sca21,reg21,reg22,sca22));
-			
-			generateMov('temp' , regSwap);
-			generateMov('temp2' , regSwap2);
+			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]")
+			generateMov(reg11, "[" + reg11 + reg21 +"*4 + data_items + 512]");
+			addLine("pop" + reg21);
 			
 		} else {
 			addLine('Errore: parse add instruction');
