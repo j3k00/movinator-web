@@ -579,6 +579,26 @@ public class Movinator {
 		String reg21
 	) {
 		
+		String regSwap1 = "";
+		String regSwap2 = "";
+		
+		generateMov(regSwap1, reg11);
+		generateMov(regSwap2, reg21);
+		
+		generateMov(reg11 , "[ numbers + 512 +" + regSwap1 + "*8 ]");
+		generateMov(reg11 , "[ numbers + 512 +" + regSwap1 + "*8 ]");
+		
+		generateMov(reg21 , "[ numbers + 512 +" + regSwap2 + "*8 ]");
+		generateMov(reg21 , "[ numbers + 512 +" + regSwap2 + "*8 ]");
+		
+		generateMov("[ numbers + 512 +" + regSwap1 + " ]", "0");
+		generateMov("[ numbers + 512 +" + regSwap2 + " ]", "1");
+		
+		generateMov("esi", "[ numbers + 512 + " + regSwap1 + " ]");
+		
+		generateMov("[ numbers + 512 + " + regSwap1 + " ]" , reg11);
+		generateMov("[ numbers + 512 + " + regSwap2 + " ]" , reg21);
+		
 	}
 	
 	/**
