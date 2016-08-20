@@ -317,6 +317,7 @@ public class Movinator {
 		String reg22,
 		String sca22
 	) {
+		String regSwap = "edx";
 		//add registro, intero
 		if (
 			num1  != null &&
@@ -349,6 +350,39 @@ public class Movinator {
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + reg21 +"*4 + data_items + 512]");
+		
+		// add memoria, intero add DWORD [eax], 5
+		} else if (/* controllo add registro memoria*/true) {
+			
+			addLine("push" + regSwap);
+			String s = Integer.parseInt(num1)*4 + "";
+			generateMov(regSwap, generateRightParam(reg21,reg22,sca21,sca22));
+			generateMov(regSwap, "[" + regSwap +"*4 + data_items + 512" + s + "]");
+			generateMov(generateLeftParam(num1,reg21,reg22,sca21,sca22), regSwap);
+			addLine("pop" + regSwap);
+			
+		// add memoria, registro
+		} else if (true) {
+			
+			addLine("push" + regSwap);
+			
+			generateMov(regSwap, generateRightParam(reg11,reg12,sca11,sca12));
+			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512]");
+			generateMov(generateLeftParam(num1,reg11,reg12,sca11,sca12), regSwap);
+			
+			addLine("pop " + regSwap);
+			
+		// add registro, memoria
+		} else if(true) {
+			
+			addLine("push" + regSwap);
+			generateMov(regSwap, generateRightParam(reg21,reg22,sca21,sca22));
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + " + " + regSwap +"*4 + data_items + 512]");
+			addLine("pop " + regSwap);
 			
 		} else {
 			addLine(";Error parse add instruction");
@@ -597,7 +631,7 @@ public class Movinator {
 		generateMov("esi", "[ numbers + 512 + " + regSwap1 + " ]");
 		
 		generateMov("[ numbers + 512 + " + regSwap1 + " ]" , reg11);
-		generateMov("[ numbers + 512 + " + regSwap2 + " ]" , reg21);
+		generateMov("[ numbers + 51 2 + " + regSwap2 + " ]" , reg21);
 		
 	}
 	
