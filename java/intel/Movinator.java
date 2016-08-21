@@ -401,6 +401,7 @@ public class Movinator {
 		String reg22,
 		String sca22
 	) {
+		String regSwap = "edx";
 		// sub registro intero
 		if (
 			num1  != null &&
@@ -416,7 +417,8 @@ public class Movinator {
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
 			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + "-" + s + "]");
-			
+		
+		//sub registro, registro
 		} else if (
 			num1  == null &&
 			reg11 != null &&
@@ -430,12 +432,54 @@ public class Movinator {
 		) {
 			
 			addLine("push" + reg21);
+			
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			
 			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]");
 			generateMov(reg11, "[" + reg11 + reg21 + "*4 + data_items + 512]");
 			addLine("pop" + reg21);
+			
+		//sub registro, memoria
+		} else if ( true ) {
+			
+			addLine("push" + regSwap);
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			
+			generateMov(regSwap, generateRightParam(sca21,reg21,reg22,sca22));
+			generateMov(regSwap, "[" + regSwap + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "[" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
+			addLine("pop " + regSwap); 
+		
+		//sub memoria, registro
+		} else if(true) {
+			
+			addLine("push " + regSwap);
+			addLine("push " + reg21);
+			
+			generateMov(regSwap, generateRightParam(sca11,reg11,reg11,sca12));
+			
+			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512");
+			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
+			
+			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512 ]");
+			generateMov(generateLeftParam(null,sca11,reg11,reg12,sca12) , regSwap);
+			
+			addLine("push " + reg21);
+			addLine("push " + regSwap);
+			
+		//sub memoria, intero
+		} else if (true) {
+			
+			addLine("push " + regSwap);
+			generateMov(regSwap, generateRightParam(sca21,reg21,reg21,sca22));
+			String s = Integer.parseInt(num1)*4 + "";
+			// sposto all indietro il puntatore del mio registro
+			generateMov(regSwap, "[" + regSwap + "*4 + data_items +" + 512 + "-" + s + "]");
+			generateMov(generateLeftParam(null,sca11,reg11,reg12,sca12) , regSwap);
+			addLine("pop " + regSwap);
 			
 		} else {
 			addLine("Errore: parse add instruction");
