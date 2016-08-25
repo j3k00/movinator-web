@@ -233,50 +233,24 @@ public class Movinator {
 		String reg12,
 		String sca12
 	) {
-		String regSwap = '%edx';
-		String regSwap2 = '%ecx';
-		
-		if (reg12 == null){
-			if (reg11.contains('%edx')) {
-				regSwap = '%eax';
-			}
-		}else {
-			if (reg11.contains('%edx') || reg12.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			if (reg11.contains('%ecx') || reg12.contains('%ecx')) {
-				regSwap = '%ebx';
-			}
-		}
-		
-		//incl %eax
+		//inc eax
 		if (
 			reg11 != null &&
-			sca11 == null &&
-			sca12 == null &&
 			reg12 == null &&
-			!isMemoryAddress(reg11)
-		){
-			
-			generateMov(regSwap , 'temp');
-			generateMov('$4', regSwap);
-			generateMov('data_items+512(' + regSwap + ', ' + reg11 + ', 4)', reg11);
-			generateMov('temp', regSwap);
-			
-		//incl mem
-		}else{
-			generateMov(regSwap , 'temp');
-			generateMov(regSwap2 , 'temp2');
-			
-			generateMov('$4', regSwap);
-			
-			generateMov(generateRightParam(sca11,reg11,reg12,sca12),regSwap2);
-			generateMov('data_items+512(' + regSwap + ', ' + regSwap2 + ', 4)', regSwap2);
-			
-			generateMov(regSwap2,generateRightParam(sca11,reg11,reg12,sca12));
-			
-			generateMov('temp', regSwap);
-			generateMov('temp2', regSwap2);
+			sca11 == null &&
+			sca12 == null
+		) {
+			generateMov(reg11, "[data_items" + "reg11" + "*4 + 516]");
+		} else if (
+			reg11 != null &&
+			reg12 != null ||
+			sca11 != null ||
+			sca12 != null
+		) {
+			generateIstr("push", regSwap);
+			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )) //TODO GENERATE PARAM
+			generateMov(regSwap, "[data_items" + regSwap + "*4 + 516]");
+			generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 ));
 		}
 	}
 	
@@ -294,50 +268,24 @@ public class Movinator {
 		String reg12,
 		String sca12
 	) {
-		String regSwap = '%edx';
-		String regSwap2 = '%ecx';
-		
-		if (reg12 == null){
-			if (reg11.contains('%edx')) {
-				regSwap = '%eax';
-			}
-		}else {
-			if (reg11.contains('%edx') || reg12.contains('%edx')) {
-				regSwap = '%eax';
-			}
-			if (reg11.contains('%ecx') || reg12.contains('%ecx')) {
-				regSwap = '%ebx';
-			}
-		}
-		
-		//decl %eax
+		// dec eax
 		if (
 			reg11 != null &&
-			sca11 == null &&
-			sca12 == null &&
 			reg12 == null &&
-			!isMemoryAddress(reg11)
-		){
-			
-			generateMov(regSwap , 'temp');
-			generateMov('$-4', regSwap);
-			generateMov('data_items+512(' + regSwap + ', ' + reg11 + ', 4)', reg11);
-			generateMov('temp', regSwap);
-			
-		//decl mem
-		}else{
-			generateMov(regSwap , 'temp');
-			generateMov(regSwap2 , 'temp2');
-			
-			generateMov('$-4', regSwap);
-			
-			generateMov(generateRightParam(sca11,reg11,reg12,sca12),regSwap2);
-			generateMov('data_items+512(' + regSwap + ', ' + regSwap2 + ', 4)', regSwap2);
-			
-			generateMov(regSwap2,generateRightParam(sca11,reg11,reg12,sca12));
-			
-			generateMov('temp', regSwap);
-			generateMov('temp2', regSwap2);
+			sca11 == null &&
+			sca12 == null
+		) {
+			generateMov(reg11, "[numbers" + "reg11" + "*4" + "508]");
+		} else if (
+			reg11 != null &&
+			reg12 != null ||
+			sca11 != null ||
+			sca12 != null
+		) {
+			generateIstr("push", regSwap);
+			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )); //TODO GENERATE PARAM
+			generateMov(regSwap, "[data_items" + regSwap + "*4 + 508]");
+			generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 )); 
 		}
 	}
 	/**

@@ -8,20 +8,24 @@ class Movinator extends CFormModel  {
 	public function generateCode($max, $file) {
 		$this->addLine(true, false, ".section .data");
 		$this->constructData_items($max);
+		$this->constructData_items_negative($max);
 		$this->constructData_temp();
+		$this->addLine(true, false, ".section .text");
 		$this->addLine(true, false, ".global _start");
 		$this->addLine(true, false, "_start:"); 
 		$this->parseFile($file);
+		$this->endFunction();
+
 	}
 	
 	private function addLine($newLine = NULL,$tab = NULL, $params){
-		if ($tab || $tab == NULL) {
+		if ($tab) {
 			$this->program .= "\t";
 		}
 		
 		$this->program .= $params;
 		
-		if ($newLine || $newLine == NULL) {
+		if ($newLine) {
 			$this->program .= "\n";
 		}
 	}
@@ -1022,6 +1026,26 @@ class Movinator extends CFormModel  {
 		}
 		
 		$this->addLine(true, false, "");
+	}
+	
+	private function constructData_items_negative($max){
+		$this->addLine(true,false,"data_items_negative:");
+		$this->addLine(false,true,".long");
+		
+		$numMax = $max/2;
+		
+		for ($i = 0; $i<$max ;$i++){
+			$this->addLine(false,false," " . $numMax-- . (($i < $max-1) ? "," : ""));
+		}
+		
+		$this->addLine(true,false,"");
+	}
+	
+	private function endFunction() {
+		$this->addLine(true,false,"xorl		%eax, %eax");
+		$this->addLine(true,false,"inc		%eax");
+		$this->addLine(true,false,"xorl		%ebx, %ebx");
+		$this->addLine(true,false,"int 	$0x80");
 	}
 	
 	public function constructData_temp() {
