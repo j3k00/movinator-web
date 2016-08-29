@@ -52,10 +52,16 @@ public class Main {
 						if (instructionMatcher.matches()) {
 							instr = instructionMatcher.group("instruction");
 							System.out.println(line + "\n");
-							String[] split = instructionMatcher.group("body").split(",");
-							System.out.println(split[1] + "\n");
-							lOperand = new Operando(split[0]); 
-							rOperand = (split.length > 1) ? new Operando(split[1]) : null;
+							
+							if (line.contains(",")) {
+								String[] split = instructionMatcher.group("body").split(",");
+								lOperand = new Operando(split[0]); 
+								rOperand = (split.length > 1) ? new Operando(split[1]) : null;
+							} else {
+								lOperand = new Operando(instructionMatcher.group("body"));
+								rOperand = null;
+							}
+							
 							
 							if (lOperand != null) {
 								System.out.println(lOperand.toString());

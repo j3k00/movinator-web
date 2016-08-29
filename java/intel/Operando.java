@@ -23,7 +23,7 @@ public class Operando {
 	
 	private void constructOperando(String operand) {
 		try {
-			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d*]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d*]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
+			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
 			Matcher instructionMatcher;
 			
 			// inizializzazione del matcher
@@ -55,4 +55,5 @@ public class Operando {
 	}
 }
 
-//^\s*(?:(\w+)|([0x]\w+)|((\w*\s\w*\s*)[[](\w*)\s*(?:([+]\s\w+\s*([+]?[-]?\s*[0x]\w+)?)|([-]?[+]?\s*[0x]\w*))?[\]]\s*)|((\w*\s\w*\s*)(\w*)[:]([0x]\w+)))?\s*$
+//^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$
+//^\s*(?:([a-zA-Z]+)|([0x][\w]+)|(?:([\w]*\s[\w]*\s*)[\[]([\w]*[*]?[\d]?)\s*(?:(?:[+]\s([\w]+[*]?[\d]?)\s*([+]?[-]?\s*[0x][\w]+)?)|([-]?[+]?\s*[0x][\w]*))?[\]]\s*)|(?:([\w]*\s[\w]*\s*)([\w]*)[:]([0x][\w]+)))?\s*$
