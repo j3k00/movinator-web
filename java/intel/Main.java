@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.StringTokenizer;
+
 
 /**
 * <h1>Movinator</h1>
@@ -16,7 +18,6 @@ import java.util.regex.Pattern;
 *
 * @author  Andrea Colato
 * @author  Tommaso Bonetti
-* @author  Nicolo Manzatti
 * 
 * @version 0.1
 * @since   05-04-2016
@@ -33,51 +34,43 @@ public class Main {
 			File file = new File(args[0]);
 			BufferedReader bufferedFile = new BufferedReader(new FileReader(file));
 			
-			
-			Pattern instruction = Pattern.compile("^\\s*(?<ins>[\\w*]+)\\s*(?:(?<num1>[$]-?[0x\\d]+)|(?<reg1>[(][%][\\w]+[)])|(?:(?<sca11>-?[\\d]+)?\\s*(?:[(]\\s*(?<reg12>[%][\\w]+)?)?\\s*,?\\s*(?<reg11>[%][\\w]+)\\s*,?\\s*(?<sca12>[\\d]+)?[)]?))\\s*(?:,\\s*(?:(?<reg2>[(][%][\\w]+[)])|(?:(?<sca21>-?[\\d]+)?\\s*[(]?\\s*(?<reg22>[%][\\w]+)?\\s*,?\\s*(?<reg21>[%][\\w]+)\\s*,?\\s*(?<sca22>[\\d]+)?[)]?)))?\\s*$");
+			Operando rOperand;
+			Operando lOperand;
+			String instr;
+			int count = 0;
 			Pattern emptyLine = Pattern.compile("^$|^(\\s*(?:(?<comm>[#]\\w*)|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*)$");
+			Pattern instruction = Pattern.compile("^(?<instruction>\\s*\\w+\\s*)\\s*(?<body>.*)$");
+			
 			Matcher instructionMatcher;
 			//Movinator checker = new Movinator(256);
 			while ((line = bufferedFile.readLine()) != null ) {
 				instructionMatcher = emptyLine.matcher(line);
-				
 				try {
 					if (!instructionMatcher.matches()) {
 						instructionMatcher = instruction.matcher(line);
-						instructionMatcher.matches();
 						
-						// Print 
-						/*System.out.println("************ RIGA ************: "+line);
-						
-						System.out.println("ins: " + instructionMatcher.group("ins"));
-						System.out.println("num1: " + instructionMatcher.group("num1"));
-						System.out.println("sca11: " + instructionMatcher.group("sca11"));
-						System.out.println("reg12: " + instructionMatcher.group("reg12"));
-						System.out.println("reg11: " + ((instructionMatcher.group("reg1") == null )?instructionMatcher.group("reg11"):instructionMatcher.group("reg1")));  
-						System.out.println("sca12: " + instructionMatcher.group("sca12"));
-						System.out.println("sca21: " + instructionMatcher.group("sca21"));
-						System.out.println("reg22: " + instructionMatcher.group("reg22"));
-						System.out.println("reg21: " + ((instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"))); 
-						System.out.println("sca22: " + instructionMatcher.group("sca22"));
-						*/
-						
-						checker.parseInstruction(
-							instructionMatcher.group("ins"),
-							instructionMatcher.group("num1"),   
-							instructionMatcher.group("sca11"),
-							instructionMatcher.group("reg12"), 
-							(instructionMatcher.group("reg1") == null )?instructionMatcher.group("reg11"):instructionMatcher.group("reg1"),
-							instructionMatcher.group("sca12"),
-							instructionMatcher.group("sca21"),  
-							instructionMatcher.group("reg22"), 
-							(instructionMatcher.group("reg2") == null )?instructionMatcher.group("reg21"):instructionMatcher.group("reg2"),
-							instructionMatcher.group("sca22"),
-							line
-						);
+						if (instructionMatcher.matches()) {
+							instr = instructionMatcher.group("instruction");
+							System.out.println(line + "\n");
+							String[] split = instructionMatcher.group("body").split(",");
+							System.out.println(split[1] + "\n");
+							lOperand = new Operando(split[0]); 
+							rOperand = (split.length > 1) ? new Operando(split[1]) : null;
+							
+							if (lOperand != null) {
+								System.out.println(lOperand.toString());
+							}
+							if(rOperand != null) {
+								System.out.println(rOperand.toString());
+							}
+							count++;
+							System.out.println(count + "\n");
+							//checker.parseInstruction(instr,lOperand,rOperand);
+						}
 					}
 				} catch (IllegalStateException e) {}
 			}
-			System.out.println(checker.getProgram());
+			//System.out.println(checker.getProgram());
 			
 		} catch (Exception e){
 			System.out.println("Errore: " + e.getMessage());

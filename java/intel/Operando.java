@@ -13,19 +13,46 @@ public class Operando {
 	String scalare2  = "";
 	String puntatore = "";
 	String registroSpeciale = "";
+	String numero = "";
+	String rChiamata = "";
+	String spostamento = "";
 	
-	public Operando(String leftOperando) {
-		constructOperando(leftOperando);
+	public Operando (String operand) {
+		constructOperando(operand);
 	}
-	private void constructOperando(String leftOperando) {
-			Pattern instruction = Pattern.compile("^\\s*(?:(\\w+)|([0x]\\w+)|((\\w*\\s\\w*\\s*)[[](\\w*)\\s*(?:([+]\\s\\w+\\s*([+]?[-]?\\s*[0x]\\w+)?)|([-]?[+]?\\s*[0x]\\w*))?[\\]]\\s*)|((\\w*\\s\\w*\\s*)(\\w*)[:]([0x]\\w+)))?\\s*$");
+	
+	private void constructOperando(String operand) {
+		try {
+			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d*]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d*]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
 			Matcher instructionMatcher;
-			instructionMatcher = instruction.matcher(leftOperando);
+			
+			// inizializzazione del matcher
+			instructionMatcher = instruction.matcher(operand);
 			instructionMatcher.matches();
-			System.out.println(instructionMatcher.group());
-			System.out.println(512+4*4);
+			
+			//salvataggio dei parametri nelle variabili
+			registro1 = (instructionMatcher.group("reg1") != null) ? instructionMatcher.group("reg1") : instructionMatcher.group("registro1");
+			numero = instructionMatcher.group("numero");
+			puntatore = (instructionMatcher.group("puntatore") != null) ? instructionMatcher.group("puntatore") : instructionMatcher.group("puntatore1");
+			registro2 = instructionMatcher.group("registro2");
+			scalare1 = instructionMatcher.group("scalare1");
+			rChiamata = instructionMatcher.group("rChiamata");
+			spostamento = instructionMatcher.group("spostamento");
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
+	public String toString() {
+		return "registro1 = " + registro1 + "\n" +
+			"registro2 = " + registro2 + "\n" +
+			"numero = " + numero + "\n" +
+			"puntatore = " + puntatore + "\n" +
+			"scalare1 = " + scalare1 + "\n" +
+			"rChiamata = " + rChiamata + "\n" +
+			"spostamento = " + spostamento + "\n"; 
+	}
 }
 
 //^\s*(?:(\w+)|([0x]\w+)|((\w*\s\w*\s*)[[](\w*)\s*(?:([+]\s\w+\s*([+]?[-]?\s*[0x]\w+)?)|([-]?[+]?\s*[0x]\w*))?[\]]\s*)|((\w*\s\w*\s*)(\w*)[:]([0x]\w+)))?\s*$
