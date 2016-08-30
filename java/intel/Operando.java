@@ -23,7 +23,8 @@ public class Operando {
 	
 	private void constructOperando(String operand) {
 		try {
-			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
+			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|\\s*(?:(?<puntatore>[a-zA-Z]+\\s*[a-zA-Z]+\\s*)[\\[]\\s*(?<registro1>[\\w]+)\\s*(?:(?:[+]?\\s*(?<registro2>[\\w]*)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
+			Pattern instruction1 = Pattern.compile("^\\s*(?:(?<puntatore>[a-zA-Z]+\\s*[a-zA-Z]+\\s*)[\\[]\\s*(?<registro1>[\\w]+)\\s*(?:(?:[+]?\\s*(?<registro2>[\\w]+)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?))?[\\]]\\s*)$");
 			Matcher instructionMatcher;
 			
 			// inizializzazione del matcher
@@ -39,6 +40,7 @@ public class Operando {
 			rChiamata = instructionMatcher.group("rChiamata");
 			spostamento = instructionMatcher.group("spostamento");
 			
+			System.out.println(instructionMatcher.group());
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -53,6 +55,7 @@ public class Operando {
 			"rChiamata = " + rChiamata + "\n" +
 			"spostamento = " + spostamento + "\n"; 
 	}
+	
 }
 
 //^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$
