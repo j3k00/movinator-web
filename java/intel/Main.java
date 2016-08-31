@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.StringTokenizer;
 
-
 /**
 * <h1>Movinator</h1>
 * The Movinator program implements an application that
@@ -51,7 +50,6 @@ public class Main {
 						
 						if (instructionMatcher.matches()) {
 							instr = instructionMatcher.group("instruction");
-							System.out.println(line + "\n");
 							
 							if (line.contains(",")) {
 								String[] split = instructionMatcher.group("body").split(",");
@@ -62,15 +60,12 @@ public class Main {
 								rOperand = null;
 							}
 							
-							
 							if (lOperand != null) {
 								System.out.println(lOperand.toString());
 							}
 							if(rOperand != null) {
 								System.out.println(rOperand.toString());
 							}
-							count++;
-							System.out.println(count + "\n");
 							//checker.parseInstruction(instr,lOperand,rOperand);
 						}
 					}
