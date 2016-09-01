@@ -66,12 +66,12 @@ public class Main {
 							if(rOperand != null) {
 								System.out.println(rOperand.toString());
 							}
-							//checker.parseInstruction(instr,lOperand,rOperand);
+							checker.parseInstruction(instr,lOperand,rOperand);
 						}
 					}
 				} catch (IllegalStateException e) {}
 			}
-			//System.out.println(checker.getProgram());
+			System.out.println(checker.getProgram());
 			
 		} catch (Exception e){
 			System.out.println("Errore: " + e.getMessage());

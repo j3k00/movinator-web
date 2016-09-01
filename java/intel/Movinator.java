@@ -687,6 +687,7 @@ public class Movinator {
 	* 
 	* @return String This returns the assembly initialization of array.
 	*/
+	
 	private void constructData_items(int max) {
 		addLine(true, false,"data_items:");
 		addLine(false, true, ".long");
