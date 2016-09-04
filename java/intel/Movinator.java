@@ -36,18 +36,11 @@ public class Movinator {
 	
 	public void parseInstruction (
 		String ins,
-		String num1,
-		String sca11, 
-		String reg12,
-		String reg11,
-		String sca12,
-		String sca21,
-		String reg22, 
-		String reg21, 
-		String sca22,
+		Operando leftOp,
+		Operando rightOp,
 		String line
 	) {
-		
+		System.out.println(ins);
 		switch (ins) {
 			case "mov":
 			case "movl":
@@ -79,62 +72,28 @@ public class Movinator {
 				);*/
 				break;
 			
-			case "decl":
+			case "dec":
 				addLine("#mvn: ", line);
-				addLine(line);
-				/*dec32(
-					sca11,
-					reg11,
-					reg12,
-					sca12
-				);*/
+				dec32(leftOp);
 				break;
 				
 			case "inc":
 			case "incl":
 				addLine("#mvn: ", line);
-				addLine(line);
-				/*inc32(
-					sca11,
-					reg11,
-					reg12,
-					sca12
-				);*/
+				inc32(leftOp);
 				break;
 				
 			case "add":
 			case "addl":
 				addLine("#mvn: ", line);
-				addLine(line);
-				/*add32(
-					 num1, 
-					 sca11, 
-					 reg11,
-					 reg12,
-					 sca12,
-					 sca21, 
-					 reg21, 
-					 reg22,
-					 sca22
-				);*/
+				add32(leftOp, rightOp);
 				break;
 				
 			
 			case "sub":
 			case "subl":
 				addLine("#mvn: ", line);
-				addLine(line);
-				/*sub32(
-					 num1,  
-					 sca11, 
-					 reg11,
-					 reg12,
-					 sca12,
-					 sca21, 
-					 reg21, 
-					 reg22,
-					 sca22
-				);*/
+				sub32(leftOp,rightOp);
 				break;
 				
 			case "xor":
@@ -161,13 +120,13 @@ public class Movinator {
 	* @param sca12 push S(R, reg11, sca12)
 	* 
 	* @return String This returns the substitute string.
-	*/ 
+	*/
+	/* 
 	private void push(
 		String num1,
 		String sca11,
 		String reg12, 
-		String reg11,
-		String sca12
+		String reg11
 	) {
 		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
 		
@@ -183,7 +142,7 @@ public class Movinator {
 		);
 		stackElements++;
 	}
-	
+	*/
 	/**
 	* This method is used to replace pop instruction into mov.
 	* 
@@ -193,12 +152,12 @@ public class Movinator {
 	* @param sca12 pop S(R, reg11, sca12)
 	* 
 	* @return String This returns the substitute string.
-	*/ 
+	*/
+	/* 
 	private void pop(
 		String sca11, 
 		String reg12,
 		String reg11,
-		String sca12
 	) {
 		stackElements--;
 		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
@@ -213,13 +172,12 @@ public class Movinator {
 					sca11,
 					reg11,
 					reg12,
-					sca12
 				),
 				stackRegister 
 			);
 		}
 	}
-	
+	*/
 	/**
 	* This method is used to replace inc instruction into mov.
 	* 
@@ -228,31 +186,31 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void inc32(
-		String sca11,
-		String reg11,
-		String reg12,
-		String sca12
+		Operando leftOp
 	) {
+		String reg11 = leftOp.registro1;
+		String reg12 = leftOp.registro2;
+		String sca11 = leftOp.scalare1;
+		
 		String regSwap = "edx";
 		//inc eax
 		if (
 			reg11 != null &&
 			reg12 == null &&
-			sca11 == null &&
-			sca12 == null
+			sca11 == null 
 		) {
 			generateMov(reg11, "[data_items" + "reg11" + "*4 + 516]");
 		} else if (
 			reg11 != null &&
 			reg12 != null ||
-			sca11 != null ||
-			sca12 != null
+			sca11 != null 
 		) {
-			//generateIstr("push", regSwap);
-			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )); //TODO GENERATE PARAM
-			generateMov(regSwap, "[data_items" + regSwap + "*4 + 516]");
-			//generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 ));
+			//push32(regSwap,null,null);
+			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
+			generateMov(regSwap, "[data_items" + " + " + regSwap + "*4 + 516]");
+			//pop32(regSwap,null,null);
 		}
+		addLine(true,true,"");
 	}
 	
 	
@@ -264,32 +222,32 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void dec32(
-		String sca11, 
-		String reg11,
-		String reg12,
-		String sca12
+		Operando leftOp
 	) {
+		String reg11 = leftOp.registro1;
+		String reg12 = leftOp.registro2;
+		String sca11 = leftOp.scalare1;
 		String regSwap = "edx";
 		// dec eax
 		if (
 			reg11 != null &&
 			reg12 == null &&
-			sca11 == null &&
-			sca12 == null
+			sca11 == null
 		) {
-			generateMov(reg11, "[numbers" + "reg11" + "*4" + "508]");
+			generateMov(reg11, "[data_items" + " + " + "reg11" + "*4" + "508]");
 		} else if (
 			reg11 != null &&
 			reg12 != null ||
-			sca11 != null ||
-			sca12 != null
+			sca11 != null
 		) {
-			//generateIstr("push", regSwap);
-			generateMov(regSwap, generateRightParam( reg11, reg12, sca11, sca12 )); //TODO GENERATE PARAM
-			generateMov(regSwap, "[data_items" + regSwap + "*4 + 508]");
-			//generateMov("DWORD" +  generateRightParam( reg11, reg12, sca11, sca12 )); 
+			//push32(regSwap,null,null);
+			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
+			generateMov(regSwap, "[data_items" +" + " + regSwap + "*4 + 508]");
+			//pop32(regSwap,null,null);
 		}
+		addLine(true,true,"");
 	}
+	
 	/**
 	* This method is used to replace add instruction into mov.
 	* 
@@ -305,19 +263,22 @@ public class Movinator {
 	* 
 	* @return String This returns the substitute string.
 	*/
-		
+	
 	private void add32(
-		String num1,
-		String sca11,
-		String reg11,
-		String reg12,
-		String sca12,
-		String sca21,
-		String reg21,
-		String reg22,
-		String sca22
+		Operando leftOp,
+		Operando rightOp
 	) {
+		String reg11 = leftOp.registro1;
+		String reg12 = leftOp.registro2;
+		String sca11 = leftOp.scalare1;
+		String reg21 = rightOp.registro1;
+		String puntatore = leftOp.puntatore;
+		String reg22 = rightOp.registro2;
+		String sca21 = rightOp.scalare1;
 		String regSwap = "edx";
+		String num1 = rightOp.numero;
+		String puntatore1 = rightOp.puntatore;
+		
 		//add registro, intero
 		if (
 			num1  != null &&
@@ -326,9 +287,9 @@ public class Movinator {
 			reg21 == null &&
 			reg22 == null &&
 			sca11 == null &&
-			sca12 == null &&
 			sca21 == null &&
-			sca22 == null
+			puntatore == null &&
+			puntatore1 == null
 		){
 			String s = Integer.parseInt(num1)*4 + "";
 			// utilizzo lo spostamento per andare a sommare direttamente l intero contenuto nella variabile num1
@@ -342,43 +303,71 @@ public class Movinator {
 			reg21 != null &&
 			reg22 == null &&
 			sca11 == null &&
-			sca12 == null &&
 			sca21 == null &&
-			sca22 == null
+			puntatore == null &&
+			puntatore1 == null 
 		) {
 			
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + reg21 +"*4 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + " + " + reg21 +"*4 + data_items + 512]");
 		
 		// add memoria, intero add DWORD [eax], 5
-		} else if (/* controllo add registro memoria*/true) {
+		} else if (
+			num1  != null &&
+			reg11 != null &&
+			puntatore != null ||
+			(reg12 != null || sca11 != null) &&
+			reg21 == null &&
+			reg22 == null &&
+			sca21 == null &&
+			puntatore1 == null 
+		) {
 			
-			addLine("push" + regSwap);
+			addLine("push " + regSwap);
 			String s = Integer.parseInt(num1)*4 + "";
-			generateMov(regSwap, generateRightParam(reg21,reg22,sca21,sca22));
+			generateMov(regSwap, rightOp.toString());
 			generateMov(regSwap, "[" + regSwap +"*4 + data_items + 512" + s + "]");
-			generateMov(generateLeftParam(num1,reg21,reg22,sca21,sca22), regSwap);
+			generateMov(rightOp.toString(), regSwap);
 			addLine("pop" + regSwap);
 			
 		// add memoria, registro
-		} else if (true) {
+		} else if (
+			num1  == null &&
+			reg11 != null &&
+			puntatore != null ||
+			(reg12 != null || sca11 != null) &&
+			reg21 != null &&
+			reg22 == null &&
+			sca21 == null &&
+			puntatore1 == null
+		) {
 			
-			addLine("push" + regSwap);
+			addLine("push " + regSwap);
 			
-			generateMov(regSwap, generateRightParam(reg11,reg12,sca11,sca12));
+			generateMov(regSwap, leftOp.toString());
 			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
 			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
 			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512]");
-			generateMov(generateLeftParam(num1,reg11,reg12,sca11,sca12), regSwap);
+			generateMov(leftOp.toString(), regSwap);
 			
 			addLine("pop " + regSwap);
 			
 		// add registro, memoria
-		} else if(true) {
+		} else if(
+			num1  == null &&
+			reg11 != null &&
+			puntatore == null &&
+			reg12 == null &&
+			sca11 == null &&
+			reg21 != null && 
+			puntatore1 != null ||
+			(reg22 == null ||
+			sca21 == null)
+		) {
 			
-			addLine("push" + regSwap);
-			generateMov(regSwap, generateRightParam(reg21,reg22,sca21,sca22));
+			addLine("push " + regSwap);
+			generateMov(regSwap, rightOp.toString());
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + " + " + regSwap +"*4 + data_items + 512]");
@@ -387,20 +376,25 @@ public class Movinator {
 		} else {
 			addLine(";Error parse add instruction");
 		}
+		
+		addLine(true,true,"");
 	}
 	
 	
 	private void sub32(
-		String num1,
-		String sca11,
-		String reg11,
-		String reg12,
-		String sca12,
-		String sca21,
-		String reg21,
-		String reg22,
-		String sca22
+		Operando leftOp,
+		Operando rightOp
 	) {
+		String reg11 = leftOp.registro1;
+		String reg12 = leftOp.registro2;
+		String sca11 = leftOp.scalare1;
+		String reg21 = rightOp.registro1;
+		String puntatore = leftOp.puntatore;
+		String reg22 = rightOp.registro2;
+		String sca21 = rightOp.scalare1;
+		String num1 = rightOp.numero;
+		String puntatore1 = rightOp.puntatore;
+		
 		String regSwap = "edx";
 		// sub registro intero
 		if (
@@ -410,9 +404,9 @@ public class Movinator {
 			reg21 == null &&
 			reg22 == null &&
 			sca11 == null &&
-			sca12 == null &&
 			sca21 == null &&
-			sca22 == null
+			puntatore == null &&
+			puntatore1 == null
 		) {
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
@@ -426,64 +420,94 @@ public class Movinator {
 			reg21 != null &&
 			reg22 == null &&
 			sca11 == null &&
-			sca12 == null &&
 			sca21 == null &&
-			sca22 == null
+			puntatore == null &&
+			puntatore1 == null
 		) {
 			
-			addLine("push" + reg21);
+			addLine("push " + reg21);
 			
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			
 			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]");
-			generateMov(reg11, "[" + reg11 + reg21 + "*4 + data_items + 512]");
+			generateMov(reg11, "[" + reg11 + " + " + reg21 + "*4 + data_items + 512]");
 			addLine("pop" + reg21);
 			
 		//sub registro, memoria
-		} else if ( true ) {
+		} else if ( 
+			num1  == null &&
+			reg11 != null &&
+			puntatore == null &&
+			reg12 == null &&
+			sca11 == null &&
+			reg21 != null && 
+			puntatore1 != null ||
+			(reg22 == null ||
+			sca21 == null) 
+		) {
 			
-			addLine("push" + regSwap);
+			addLine("push " + regSwap);
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
 			
-			generateMov(regSwap, generateRightParam(sca21,reg21,reg22,sca22));
+			generateMov(regSwap, rightOp.toString());
 			generateMov(regSwap, "[" + regSwap + "*4 + data_items_negative + 512]");
 			generateMov(reg11, "[" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
 			addLine("pop " + regSwap); 
 		
 		//sub memoria, registro
-		} else if(true) {
+		} else if(
+			num1  == null &&
+			reg11 != null &&
+			puntatore != null ||
+			(reg12 != null || sca11 != null) &&
+			reg21 != null &&
+			reg22 == null &&
+			sca21 == null &&
+			puntatore1 == null
+		) {
 			
 			addLine("push " + regSwap);
 			addLine("push " + reg21);
 			
-			generateMov(regSwap, generateRightParam(sca11,reg11,reg11,sca12));
+			generateMov(regSwap, leftOp.toString());
 			
 			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512");
 			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
 			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
 			
 			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512 ]");
-			generateMov(generateLeftParam(null,sca11,reg11,reg12,sca12) , regSwap);
+			generateMov(leftOp.toString() , regSwap);
 			
 			addLine("push " + reg21);
 			addLine("push " + regSwap);
 			
 		//sub memoria, intero
-		} else if (true) {
+		} else if (
+			num1  != null &&
+			reg11 != null &&
+			puntatore != null ||
+			(reg12 != null || sca11 != null) &&
+			reg21 == null &&
+			reg22 == null &&
+			sca21 == null &&
+			puntatore1 == null
+		) {
 			
 			addLine("push " + regSwap);
-			generateMov(regSwap, generateRightParam(sca21,reg21,reg21,sca22));
+			generateMov(regSwap, rightOp.toString());
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
 			generateMov(regSwap, "[" + regSwap + "*4 + data_items +" + 512 + "-" + s + "]");
-			generateMov(generateLeftParam(null,sca11,reg11,reg12,sca12) , regSwap);
+			generateMov(leftOp.toString() , regSwap);
 			addLine("pop " + regSwap);
 			
 		} else {
 			addLine("Errore: parse add instruction");
 		}
+		
+		addLine(true,true,"");
 	}
 	
 	

@@ -38,10 +38,10 @@ public class Main {
 			String instr;
 			int count = 0;
 			Pattern emptyLine = Pattern.compile("^$|^(\\s*(?:(?<comm>[#]\\w*)|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*)$");
-			Pattern instruction = Pattern.compile("^(?<instruction>\\s*\\w+\\s*)\\s*(?<body>.*)$");
+			Pattern instruction = Pattern.compile("^\\s*(?<instruction>\\w+)\\s*(?<body>.*)$");
 			
 			Matcher instructionMatcher;
-			//Movinator checker = new Movinator(256);
+			Movinator checker = new Movinator(256);
 			while ((line = bufferedFile.readLine()) != null ) {
 				instructionMatcher = emptyLine.matcher(line);
 				try {
@@ -60,13 +60,7 @@ public class Main {
 								rOperand = null;
 							}
 							
-							if (lOperand != null) {
-								System.out.println(lOperand.toString());
-							}
-							if(rOperand != null) {
-								System.out.println(rOperand.toString());
-							}
-							checker.parseInstruction(instr,lOperand,rOperand);
+							checker.parseInstruction(instr,lOperand,rOperand,line);
 						}
 					}
 				} catch (IllegalStateException e) {}
@@ -78,4 +72,3 @@ public class Main {
 		}
 	}
 }
-
