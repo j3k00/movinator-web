@@ -49,7 +49,7 @@ public class Movinator {
 			
 			case "push":
 			case "pushl":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				addLine(line);
 				/*push(
 					num1,  
@@ -62,7 +62,7 @@ public class Movinator {
 			
 			case "pop":
 			case "popl":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				addLine(line);
 				/*pop(
 					sca11, 
@@ -73,31 +73,31 @@ public class Movinator {
 				break;
 			
 			case "dec":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				dec32(leftOp);
 				break;
 				
 			case "inc":
 			case "incl":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				inc32(leftOp);
 				break;
 				
 			case "add":
 			case "addl":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				add32(leftOp, rightOp);
 				break;
 				
 			
 			case "sub":
 			case "subl":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				sub32(leftOp,rightOp);
 				break;
 				
 			case "xor":
-				addLine("#mvn: ", line);
+				addLine(";mvn: ", line);
 				addLine(line);
 				/*xor32(
 					reg11,
@@ -199,7 +199,7 @@ public class Movinator {
 			reg12 == null &&
 			sca11 == null 
 		) {
-			generateMov(reg11, "[data_items" + "reg11" + "*4 + 516]");
+			generateMov(reg11, "DWORD [data_items" + " + " + reg11 + "*4 + 516]");
 		} else if (
 			reg11 != null &&
 			reg12 != null ||
@@ -207,7 +207,7 @@ public class Movinator {
 		) {
 			//push32(regSwap,null,null);
 			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
-			generateMov(regSwap, "[data_items" + " + " + regSwap + "*4 + 516]");
+			generateMov(regSwap, "DWORD [data_items" + " + " + regSwap + "*4 + 516]");
 			//pop32(regSwap,null,null);
 		}
 		addLine(true,true,"");
@@ -234,7 +234,7 @@ public class Movinator {
 			reg12 == null &&
 			sca11 == null
 		) {
-			generateMov(reg11, "[data_items" + " + " + "reg11" + "*4" + "508]");
+			generateMov(reg11, "DWORD [data_items" + " + " + reg11 + "*4" + " + 508]");
 		} else if (
 			reg11 != null &&
 			reg12 != null ||
@@ -242,7 +242,7 @@ public class Movinator {
 		) {
 			//push32(regSwap,null,null);
 			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
-			generateMov(regSwap, "[data_items" +" + " + regSwap + "*4 + 508]");
+			generateMov(regSwap, "DWORD [data_items" +" + " + regSwap + "*4 + 508]");
 			//pop32(regSwap,null,null);
 		}
 		addLine(true,true,"");
@@ -275,9 +275,10 @@ public class Movinator {
 		String puntatore = leftOp.puntatore;
 		String reg22 = rightOp.registro2;
 		String sca21 = rightOp.scalare1;
-		String regSwap = "edx";
 		String num1 = rightOp.numero;
 		String puntatore1 = rightOp.puntatore;
+		
+		String regSwap = "edx";
 		
 		//add registro, intero
 		if (
@@ -293,7 +294,7 @@ public class Movinator {
 		){
 			String s = Integer.parseInt(num1)*4 + "";
 			// utilizzo lo spostamento per andare a sommare direttamente l intero contenuto nella variabile num1
-			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + "+" + s + "]");
+			generateMov(reg11, " DWORD [" + reg11 + "*4 + data_items +" + 512 + "+" + s + "]");
 			
 		// add registro, registro
 		} else if (
@@ -308,9 +309,9 @@ public class Movinator {
 			puntatore1 == null 
 		) {
 			
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + " + " + reg21 +"*4 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 +"*4 + data_items + 512]");
 		
 		// add memoria, intero add DWORD [eax], 5
 		} else if (
@@ -327,7 +328,7 @@ public class Movinator {
 			addLine("push " + regSwap);
 			String s = Integer.parseInt(num1)*4 + "";
 			generateMov(regSwap, rightOp.toString());
-			generateMov(regSwap, "[" + regSwap +"*4 + data_items + 512" + s + "]");
+			generateMov(regSwap, "DWORD [" + regSwap +"*4 + data_items + 512" + s + "]");
 			generateMov(rightOp.toString(), regSwap);
 			addLine("pop" + regSwap);
 			
@@ -346,9 +347,9 @@ public class Movinator {
 			addLine("push " + regSwap);
 			
 			generateMov(regSwap, leftOp.toString());
-			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
-			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
-			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "DWORD [" + regSwap + " + " + reg21 + "*4 + data_items + 512]");
 			generateMov(leftOp.toString(), regSwap);
 			
 			addLine("pop " + regSwap);
@@ -368,9 +369,9 @@ public class Movinator {
 			
 			addLine("push " + regSwap);
 			generateMov(regSwap, rightOp.toString());
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + " + " + regSwap +"*4 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + regSwap +"*4 + data_items + 512]");
 			addLine("pop " + regSwap);
 			
 		} else {
@@ -410,7 +411,7 @@ public class Movinator {
 		) {
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
-			generateMov(reg11, "[" + reg11 + "*4 + data_items +" + 512 + "-" + s + "]");
+			generateMov(reg11, "DWORD [" + reg11 + "*4 + data_items +" + 512 + "-" + s + "]");
 		
 		//sub registro, registro
 		} else if (
@@ -427,11 +428,11 @@ public class Movinator {
 			
 			addLine("push " + reg21);
 			
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			
-			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512]");
-			generateMov(reg11, "[" + reg11 + " + " + reg21 + "*4 + data_items + 512]");
+			generateMov(reg21, "DWORD [" + reg21 + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 + "*4 + data_items + 512]");
 			addLine("pop" + reg21);
 			
 		//sub registro, memoria
@@ -448,12 +449,12 @@ public class Movinator {
 		) {
 			
 			addLine("push " + regSwap);
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg11, "[" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			
 			generateMov(regSwap, rightOp.toString());
-			generateMov(regSwap, "[" + regSwap + "*4 + data_items_negative + 512]");
-			generateMov(reg11, "[" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
 			addLine("pop " + regSwap); 
 		
 		//sub memoria, registro
@@ -473,11 +474,11 @@ public class Movinator {
 			
 			generateMov(regSwap, leftOp.toString());
 			
-			generateMov(reg21, "[" + reg21 + "*4 + data_items_negative + 512");
-			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
-			generateMov(regSwap, "[" + regSwap + "*8 + data_items + 512]");
+			generateMov(reg21, "DWORD [" + reg21 + "*4 + data_items_negative + 512");
+			generateMov(regSwap, "DWORD [" + regSwap + "*8 + data_items + 512]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*8 + data_items + 512]");
 			
-			generateMov(regSwap, "[" + regSwap + " + " + reg21 + "*4 + data_items + 512 ]");
+			generateMov(regSwap, "DWORD [" + regSwap + " + " + reg21 + "*4 + data_items + 512 ]");
 			generateMov(leftOp.toString() , regSwap);
 			
 			addLine("push " + reg21);
@@ -499,7 +500,7 @@ public class Movinator {
 			generateMov(regSwap, rightOp.toString());
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
-			generateMov(regSwap, "[" + regSwap + "*4 + data_items +" + 512 + "-" + s + "]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*4 + data_items +" + 512 + "-" + s + "]");
 			generateMov(leftOp.toString() , regSwap);
 			addLine("pop " + regSwap);
 			
@@ -533,7 +534,7 @@ public class Movinator {
 	* @return String This returns the substitute string.
 	*/ 
 	private void generateMov(String param1, String param2) {
-		addLine("movl\t", param1, ", ", param2);
+		addLine("mov\t", param1, ", ", param2);
 	}
 	
 	/**
