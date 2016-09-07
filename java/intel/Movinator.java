@@ -309,11 +309,13 @@ public class Movinator {
 			puntatore == null &&
 			puntatore1 == null 
 		) {
-			
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap,reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 +"*4 + data_items + 512]");
-		
+			generateMov(regSwap, "DWORD [temp]");
+			
 		// add memoria, intero add DWORD [eax], 5
 		} else if (
 			num1  != null &&
@@ -424,12 +426,13 @@ public class Movinator {
 			puntatore1 == null
 		) {
 			
-			generateMov("DWORD [temp]", reg21);
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap, reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg21, "DWORD [" + reg21 + "*4 + data_items_negative + 512]");
-			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 + "*4 + data_items + 512]");
-			generateMov(reg21, "DWORD [temp]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
+			generateMov(regSwap, "DWORD [temp]");
 			
 		//sub registro, memoria
 		} else if ( 

@@ -5,6 +5,9 @@
 	dec eax
 	sub eax,3
 	sub eax,eax
+	add eax,eax
+	inc DWORD [eax]
+	dec DWORD [eax]
 
 
 
