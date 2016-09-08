@@ -44,18 +44,15 @@ public class Movinator {
 		System.out.println(ins);
 		switch (ins) {
 			case "mov":
-			case "movl":
 				addLine("", line.replaceAll("^\\s*", ""));
 				break;
 			
 			case "push":
-			case "pushl":
 				addLine(";mvn: ", line);
 				push(leftOp);
 				break;
 			
 			case "pop":
-			case "popl":
 				addLine(";mvn: ", line);
 				pop(leftOp);
 				break;
@@ -66,20 +63,17 @@ public class Movinator {
 				break;
 				
 			case "inc":
-			case "incl":
 				addLine(";mvn: ", line);
 				inc32(leftOp);
 				break;
 				
 			case "add":
-			case "addl":
 				addLine(";mvn: ", line);
 				add32(leftOp, rightOp);
 				break;
 				
 			
 			case "sub":
-			case "subl":
 				addLine(";mvn: ", line);
 				sub32(leftOp,rightOp);
 				break;
