@@ -46,7 +46,7 @@ public class Operando {
 	}
 	
 	public String toString() {
-		 String toString = "";
+		String toString = "";
 		
 		if (
 			registro1 != null &&

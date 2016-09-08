@@ -729,7 +729,7 @@ public class Movinator {
 		return true;
 	}
 	
-	private String getRegSwap(String reg1, String reg2,String reg3,String reg4) {
+	private String getRegSwap(String reg1, String reg2, String reg3, String reg4) {
 		List<String> s = Arrays.asList(reg1, reg2, reg3, reg4);
 		
 		if (!(s.contains("eax"))) {
@@ -738,8 +738,8 @@ public class Movinator {
 			return "ebx";
 		} else if (!(s.contains("ecx"))) {
 			return "ecx";
-		} else {
-			return "edx";
 		}
+		
+		return "edx";
 	}
 }
