@@ -1,3 +1,4 @@
+import java.util.*;
 
 public class Movinator {
 	
@@ -50,26 +51,13 @@ public class Movinator {
 			case "push":
 			case "pushl":
 				addLine(";mvn: ", line);
-				addLine(line);
-				/*push(
-					num1,  
-					sca11, 
-					reg12,
-					reg11,
-					sca12
-				);*/
+				push(leftOp);
 				break;
 			
 			case "pop":
 			case "popl":
 				addLine(";mvn: ", line);
-				addLine(line);
-				/*pop(
-					sca11, 
-					reg12,
-					reg11,
-					sca12
-				);*/
+				pop(leftOp);
 				break;
 			
 			case "dec":
@@ -121,28 +109,35 @@ public class Movinator {
 	* 
 	* @return String This returns the substitute string.
 	*/
-	/* 
-	private void push(
-		String num1,
-		String sca11,
-		String reg12, 
-		String reg11
-	) {
-		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
+	
+	private void push(Operando leftOp) {
 		
-		generateMov(
-			generateLeftParam(
-				num1,
-				sca11,
-				reg11,
-				reg12,
-				sca12
-			),
-			stackRegister 
-		);
-		stackElements++;
+		String stackPointer = ((stackElements==0) ? "" : stackElements*4) + "";
+		String stackRegister = (stackElements != 0) ? "DWORD [esp + " + stackPointer + "]" : "DWORD [esp]";
+		
+		String puntatore = leftOp.puntatore; 
+		String reg1 = leftOp.registro1;
+		String reg2 = leftOp.registro2;
+		String scalare1 =  leftOp.scalare1;
+		String regSwap = getRegSwap(reg1,reg2,null,null);
+		
+		if (puntatore == null) {
+			
+			generateMov(stackRegister,leftOp.toString());
+			stackElements++;
+			
+		} else {
+			
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap, leftOp.toString());
+			generateMov(stackRegister, regSwap);
+			generateMov(regSwap, "DWORD [temp]");
+			stackElements++;
+		}
+		
+		addLine(true,true,"");
 	}
-	*/
+	
 	/**
 	* This method is used to replace pop instruction into mov.
 	* 
@@ -153,31 +148,31 @@ public class Movinator {
 	* 
 	* @return String This returns the substitute string.
 	*/
-	/* 
-	private void pop(
-		String sca11, 
-		String reg12,
-		String reg11,
-	) {
+	
+	private void pop(Operando leftOp) {
 		stackElements--;
-		String stackRegister = ((stackElements!=0) ? stackElements*4 : "") + "(%esp)";
+		String stackPointer = ((stackElements==0) ? "" : stackElements*4 ) + "";
+		String stackRegister = (stackElements != 0) ? "DWORD [esp + " + stackPointer + "]" : "DWORD [esp]";
 		
+		String puntatore = leftOp.puntatore; 
+		String reg1 = leftOp.registro1;
+		String reg2 = leftOp.registro2;
+		String regSwap = getRegSwap(reg1,reg2,null,null);
 		
 		if (stackElements < 0) {
 			addLine("ERROR: Pop instruction is invalid: there are no elements in stack");
-			
+		} else if(puntatore == null) {
+			generateMov(leftOp.toString(),stackRegister); 
 		} else {
-			generateMov(
-				generateRightParam(
-					sca11,
-					reg11,
-					reg12,
-				),
-				stackRegister 
-			);
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap,stackRegister); 
+			generateMov(leftOp.toString(), regSwap);
+			generateMov(regSwap, "DWORD [temp]");
 		}
+		
+		addLine(true,true,"");
 	}
-	*/
+	
 	/**
 	* This method is used to replace inc instruction into mov.
 	* 
@@ -192,7 +187,7 @@ public class Movinator {
 		String reg12 = leftOp.registro2;
 		String sca11 = leftOp.scalare1;
 		
-		String regSwap = "edx";
+		String regSwap = getRegSwap(reg11,reg12,null,null);
 		//inc eax
 		if (
 			reg11 != null &&
@@ -228,7 +223,7 @@ public class Movinator {
 		String reg11 = leftOp.registro1;
 		String reg12 = leftOp.registro2;
 		String sca11 = leftOp.scalare1;
-		String regSwap = "edx";
+		String regSwap = getRegSwap(reg11,reg12,null,null);
 		// dec eax
 		if (
 			reg11 != null &&
@@ -279,7 +274,7 @@ public class Movinator {
 		String num1 = rightOp.numero;
 		String puntatore1 = rightOp.puntatore;
 		
-		String regSwap = "edx";
+		String regSwap = getRegSwap(reg11,reg12,reg21,reg22);
 		
 		//add registro, intero
 		if (
@@ -309,11 +304,13 @@ public class Movinator {
 			puntatore == null &&
 			puntatore1 == null 
 		) {
-			
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap,reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 +"*4 + data_items + 512]");
-		
+			generateMov(regSwap, "DWORD [temp]");
+			
 		// add memoria, intero add DWORD [eax], 5
 		} else if (
 			num1  != null &&
@@ -394,7 +391,7 @@ public class Movinator {
 		String num1 = rightOp.numero;
 		String puntatore1 = rightOp.puntatore;
 		
-		String regSwap = "edx";
+		String regSwap = getRegSwap(reg11,reg12,reg21,reg22);
 		// sub registro intero
 		if (
 			num1  != null &&
@@ -424,12 +421,13 @@ public class Movinator {
 			puntatore1 == null
 		) {
 			
-			generateMov("DWORD [temp]", reg21);
+			generateMov("DWORD [temp]", regSwap);
+			generateMov(regSwap, reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
-			generateMov(reg21, "DWORD [" + reg21 + "*4 + data_items_negative + 512]");
-			generateMov(reg11, "DWORD [" + reg11 + " + " + reg21 + "*4 + data_items + 512]");
-			generateMov(reg21, "DWORD [temp]");
+			generateMov(regSwap, "DWORD [" + regSwap + "*4 + data_items_negative + 512]");
+			generateMov(reg11, "DWORD [" + reg11 + " + " + regSwap + "*4 + data_items + 512]");
+			generateMov(regSwap, "DWORD [temp]");
 			
 		//sub registro, memoria
 		} else if ( 
@@ -735,5 +733,19 @@ public class Movinator {
 		}
 		
 		return true;
+	}
+	
+	private String getRegSwap(String reg1, String reg2,String reg3,String reg4) {
+		List<String> s = Arrays.asList(reg1, reg2, reg3, reg4);
+		
+		if (!(s.contains("eax"))) {
+			return "eax";
+		} else if (!(s.contains("ebx"))) {
+			return "ebx";
+		} else if (!(s.contains("ecx"))) {
+			return "ecx";
+		} else {
+			return "edx";
+		}
 	}
 }
