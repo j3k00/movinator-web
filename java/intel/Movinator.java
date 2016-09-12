@@ -6,10 +6,12 @@ public class Movinator {
 	String program = "";
 	
 	public Movinator(int max) {
-		addLine(true, false, ".section .data");
+		addLine(true, false, "global _start");
+		addLine(true, false, "section .data");
 		constructData_items(max);
+		constructData_items_negative(max);
 		constructData_temp();
-		addLine(true, false, ".global _start");
+		addLine(true, false, "section .text");
 		addLine(true, false, "_start:");
 	}
 	
@@ -701,8 +703,7 @@ public class Movinator {
 	*/
 	
 	private void constructData_items(int max) {
-		addLine(true, false,"data_items:");
-		addLine(false, true, ".long");
+		addLine(false, false,"data_items DD ");
 		
 		int numMax = max/2;
 		
@@ -713,12 +714,22 @@ public class Movinator {
 		addLine(true, false, "");
 	}
 	
-	private void constructData_temp() {
-		addLine(true, false,"temp:");
-		addLine(true, true, ".long 0");
+	private void constructData_items_negative(int max) {
+		addLine(false, false,"data_items_negative DD ");
 		
-		addLine(true, false,"temp2:");
-		addLine(true, true, ".long 0");
+		int numMax = max/2;
+		
+		for (int i = -numMax; i < numMax; i ++) {
+			int num = (i > 0) ? -i : -i;
+			addLine(false, false, " " + num + ((i < numMax-1) ? "," : ""));
+		}
+		
+		addLine(true, false, "");
+	}
+	
+	private void constructData_temp() {
+		addLine(true, false,"temp DD 0");
+		addLine(true, false,"temp2 DD 0");
 	}
 	
 	private Boolean isMemoryAddress(String s){
