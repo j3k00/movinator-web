@@ -3,4 +3,5 @@
 ./java/at&t/*.class
 ./assets/*
 ./java/intel/intel.iml
-./java/intel/.idea/*
+.*
+!/.gitignore
