@@ -2,3 +2,5 @@
 ./java/intel/*.class
 ./java/at&t/*.class
 ./assets/*
+./java/intel/itel.iml
+./java/intel/.idea/*

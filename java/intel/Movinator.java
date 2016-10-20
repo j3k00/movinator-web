@@ -4,7 +4,7 @@ public class Movinator {
 	
 	public int stackElements = 0;
 	String program = "";
-	
+
 	public Movinator(int max) {
 		addLine(true, false, "global _start");
 		addLine(true, false, "section .data");
@@ -739,10 +739,10 @@ public class Movinator {
 		
 		return true;
 	}
-	
+
 	private String getRegSwap(String reg1, String reg2, String reg3, String reg4) {
 		List<String> s = Arrays.asList(reg1, reg2, reg3, reg4);
-		
+
 		if (!(s.contains("eax"))) {
 			return "eax";
 		} else if (!(s.contains("ebx"))) {
@@ -750,7 +750,7 @@ public class Movinator {
 		} else if (!(s.contains("ecx"))) {
 			return "ecx";
 		}
-		
+
 		return "edx";
 	}
 }
