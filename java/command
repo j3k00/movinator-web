@@ -1,0 +1,4 @@
+Decompila tutto il file
+objdump --no-show-raw-insn -D -z Keylogger1.exe | cut -d':' -f2 | sed 's/^\s//g' > prova.asm
+
+Esecuzione di un file .asm

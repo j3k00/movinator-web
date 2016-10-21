@@ -123,7 +123,6 @@ public class Movinator {
 			stackElements++;
 			
 		} else {
-			
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, leftOp.toString());
 			generateMov(stackRegister, regSwap);
@@ -185,22 +184,14 @@ public class Movinator {
 		
 		String regSwap = getRegSwap(reg11,reg12,null,null);
 		//inc eax
-		if (
-			reg11 != null &&
-			reg12 == null &&
-			sca11 == null 
-		) {
+
+		if (leftOp.typeOperation().compareTo("registro") == 0) {
 			generateMov(reg11, "DWORD [data_items" + " + " + reg11 + "*4 + 516]");
-		} else if (
-			reg11 != null &&
-			reg12 != null ||
-			sca11 != null 
-		) {
+		} else if (leftOp.typeOperation().compareTo("memoria") == 0) {
 			generateMov("DWORD [temp]", regSwap);
-			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
+			generateMov(regSwap, leftOp.toString());
 			generateMov(regSwap, "DWORD [data_items" + " + " + regSwap + "*4 + 516]");
 			generateMov(regSwap, "DWORD [temp]");
-
 		}
 		addLine(true,true,"");
 	}
@@ -221,17 +212,9 @@ public class Movinator {
 		String sca11 = leftOp.scalare1;
 		String regSwap = getRegSwap(reg11,reg12,null,null);
 		// dec eax
-		if (
-			reg11 != null &&
-			reg12 == null &&
-			sca11 == null
-		) {
+		if (leftOp.typeOperation().compareTo("registro") == 0) {
 			generateMov(reg11, "DWORD [data_items" + " + " + reg11 + "*4" + " + 508]");
-		} else if (
-			reg11 != null &&
-			reg12 != null ||
-			sca11 != null
-		) {
+		} else if (leftOp.typeOperation().compareTo("memoria") == 0) {
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, leftOp.toString()); //TODO GENERATE PARAM
 			generateMov(regSwap, "DWORD [data_items" +" + " + regSwap + "*4 + 508]");
@@ -274,15 +257,8 @@ public class Movinator {
 		
 		//add registro, intero
 		if (
-			num1  != null &&
-			reg11 != null &&
-			reg12 == null &&
-			reg21 == null &&
-			reg22 == null &&
-			sca11 == null &&
-			sca21 == null &&
-			puntatore == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("intero") == 0
 		){
 			String s = Integer.parseInt(num1)*4 + "";
 			// utilizzo lo spostamento per andare a sommare direttamente l intero contenuto nella variabile num1
@@ -290,15 +266,8 @@ public class Movinator {
 			
 		// add registro, registro
 		} else if (
-			num1  == null &&
-			reg11 != null &&
-			reg12 == null &&
-			reg21 != null &&
-			reg22 == null &&
-			sca11 == null &&
-			sca21 == null &&
-			puntatore == null &&
-			puntatore1 == null 
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("registro") == 0
 		) {
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap,reg21);
@@ -309,16 +278,9 @@ public class Movinator {
 			
 		// add memoria, intero add DWORD [eax], 5
 		} else if (
-			num1  != null &&
-			reg11 != null &&
-			puntatore != null ||
-			(reg12 != null || sca11 != null) &&
-			reg21 == null &&
-			reg22 == null &&
-			sca21 == null &&
-			puntatore1 == null 
+			leftOp.typeOperation().compareTo("memoria") == 0 &&
+			rightOp.typeOperation().compareTo("intero") == 0
 		) {
-			
 			generateMov("DWORD [temp]", regSwap);
 			String s = Integer.parseInt(num1)*4 + "";
 			generateMov(regSwap, rightOp.toString());
@@ -329,14 +291,8 @@ public class Movinator {
 			
 		// add memoria, registro
 		} else if (
-			num1  == null &&
-			reg11 != null &&
-			puntatore != null ||
-			(reg12 != null || sca11 != null) &&
-			reg21 != null &&
-			reg22 == null &&
-			sca21 == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("memoria") == 0 &&
+			rightOp.typeOperation().compareTo("registro") == 0
 		) {
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, leftOp.toString());
@@ -348,15 +304,8 @@ public class Movinator {
 			
 		// add registro, memoria
 		} else if(
-			num1  == null &&
-			reg11 != null &&
-			puntatore == null &&
-			reg12 == null &&
-			sca11 == null &&
-			reg21 != null && 
-			puntatore1 != null ||
-			(reg22 == null ||
-			sca21 == null)
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("memoria") == 0
 		) {
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, rightOp.toString());
@@ -390,15 +339,8 @@ public class Movinator {
 		String regSwap = getRegSwap(reg11,reg12,reg21,reg22);
 		// sub registro intero
 		if (
-			num1  != null &&
-			reg11 != null &&
-			reg12 == null &&
-			reg21 == null &&
-			reg22 == null &&
-			sca11 == null &&
-			sca21 == null &&
-			puntatore == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("intero") == 0
 		) {
 			String s = Integer.parseInt(num1)*4 + "";
 			// sposto all indietro il puntatore del mio registro
@@ -406,17 +348,9 @@ public class Movinator {
 		
 		//sub registro, registro
 		} else if (
-			num1  == null &&
-			reg11 != null &&
-			reg12 == null &&
-			reg21 != null &&
-			reg22 == null &&
-			sca11 == null &&
-			sca21 == null &&
-			puntatore == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("registro") == 0
 		) {
-			
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
@@ -426,18 +360,10 @@ public class Movinator {
 			generateMov(regSwap, "DWORD [temp]");
 			
 		//sub registro, memoria
-		} else if ( 
-			num1  == null &&
-			reg11 != null &&
-			puntatore == null &&
-			reg12 == null &&
-			sca11 == null &&
-			reg21 != null && 
-			puntatore1 != null ||
-			(reg22 == null ||
-			sca21 == null) 
+		} else if (
+			leftOp.typeOperation().compareTo("registro") == 0 &&
+			rightOp.typeOperation().compareTo("memoria") == 0
 		) {
-			
 			generateMov("DWORD [temp]", reg21);
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
 			generateMov(reg11, "DWORD [" + reg11 + "*8 + data_items + 512]");
@@ -448,16 +374,9 @@ public class Movinator {
 		
 		//sub memoria, registro
 		} else if(
-			num1  == null &&
-			reg11 != null &&
-			puntatore != null ||
-			(reg12 != null || sca11 != null) &&
-			reg21 != null &&
-			reg22 == null &&
-			sca21 == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("memoria") == 0 &&
+			rightOp.typeOperation().compareTo("registro") == 0
 		) {
-			
 			generateMov("DWORD [temp2]", regSwap);
 			generateMov("DWORD [temp]", reg21);
 			
@@ -475,16 +394,9 @@ public class Movinator {
 			
 		//sub memoria, intero
 		} else if (
-			num1  != null &&
-			reg11 != null &&
-			puntatore != null ||
-			(reg12 != null || sca11 != null) &&
-			reg21 == null &&
-			reg22 == null &&
-			sca21 == null &&
-			puntatore1 == null
+			leftOp.typeOperation().compareTo("memoria") == 0 &&
+			rightOp.typeOperation().compareTo("intero") == 0
 		) {
-			
 			generateMov("DWORD [temp]", regSwap);
 			generateMov(regSwap, rightOp.toString());
 			String s = Integer.parseInt(num1)*4 + "";
