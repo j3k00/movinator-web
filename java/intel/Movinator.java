@@ -96,13 +96,9 @@ public class Movinator {
 	
 	/**
 	* This method is used to replace push instruction into mov.
-	* 
-	* @param num1 push $num1
-	* @param sca11 push sca11(R, R, S)
-	* @param reg12 push S(reg12, R, S), push %eax, push (%esp)
-	* @param reg11 push S(R, reg11, S)
-	* @param sca12 push S(R, reg11, sca12)
-	* 
+	*
+    * @param leftOp		includes all leftOperand
+	*
 	* @return String This returns the substitute string.
 	*/
 	
@@ -135,11 +131,8 @@ public class Movinator {
 	
 	/**
 	* This method is used to replace pop instruction into mov.
-	* 
-	* @param sca11 pop sca11(R, R, S)
-	* @param reg12 pop S(reg12, R, S)
-	* @param reg11 pop S(R, reg11, S), pop reg11, pop (reg11)
-	* @param sca12 pop S(R, reg11, sca12)
+	*
+    * @param leftOp		includes all leftOperand
 	* 
 	* @return String This returns the substitute string.
 	*/
@@ -170,9 +163,9 @@ public class Movinator {
 	
 	/**
 	* This method is used to replace inc instruction into mov.
-	* 
-	* @param reg11 inc %reg11
-	* 
+	*
+    * @param leftOp		includes all leftOperand
+    *
 	* @return String This returns the substitute string.
 	*/ 
 	private void inc32(
@@ -199,9 +192,9 @@ public class Movinator {
 	
 	/**
 	* This method is used to replace dec instruction into mov.
-	* 
-	* @param reg11 dec %reg11
-	* 
+	*
+    * @param leftOp		includes all leftOperand
+    *
 	* @return String This returns the substitute string.
 	*/ 
 	private void dec32(
@@ -226,16 +219,9 @@ public class Movinator {
 	/**
 	* This method is used to replace add instruction into mov.
 	* 
-	* @param num1		addl $num1, R addl $num1,M
-	* @param sca11		addl sca11(R,R,S) , R
-	* @param reg11		addl S(R,reg11,S) , R
-	* @param reg12		addl S(reg12,R,S) , R
-	* @param sca12		addl S(R,R,sca12) , R
-	* @param sca21		addl N , sca12(R,R,S) , addl R , sca12(R,R,S)
-	* @param reg21		addl N , S(R,reg21,S) , addl R , S(R,reg21,S)
-	* @param reg22		addl N , S(reg22,R,S) , addl R , S(reg22,R,S)
-	* @param sca22		addl N , S(R,R,sca22) , addl R , S(R,R,sca22)
-	* 
+	* @param leftOp		includes all leftOperand
+	* @param rightOp    includes all rightOperand
+	*
 	* @return String This returns the substitute string.
 	*/
 	
