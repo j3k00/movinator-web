@@ -1,20 +1,26 @@
+import java.nio.file.OpenOption;
+import java.util.HashMap;
+
 public class Juice {
 
     public String juice = "";
     private String istruzione = "";
+    private HashMap<String,String> matchInstruction;
 
-    public Juice (String istruzione, String parametri) {
-        constuctJuice(istruzione, parametri);
+    public Juice (String istruzione, Operando leftParam, Operando rigthParam) {
+        instantiateHashMap();
+        constuctJuice(istruzione, leftParam, rigthParam);
     }
 
     /**
      * @param istruzione: tipo di istruzione da cui ricaveremo l'equazione
      * @param parametri: parametri dell istruzione
      */
-    private void constuctJuice(String istruzione,String parametri) {
+
+    private void constuctJuice(String istruzione, Operando leftParam, Operando rigthParam) {
         switch (istruzione) {
             case "mov":
-                juice = movEquations(parametri);
+                juice = movEquations(leftParam, rigthParam);
         }
     }
 
@@ -22,19 +28,46 @@ public class Juice {
      * @param parametri
      * @return
      */
-    private String movEquations(String parametri){
-        Operando op = new Operando(parametri);
+    private String movEquations(Operando leftParam, Operando rigthParams){
         String result = "";
 
-        //
-        // TODO
-        //
-        if () {
-
-        } else if () {
+        if (
+            rigthParams.numero    != null &&
+            rigthParams.registro1 == null &&
+            rigthParams.registro2 == null &&
+            rigthParams.scalare1  == null &&
+            rigthParams.scalare2  == null &&
+            leftParam.registro1   != null &&
+            leftParam.registro2   == null &&
+            leftParam.scalare2    == null &&
+            leftParam.scalare1    == null
+        ) {
+            result = matchInstruction.get(leftParam.registro1) + rigthParams.numero;
+        } else if (
+            rigthParams.numero    == null &&
+            rigthParams.registro1 != null &&
+            rigthParams.registro2 == null &&
+            rigthParams.scalare1  == null &&
+            rigthParams.scalare2  == null &&
+            leftParam.registro1   != null &&
+            leftParam.registro2   == null &&
+            leftParam.scalare2    == null &&
+            leftParam.scalare1    == null
+        ) {
+            result = matchInstruction.get(leftParam.registro1) + matchInstruction.get(rigthParams.registro1) + ".value";
+        } else if (
+            rigthParams.numero    == null &&
+            rigthParams.registro1 != null &&
+            rigthParams.registro2 != null &&
+            rigthParams.scalare1  == null &&
+            rigthParams.scalare2  == null &&
+            leftParam.registro1   != null &&
+            leftParam.registro2   == null &&
+            leftParam.scalare2    == null &&
+            leftParam.scalare1    == null
+        ) {
 
         }
-
         return result;
     }
 
@@ -42,37 +75,18 @@ public class Juice {
      * @param register
      * @return
      */
-    private String returnIdentifierRegister(String register) {
-        switch (register) {
-            case "eax":
-                return "RD1";
+    private void instantiateHashMap() {
 
-            case "ebx":
-                return "RD2";
+        matchInstruction = new HashMap<String, String>();
+        matchInstruction.put("eax", "RD1");
+        matchInstruction.put("ebx", "RD2");
+        matchInstruction.put("ecx", "RD3");
+        matchInstruction.put("edx", "RD4");
+        matchInstruction.put("eip", "RP1");
+        matchInstruction.put("esp", "RP2");
+        matchInstruction.put("ebp", "RP3");
+        matchInstruction.put("esi", "RI1");
+        matchInstruction.put("esi", "RI2");
 
-            case "ecx":
-                return "RD3";
-
-            case "edx":
-                return "RD4";
-
-            case "eip":
-                return "RP1";
-
-            case "esp":
-                return "RP2";
-
-            case "ebp":
-                return "RP3";
-
-            case "esi":
-                return "RI1";
-
-            case "edi":
-                return "RI2";
-
-            default:
-                return "";
-        }
     }
 }

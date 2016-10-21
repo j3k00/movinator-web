@@ -90,8 +90,55 @@ public class Operando {
 		}
 		return toString; 
 	}
+    public String toString() {
+        String toString = "";
+
+        if (
+            registro1 != null &&
+            puntatore == null &&
+            registro2 == null &&
+            scalare1  == null
+        ) {
+            toString = "eax";
+        } else if (
+            registro1 != null &&
+            puntatore != null &&
+            registro2 == null &&
+            scalare1  == null
+        ) {
+            toString = puntatore + "[" + registro1 + "]";
+        } else if (
+            registro1 != null &&
+            puntatore != null &&
+            registro2 != null &&
+            scalare1  == null
+        ) {
+            toString = puntatore + "[" + registro1 + "+" + registro2 + "]";
+        } else if  (
+            registro1 != null &&
+            puntatore != null &&
+            registro2 == null &&
+            scalare1  != null
+        ) {
+            toString = puntatore + "[" + registro1 + scalare1 + "]";
+        } else if(
+            registro1 != null &&
+            puntatore != null &&
+            registro2 != null &&
+            scalare1  != null
+        ) {
+            toString = puntatore + "[" + registro1 + "+" + registro2 + " " + scalare1 + "]";
+        } else if (numero != null) {
+            toString = numero;
+        } else {
+            toString = "Errore";
+        }
+        return toString;
+    }
 	
 }
 
+
+// regular expression from js to javascript
 //^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x][\\w]+)|(?:(?<puntatore>[\\w]*\\s[\\w]*\\s*)[\\[](?<registro1>[\\w]*[*]?[\\d]?)\\s*(?:(?:[+]\\s(?<registro2>[\\w]+[*]?[\\d]?)\\s*(?<scalare1>[+]?[-]?\\s*[0x][\\w]+)?)|(<?scalare1>[-]?[+]?\\s*[0x][\\w]*))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$
 //^\s*(?:([a-zA-Z]+)|([0x][\w]+)|(?:([\w]*\s[\w]*\s*)[\[]([\w]*[*]?[\d]?)\s*(?:(?:[+]\s([\w]+[*]?[\d]?)\s*([+]?[-]?\s*[0x][\w]+)?)|([-]?[+]?\s*[0x][\w]*))?[\]]\s*)|(?:([\w]*\s[\w]*\s*)([\w]*)[:]([0x][\w]+)))?\s*$

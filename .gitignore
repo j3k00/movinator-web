@@ -4,4 +4,4 @@
 ./assets/*
 ./java/intel/intel.iml
 .*
-!/.gitignore
+!./.gitignore
