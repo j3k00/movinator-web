@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<program>
+	<generalpurposeregisters>
+		<eax prefix="000">
+			<ax>valore in hex: 0 - 10000</ax>
+			<ah>valore in hex: 0 - 100</ah>
+			<al>valore in hex: 0 - 100</al>
+		</eax>
+		<ebx prefix="001">
+			<bx></bx>
+			<bh></bh>
+			<bl></bl>
+		</ebx>
+		<ecx prefix="010">
+			<cx></cx>
+			<ch></ch>
+			<cl></cl>
+		</ecx>
+		<edx prefix="011">
+			<dx></dx>
+			<dh></dh>
+			<dl></dl>
+		</edx>
+		<ebp prefix="100">141241</ebp>
+		<esi prefix="101">141241</esi>
+		<edi prefix="110">141241</edi>
+		<esp prefix="111">141241</esp>
+	</generalpurposeregisters>
+	<constants>
+		<con32>	Any 32-bit constant
+		<con16>	Any 16-bit constant
+		<con8>	Any 8-bit constant
+		<con>
+	</constants>
+	<variables>
+		...
+	</variables>
+	<addressspace>
+		stack..
+		
+		<cell address="0x00016">123</cell>
+		<cell address="0x00008">523532</cell>
+		<cell address="0x00000">c</cell>
+	</addressspace>
+	
+</program>
