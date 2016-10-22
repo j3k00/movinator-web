@@ -4,7 +4,7 @@ public class Movinator {
 	
 	public int stackElements = 0;
 	String program = "";
-
+	
 	public Movinator(int max) {
 		addLine(true, false, "global _start");
 		addLine(true, false, "section .data");
@@ -97,7 +97,7 @@ public class Movinator {
 	/**
 	* This method is used to replace push instruction into mov.
 	*
-    * @param leftOp		includes all leftOperand
+	* @param leftOp		includes all leftOperand
 	*
 	* @return String This returns the substitute string.
 	*/
@@ -177,7 +177,7 @@ public class Movinator {
 		
 		String regSwap = getRegSwap(reg11,reg12,null,null);
 		//inc eax
-
+		
 		if (leftOp.typeOperation().compareTo("registro") == 0) {
 			generateMov(reg11, "DWORD [data_items" + " + " + reg11 + "*4 + 516]");
 		} else if (leftOp.typeOperation().compareTo("memoria") == 0) {
@@ -637,10 +637,10 @@ public class Movinator {
 		
 		return true;
 	}
-
+	
 	private String getRegSwap(String reg1, String reg2, String reg3, String reg4) {
 		List<String> s = Arrays.asList(reg1, reg2, reg3, reg4);
-
+		
 		if (!(s.contains("eax"))) {
 			return "eax";
 		} else if (!(s.contains("ebx"))) {
@@ -648,7 +648,7 @@ public class Movinator {
 		} else if (!(s.contains("ecx"))) {
 			return "ecx";
 		}
-
+		
 		return "edx";
 	}
 }
