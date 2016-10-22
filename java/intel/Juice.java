@@ -61,7 +61,7 @@ public class Juice implements Comparable{
 		
 		
 		
-		return Math.log10(????);
+		return Math.log10(concatenazione degli elementi di array);
 	}
 	
 	@Override
