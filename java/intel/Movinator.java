@@ -193,8 +193,8 @@ public class Movinator {
 	/**
 	* This method is used to replace dec instruction into mov.
 	*
-    * @param leftOp		includes all leftOperand
-    *
+	* @param leftOp		includes all leftOperand
+	*
 	* @return String This returns the substitute string.
 	*/ 
 	private void dec32(

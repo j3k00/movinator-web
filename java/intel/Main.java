@@ -36,7 +36,6 @@ public class Main {
 			Operando rOperand;
 			Operando lOperand;
 			String instr;
-			int count = 0;
 			Pattern emptyLine = Pattern.compile("^$|^(\\s*(?:(?<comm>[#]\\w*)|[.]\\w*(?:\\s*(?:[.]|[_]))?\\w*|\\w*[:])\\s*)$");
 			Pattern instruction = Pattern.compile("^\\s*(?<instruction>\\w+)\\s*(?<body>.*)$");
 			
