@@ -29,7 +29,7 @@ public class Movingine {
 			Matcher instructionMatcher;
 			String line = "";
 			
-			while ((line = bufferedFile.readLine()) != null ) {
+			while ((line = bufferedFile.readLine()) != null) {
 				instructionMatcher = emptyLine.matcher(line);
 				try {
 					if (!instructionMatcher.matches()) {

@@ -6,6 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Operando {
+	public final static OP_INTEGER = 0;
+	public final static OP_MEMORY = 1;
+	public final static OP_REGISTER = 2;
 	
 	public String registro1 = "";
 	public String registro2 = "";
@@ -113,7 +116,7 @@ public class Operando {
 		return toString;
 	}
 	
-	public String typeOperation() {
+	public int typeOperation() {
 		if (
 			registro1 != null &&
 			puntatore == null &&
@@ -121,7 +124,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "registro";
+			return OP_REGISTER;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -129,7 +132,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -137,7 +140,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -145,7 +148,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -153,7 +156,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		}else if(
 			registro1 != null &&
 			puntatore != null &&
@@ -161,7 +164,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  != null
 		) {
-			return  "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -169,11 +172,9 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  != null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (numero != null) {
-			return "intero";
-		} else {
-			return "Error";
+			return OP_INTEGER;
 		}
 	}
 }
