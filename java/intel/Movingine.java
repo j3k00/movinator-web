@@ -84,6 +84,8 @@ public class Movingine {
 	 * @param leftParam
 	 * @param rightParams
 	 * @return
+	 *
+	 * Funzione che genera l'equazioni corrispondete alla stringa
 	 */
 	private void movEquations(Operando leftParam, Operando rightParams){
 		
@@ -145,6 +147,14 @@ public class Movingine {
 		return movingine;
 	}
 	
+	/**
+	 * @param tmpEngine
+	 * @return
+	 * Questa funzione prende in ingresso l array delle operazioni di un singolo blocco
+	 * e ad ogni assegnamento le spezza in parametro sinitro e parametro destro in un hashmap
+	 * in modo tale se trovo due istruzioni di assegnamento su uno stesso registro la prima venga
+	 * eliminata
+	 */
 	private String simplyfyEngine(LinkedList<String> tmpEngine){
 		
 		// registro
