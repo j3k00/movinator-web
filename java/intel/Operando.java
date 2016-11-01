@@ -130,7 +130,6 @@ public class Operando {
 		return toString;
 	}
 	
-	
 	/**
 	 * @return
 	 * Ritorna il tipo dell operazione corrente, aggiunto per eliminare
@@ -201,7 +200,6 @@ public class Operando {
 		}
 	}
 }
-
 // regular expression from js to javascript
 //^\s*(?:([a-zA-Z]+)|([0x][\w]+)|(?:([\w]*\s[\w]*\s*)[\[]([\w]*[*]?[\d]?)\s*(?:(?:[+]\s([\w]+[*]?[\d]?)\s*([+]?[-]?\s*[0x][\w]+)?)|([-]?[+]?\s*[0x][\w]*))?[\]]\s*)|(?:([\w]*\s[\w]*\s*)([\w]*)[:]([0x][\w]+)))?\s*$
 //^\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x]?[\w]+)|\s*(?:(?<puntatore>[a-zA-Z]+\s*[a-zA-Z]+\s*)[\[]\s*(?<registro1>[\w]+)\s*(?:(?:[+]?\s*(?<registro2>[\w]+[*]?[\d]*)?\s*(?<scalare1>[+]?[-]?\s*[0x]?[\w]+)?))?[\]]\s*)|(?:(?<puntatore1>[\w]*\s[\w]*\s*)(?<rChiamata>[\w]*)[:](?<spostamento>[0x][\w]+)))?\s*$

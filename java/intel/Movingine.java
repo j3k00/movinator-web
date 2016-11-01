@@ -8,6 +8,7 @@ public class Movingine {
 	public final static int OP_INTEGER  = 0;
 	public final static int OP_MEMORY   = 1;
 	public final static int OP_REGISTER = 2;
+	
 	private String engine = "";
 	public LinkedList<String> movingine = new LinkedList<>();
 	private LinkedList<String> tempmovingine = new LinkedList<>();
@@ -32,7 +33,7 @@ public class Movingine {
 			Matcher instructionMatcher;
 			String line = "";
 			
-			while ((line = bufferedFile.readLine()) != null ) {
+			while ((line = bufferedFile.readLine()) != null) {
 				instructionMatcher = emptyLine.matcher(line);
 				try {
 					if (!instructionMatcher.matches()) {
