@@ -1,18 +1,17 @@
-import java.io.File;
-import java.io.FileReader;
-import java.io.BufferedReader;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Operando {
+	
+	public final static int OP_INTEGER  = 0;
+	public final static int OP_MEMORY   = 1;
+	public final static int OP_REGISTER = 2;
 	
 	public String registro1 = "";
 	public String registro2 = "";
 	public String scalare1 = "";
 	public String scalare2 = "";
 	public String puntatore = "";
-	public String registroSpeciale = "";
 	public String numero = "";
 	public String rChiamata = "";
 	public String spostamento = "";
@@ -21,6 +20,19 @@ public class Operando {
 		constructOperando(operand);
 	}
 	
+	
+	/**
+	 * @param operand string contenente l'intera istruzione
+	 * mov eax, ebx						-> mov registro1, registro1
+	 * mov eax, 4						-> mov registro1, numero
+	 * mov eax, DWORD [eax]				-> mov registro1, puntatore[registro1]
+	 * mov eax, DWORD[eax + ebx]		-> mov registro1, puntatore[registro1, registro2]
+	 * mov eax, DWORD[eax + ebx + 4]	-> mov registro1, puntatore[registro1, registro2, scalare1]
+	 * mov eax, DWORD[eax + ebx*4 + 4]	-> mov registro1, puntatore[registro1, registro2, scalare2s, scalare1]
+	 *
+	 * Gli atri due registri sarebbero per le operazioni nella forma
+	 * mov es:444, ebx
+	 **/
 	private void constructOperando(String operand) {
 		try {
 			Pattern instruction = Pattern.compile("^\\s*(?:(?<reg1>[a-zA-Z]+)|(?<numero>[0x]?[\\w]+)|\\s*(?:(?<puntatore>[a-zA-Z]+\\s*[a-zA-Z]+\\s*)[\\[]\\s*(?<registro1>[\\w]+)\\s*((?:[+]?\\s*(?:(?<registro2>[\\w]+)[*]?(?<scalare2>[\\d]*)?)?\\s*(?<scalare1>[+]?[-]?\\s*[0x]?[\\w]+)?))?[\\]]\\s*)|(?:(?<puntatore1>[\\w]*\\s[\\w]*\\s*)(?<rChiamata>[\\w]*)[:](?<spostamento>[0x][\\w]+)))?\\s*$");
@@ -46,6 +58,11 @@ public class Operando {
 		}
 	}
 	
+	
+	/**
+	 * @return
+	 * Ritorna la stringa corrispondente ai parametri
+	 */
 	public String toString() {
 		String toString = "";
 		
@@ -113,7 +130,14 @@ public class Operando {
 		return toString;
 	}
 	
-	public String typeOperation() {
+	
+	/**
+	 * @return
+	 * Ritorna il tipo dell operazione corrente, aggiunto per eliminare
+	 * i comandi di controllo del tipo di operazione effettuati nella classe
+	 * Movinator
+	 */
+	public int typeOperation() {
 		if (
 			registro1 != null &&
 			puntatore == null &&
@@ -121,7 +145,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "registro";
+			return OP_REGISTER;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -129,7 +153,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -137,7 +161,7 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -145,7 +169,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -153,7 +177,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  == null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		}else if(
 			registro1 != null &&
 			puntatore != null &&
@@ -161,7 +185,7 @@ public class Operando {
 			scalare1  != null &&
 			scalare2  != null
 		) {
-			return  "memoria";
+			return OP_MEMORY;
 		} else if (
 			registro1 != null &&
 			puntatore != null &&
@@ -169,11 +193,11 @@ public class Operando {
 			scalare1  == null &&
 			scalare2  != null
 		) {
-			return "memoria";
+			return OP_MEMORY;
 		} else if (numero != null) {
-			return "intero";
+			return OP_INTEGER;
 		} else {
-			return "Error";
+			return -1;
 		}
 	}
 }

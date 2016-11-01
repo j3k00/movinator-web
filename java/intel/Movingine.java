@@ -5,6 +5,9 @@ import java.util.regex.Pattern;
 
 public class Movingine {
 	
+	public final static int OP_INTEGER  = 0;
+	public final static int OP_MEMORY   = 1;
+	public final static int OP_REGISTER = 2;
 	private String engine = "";
 	public LinkedList<String> movingine = new LinkedList<>();
 	private LinkedList<String> tempmovingine = new LinkedList<>();
@@ -14,10 +17,10 @@ public class Movingine {
 	
 	public Movingine (String fileName) {
 		file = new File(fileName);
-		constructJuice();
+		startEngine();
 	}
 	
-	private void constructJuice() {
+	private void startEngine() {
 		try {
 			bufferedFile = new BufferedReader(new FileReader(file));
 			Operando rOperand;
@@ -86,22 +89,22 @@ public class Movingine {
 		
 		//mov registro, intero
 		if (
-			leftParam.typeOperation().compareTo("registro") == 0 &&
-			rightParams.typeOperation().compareTo("intero") == 0
+			leftParam.typeOperation() == OP_REGISTER &&
+			rightParams.typeOperation() == OP_INTEGER
 		) {
 			tempmovingine.add(leftParam.registro1 + " = " + rightParams.numero);
 			
 		//mov registro, registro
 		} else if (
-			leftParam.typeOperation().compareTo("registro") == 0 &&
-			rightParams.typeOperation().compareTo("registro") == 0
+			leftParam.typeOperation() == OP_REGISTER &&
+			rightParams.typeOperation() == OP_REGISTER
 		) {
 			tempmovingine.add(leftParam.registro1 + " = " + rightParams.registro1 + ".v");
 			
 		//mov registro, memoria
 		} else if (
-			leftParam.typeOperation().compareTo("registro") == 0 &&
-			rightParams.typeOperation().compareTo("memoria") == 0
+			leftParam.typeOperation() == OP_REGISTER &&
+			rightParams.typeOperation() == OP_MEMORY
 		) {
 			String registro1 = rightParams.registro1 + ".value";
 			String registro2 = (rightParams.registro2 != null) ? rightParams.registro2 + ".v" : "";
@@ -111,8 +114,8 @@ public class Movingine {
 			String result = leftParam.registro1 + " = " +" m(" + registro1 + " + " + registro2 + scalare2 + " + " + scalare1 + " )";
 			tempmovingine.add(result);
 		} else if(
-			leftParam.typeOperation().compareTo("memoria") == 0 &&
-			rightParams.typeOperation().compareTo("intero") == 0
+			leftParam.typeOperation() == OP_MEMORY &&
+			rightParams.typeOperation() == OP_INTEGER
 		) {
 			String registro1 = leftParam.registro1 + ".v";
 			String registro2 = (leftParam.registro2 != null) ? leftParam.registro2 + ".v" : "";
@@ -122,8 +125,8 @@ public class Movingine {
 			String result  = "m(" + registro1 + "+" + registro2 + scalare2 + " " + scalare1 + ")" + " = " + rightParams.numero;
 			tempmovingine.add(result);
 		} else if (
-			leftParam.typeOperation().compareTo("memoria") == 0 &&
-			rightParams.typeOperation().compareTo("registro") == 0
+			leftParam.typeOperation() == OP_MEMORY &&
+			rightParams.typeOperation() == OP_REGISTER
 		) {
 			String registro1 = leftParam.registro1 + ".v";
 			String registro2 = (leftParam.registro2 != null) ? leftParam.registro2 + ".v" : "";
@@ -179,5 +182,4 @@ public class Movingine {
 		}
 	return engine;
 	}
-	
 }
