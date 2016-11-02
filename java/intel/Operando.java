@@ -7,16 +7,19 @@ public class Operando {
 	public final static int OP_MEMORY   = 1;
 	public final static int OP_REGISTER = 2;
 	
-	public String registro1 = "";
-	public String registro2 = "";
-	public String scalare1 = "";
-	public String scalare2 = "";
-	public String puntatore = "";
-	public String numero = "";
-	public String rChiamata = "";
-	public String spostamento = "";
+	private string operand = "";
+	
+	private String registro1 = "";
+	private String registro2 = "";
+	private String scalare1 = "";
+	private String scalare2 = "";
+	private String puntatore = "";
+	private String numero = "";
+	private String rChiamata = "";
+	private String spostamento = "";
 	
 	public Operando(String operand) {
+		this.operand = operand.trim();
 		constructOperando(operand);
 	}
 	
@@ -26,9 +29,9 @@ public class Operando {
 	 * mov eax, ebx						-> mov registro1, registro1
 	 * mov eax, 4						-> mov registro1, numero
 	 * mov eax, DWORD [eax]				-> mov registro1, puntatore[registro1]
-	 * mov eax, DWORD[eax + ebx]		-> mov registro1, puntatore[registro1, registro2]
-	 * mov eax, DWORD[eax + ebx + 4]	-> mov registro1, puntatore[registro1, registro2, scalare1]
-	 * mov eax, DWORD[eax + ebx*4 + 4]	-> mov registro1, puntatore[registro1, registro2, scalare2s, scalare1]
+	 * mov eax, DWORD [eax + ebx]		-> mov registro1, puntatore[registro1, registro2]
+	 * mov eax, DWORD [eax + ebx + 4]	-> mov registro1, puntatore[registro1, registro2, scalare1]
+	 * mov eax, DWORD [eax + ebx*4 + 4]	-> mov registro1, puntatore[registro1, registro2, scalare2s, scalare1]
 	 *
 	 * Gli atri due registri sarebbero per le operazioni nella forma
 	 * mov es:444, ebx
@@ -58,78 +61,6 @@ public class Operando {
 		}
 	}
 	
-	
-	/**
-	 * @return
-	 * Ritorna la stringa corrispondente ai parametri
-	 */
-	public String toString() {
-		String toString = "";
-		
-		if (
-			registro1 != null &&
-			puntatore == null &&
-			registro2 == null &&
-			scalare1  == null &&
-			scalare2  == null
-		) {
-			toString = "eax";
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 == null &&
-			scalare1  == null &&
-			scalare2  == null
-		) {
-			toString = puntatore + "[" + registro1 + "]";
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  == null &&
-			scalare2  == null
-		) {
-			toString = puntatore + "[" + registro1 + "+" + registro2 + "]";
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 == null &&
-			scalare1  != null &&
-			scalare2  == null
-		) {
-			toString = puntatore + "[" + registro1 + scalare1 + "]";
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  != null &&
-			scalare2  == null
-		) {
-			toString = puntatore + "[" + registro1 + "+" + registro2 + " " + scalare1 + "]";
-		} else if(
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  != null &&
-			scalare2  != null
-		) {
-			toString = puntatore + "[" + registro1 + "+" + registro2 + "*" + scalare2 + scalare1 + "]";
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  == null &&
-			scalare2  != null
-		) {
-			toString = puntatore + "[" + registro1 + "+" + registro2 + "*" + scalare2 + "]";
-		} else if (numero != null) {
-			toString = numero;
-		} else {
-			toString = "Errore";
-		}
-		return toString;
-	}
-	
 	/**
 	 * @return
 	 * Ritorna il tipo dell operazione corrente, aggiunto per eliminare
@@ -145,59 +76,21 @@ public class Operando {
 			scalare2  == null
 		) {
 			return OP_REGISTER;
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 == null &&
-			scalare1  == null &&
-			scalare2  == null
-		) {
-			return OP_MEMORY;
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  == null &&
-			scalare2  == null
-		) {
-			return OP_MEMORY;
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 == null &&
-			scalare1  != null &&
-			scalare2  == null
-		) {
-			return OP_MEMORY;
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  != null &&
-			scalare2  == null
-		) {
-			return OP_MEMORY;
-		}else if(
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  != null &&
-			scalare2  != null
-		) {
-			return OP_MEMORY;
-		} else if (
-			registro1 != null &&
-			puntatore != null &&
-			registro2 != null &&
-			scalare1  == null &&
-			scalare2  != null
-		) {
-			return OP_MEMORY;
-		} else if (numero != null) {
-			return OP_INTEGER;
-		} else {
-			return -1;
 		}
+		
+		if (numero != null) {
+			return OP_INTEGER;
+		}
+		
+		return OP_MEMORY;
+	}
+	
+	/**
+	 * @return
+	 * Ritorna la stringa corrispondente ai parametri
+	 */
+	public String toString() {
+		return operand;
 	}
 }
 // regular expression from js to javascript
