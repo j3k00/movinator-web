@@ -7,16 +7,16 @@ public class Operando {
 	public final static int OP_MEMORY   = 1;
 	public final static int OP_REGISTER = 2;
 	
-	private string operand = "";
+	private String operand = "";
 	
-	private String registro1 = "";
-	private String registro2 = "";
-	private String scalare1 = "";
-	private String scalare2 = "";
-	private String puntatore = "";
-	private String numero = "";
-	private String rChiamata = "";
-	private String spostamento = "";
+	public String registro1 = "";
+	public String registro2 = "";
+	public String scalare1 = "";
+	public String scalare2 = "";
+	public String puntatore = "";
+	public String numero = "";
+	public String rChiamata = "";
+	public String spostamento = "";
 	
 	public Operando(String operand) {
 		this.operand = operand.trim();

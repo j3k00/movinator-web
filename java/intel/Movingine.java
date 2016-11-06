@@ -5,12 +5,12 @@ import java.util.regex.Pattern;
 
 public class Movingine {
 	
-	public final static int OP_INTEGER  = 0;
-	public final static int OP_MEMORY   = 1;
-	public final static int OP_REGISTER = 2;
+	private final static int OP_INTEGER  = 0;
+	private final static int OP_MEMORY   = 1;
+	private final static int OP_REGISTER = 2;
 	
 	private String engine = "";
-	public LinkedList<String> movingine = new LinkedList<>();
+	private LinkedList<String> movingine = new LinkedList<>();
 	private LinkedList<String> tempmovingine = new LinkedList<>();
 	
 	File file = null;
@@ -169,7 +169,6 @@ public class Movingine {
 			String[] split = s.split("=");
 			String leftOp  = split[0];
 			String rightOp = split[1];
-			System.out.println(leftOp+rightOp);
 			if (leftOp.contains("m(") || rightOp.contains("m(")) {
 				Set set = tempRegister.entrySet();
 				Iterator it = set.iterator();
