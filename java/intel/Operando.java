@@ -52,7 +52,7 @@ public class Operando {
 			rChiamata = instructionMatcher.group("rChiamata");
 			spostamento = instructionMatcher.group("spostamento");
 			
-			System.out.println("registro1 = " + registro1 + "\n" + "numero = " + numero + "\n" + "puntatore = " + puntatore + "\n" + "registro2 = " + registro2 + "\n" + "scalare1 = " + scalare1);
+			//System.out.println("registro1 = " + registro1 + "\n" + "numero = " + numero + "\n" + "puntatore = " + puntatore + "\n" + "registro2 = " + registro2 + "\n" + "scalare1 = " + scalare1);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
 		}

@@ -58,7 +58,6 @@ public class Main {
 								lOperand = new Operando(instructionMatcher.group("body"));
 								rOperand = null;
 							}
-							
 							checker.parseInstruction(instr,lOperand,rOperand,line);
 						}
 					}
@@ -69,5 +68,6 @@ public class Main {
 		} catch (Exception e){
 			System.out.println("Errore: " + e.getMessage());
 		}
+		Movingine mv = new Movingine(args[0]);
 	}
 }

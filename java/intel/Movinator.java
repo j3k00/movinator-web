@@ -46,7 +46,6 @@ public class Movinator {
 		Operando rightOp,
 		String line
 	) {
-		System.out.println(ins);
 		switch (ins) {
 			case "mov":
 				addLine("", line.replaceAll("^\\s*", ""));
