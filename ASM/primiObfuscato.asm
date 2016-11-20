@@ -90,6 +90,19 @@ fine:
 	pop eax
 	inc eax
 	mov ebx, 0
+	push eax
+	push ebx
+	push edx
+	push ecx
+	mov ebx,20
+	mov eax,20
+	mov ecx,20
+	mov edx,20
+	mov eax,20
+	pop ecx
+	pop edx
+	pop ebx
+	pop eax
 	jmp controller
 exit:
 	mov eax, 1
