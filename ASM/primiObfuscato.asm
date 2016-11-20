@@ -11,20 +11,20 @@ _start:
 	mov eax, 0
 	inc eax
 	inc eax
-  push ecx
-  inc ecx
-  inc ecx
-  pop ecx
+	push ecx
+	inc ecx
+	inc ecx
+	pop ecx
 	jmp controller
 controller:
 	;controlla che non abbia superato il range del valore specificato
-  push eax
-  push ecx
-  dec eax
-  dec eax
-  dec ecx
-  pop ecx
-  pop eax
+	push eax
+	push ecx
+	dec eax
+	dec eax
+	dec ecx
+	pop ecx
+	pop eax
 	cmp eax, ecx
 	je exit
 	mov edx, 0
@@ -38,14 +38,15 @@ controller:
 	jne controller
 	je primo
 primo:
-  push ebx
-  push eax
-  push edx
-  mov ebx,20
-  mov eax,20
-  div ebx
-  pop eax
-  pop ebx
+	push ebx
+	push eax
+	push edx
+	mov ebx,20
+	mov eax,20
+	div ebx
+	pop edx
+	pop eax
+	pop ebx
 	; se il divisore è 1 torno al controller
 	cmp ebx, 1
 	je controller
