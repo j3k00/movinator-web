@@ -72,6 +72,7 @@ public class Movingine {
 	 */
 	
 	private void constuctEngine(String istruzione, Operando leftParam, Operando rightParam) {
+		String s1 = istruzione + " " + leftParam + " " + rightParam;
 		switch (istruzione) {
 			case "mov":
 				movEquations(leftParam, rightParam);
@@ -79,11 +80,14 @@ public class Movingine {
 			case "jmp":
 			case "jne":
 			case "jnz":
-			default:
 				engine = simplyfyEngine(tempmovingine);
 				movingine.add(engine);
 				engine = "";
 				tempmovingine = new LinkedList<>();
+				break;
+			default:
+				String s = istruzione + " " + leftParam + " " + rightParam;
+				tempmovingine.add(s);
 		}
 	}
 	
@@ -166,25 +170,29 @@ public class Movingine {
 		String engine = "";
 		HashMap<String,String> tempRegister = new HashMap<>();
 		for (String s:tmpEngine) {
-			String[] split = s.split("=");
-			String leftOp  = split[0];
-			String rightOp = split[1];
-			if (leftOp.contains("m(") || rightOp.contains("m(")) {
-				Set set = tempRegister.entrySet();
-				Iterator it = set.iterator();
-				while (it.hasNext()) {
-					Map.Entry me = (Map.Entry) it.next();
-					engine += me.getKey().toString() + "=" + me.getValue().toString() + ";";
-				}
-				tempRegister = new HashMap<>();
-				engine += s + ";";
-			} else {
-				if (tempRegister.containsKey(leftOp)) {
-					tempRegister.remove(leftOp);
-					tempRegister.put(leftOp, rightOp);
+			if (s.contains("=")) {
+				String[] split = s.split("=");
+				String leftOp  = split[0];
+				String rightOp = split[1];
+				if (leftOp.contains("m(") || rightOp.contains("m(")) {
+					Set set = tempRegister.entrySet();
+					Iterator it = set.iterator();
+					while (it.hasNext()) {
+						Map.Entry me = (Map.Entry) it.next();
+						engine += me.getKey().toString() + "=" + me.getValue().toString() + ";";
+					}
+					tempRegister = new HashMap<>();
+					engine += s + ";";
 				} else {
-					tempRegister.put(leftOp, rightOp);
+					if (tempRegister.containsKey(leftOp)) {
+						tempRegister.remove(leftOp);
+						tempRegister.put(leftOp, rightOp);
+					} else {
+						tempRegister.put(leftOp, rightOp);
+					}
 				}
+			} else {
+				engine += s+";";
 			}
 		}
 		engine = engine.replaceAll(" ","");
