@@ -1,6 +1,6 @@
 import java.nio.file.OpenOption;
 import java.util.HashMap;
-
+/*
 public class Movinjuice implements Comparable {
 	String[] juice;
 	long[] movid;
@@ -91,3 +91,4 @@ public class Movinjuice implements Comparable {
 		return Math.abs(this.movid - other.movid);
 	}
 }
+*/

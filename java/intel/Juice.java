@@ -10,19 +10,19 @@ public class Juice implements Comparable {
         instantiateHashMap();
         constuctJuice(istruzione, leftParam, rightParam);
     }
-
+    
     /**
      * @param istruzione: tipo di istruzione da cui ricaveremo l'equazione
      * @param parametri: parametri dell istruzione
      */
-
+    
     private void constuctJuice(String istruzione, Operando leftParam, Operando rightParam) {
         switch (istruzione) {
             case "mov":
                 juice = movEquations(leftParam, rightParam);
         }
     }
-
+    
     /**
      * @param leftParam
      * @param rightParams
@@ -30,21 +30,21 @@ public class Juice implements Comparable {
      */
     private String movEquations(Operando leftParam, Operando rightParams){
         String result = "";
-
+        
         //mov registro, intero
         if (
             leftParam.typeOperation().compareTo("registro") == 0 &&
             rightParams.typeOperation().compareTo("intero") == 0
         ) {
             result = matchInstruction.get(leftParam.registro1) + " + " + rigthParams.numero;
-
-        //mov registro, registro
+        
+       //mov registro, registro
         } else if (
             leftParam.typeOperation().compareTo("registro") == 0 &&
             rightParams.typeOperation().compareTo("registro") == 0
         ) {
             result = matchInstruction.get(leftParam.registro1) + " + " + matchInstruction.get(rigthParams.registro1) + ".value";
-
+        
         //mov registro, memoria
         } else if (
             leftParam.typeOperation().compareTo("registro") == 0 &&
@@ -54,13 +54,13 @@ public class Juice implements Comparable {
             String registro2 = (rightParams.registro2 != null) ? matchInstruction.get(rightParams.registro2) + ".value" : "";
             String scalare1  = (rightParams.scalare1 != null) ? rightParams.scalare1 : "";
             String scalare2  = (rightParams.scalare2 != null) ? "*" + rightParams.scalare2 : "";
-
+            
             result = matchInstruction.get(leftParam.registro1) + " mem(" + registro1 + " + " + registro2 + scalare2 + " + " + scalare1 + " )";
         }
         return result;
     }
-
-
+    
+     
     /**
      * @param register
      * @return

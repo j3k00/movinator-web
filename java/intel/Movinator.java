@@ -90,9 +90,8 @@ public class Movinator {
 					reg21
 				);*/
 				break;
-				
 			default:
-				addLine("#mvn ERR", line);
+				addLine(line);
 		}
 	}
 	
@@ -399,8 +398,6 @@ public class Movinator {
 		
 		addLine(true,true,"");
 	}
-	
-	
 	/*
 	 * Utils Method
 	*/
@@ -593,6 +590,7 @@ public class Movinator {
 		
 	}
 	
+	
 	/**
 	* This method is used to create an array with
 	* as many elements as specified in input
@@ -650,7 +648,6 @@ public class Movinator {
 		} else if (!(s.contains("ecx"))) {
 			return "ecx";
 		}
-		
 		return "edx";
 	}
 }

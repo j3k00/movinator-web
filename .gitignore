@@ -3,5 +3,6 @@
 ./java/at&t/*.class
 ./assets/*
 ./java/intel/intel.iml
+./java/intel/out/*
 .*
 !./.gitignore

@@ -196,6 +196,7 @@ public class Movingine {
 			}
 		}
 		engine = engine.replaceAll(" ","");
+		engine = engine.replaceAll("null","");
 		return engine;
 	}
 }
