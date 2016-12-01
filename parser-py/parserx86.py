@@ -1,5 +1,5 @@
 import sys
-
+from operando import operando
 '''
 this function split the assembly x-86 operation into instruction and body
 '''
@@ -19,10 +19,22 @@ def splitInstruction(line):
 
 def semantic(line):
 	instr,body = splitInstruction(line)
+	op1 = ''
+	op2 = ''
+	if ',' in body:
+		arrayOp = body.split(',')
+		op1 = operando(arrayOp[0])
+		op2 = operando(arrayOp[1].strip())
+	else:
+		op1 = operando(body)
+	
+	#dictionary that assign at instruction key its routine
 	switcher = {
-		'mov': movSemantic(body),
-		'add': addSemantic(body),
+		'mov': movSemantic(op1,op2),
+		'add': addSemantic(op1,op2),
 	}
+	
+	#return routine function
 	return switcher.get(instr)
 
 def readFile(file):
@@ -33,11 +45,11 @@ def readFile(file):
 		print "File doesn't exist"
 
 #Semantic function
-def movSemantic(body):
-	return 'mov ' + body
+def movSemantic(op1,op2):
+	return 'mov ' + op1.toString() + ', ' + op2.toString()
 
-def addSemantic(body):
-	return 'add ' + body
+def addSemantic(op1,op2):
+	return 'add ' #+ op1.reg1 + ',' + op2.reg2
 		
 if __name__ == "__main__":
 	this = readFile(sys.argv[1])
