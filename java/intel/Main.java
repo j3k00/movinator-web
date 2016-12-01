@@ -69,6 +69,5 @@ public class Main {
 			System.out.println("Errore: " + e.getMessage());
 		}
 		Movingine mv = new Movingine(args[0]);
-		ComparateJuice jc = new ComparateJuice(mv.getMovingine(), args[0]);
 	}
 }
