@@ -23,5 +23,5 @@ Department of Computer Science
 
 ## References
 
-* The inspiration for the compiler is the paper ["mov is Turing-complete"], 
+* The inspiration for the compiler is the paper ["mov is Turing-complete", 
   by Stephen Dolan](http://drwho.virtadpt.net/files/mov.pdf).
